@@ -1,0 +1,926 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<title>Lengua de Señas Mexicana (LSM) · GM Complejo Toluca</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,300;8..60,400;8..60,500;8..60,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #edf3f2;
+    --paper-mid: #dcecf0;
+    --paper-line: #bfd1d8;
+    --paper-line-dark: #809ba1;
+    --ink: #102b35;
+    --ink-soft: #536d73;
+    --accent: #005baa;
+    --accent-hover: #003e63;
+    --accent-tint: #dceff5;
+    --accent-alt: #efa303;
+    --accent-alt-soft: #fff2dd;
+    --positive: #2f6b4f;
+    --gm-glyph: #001d2a;
+    --gm-glass: rgba(255,255,255,0.55);
+  }
+  html[data-theme='dark'] {
+    --paper: #10181c;
+    --paper-mid: #182a30;
+    --paper-line: #304b53;
+    --paper-line-dark: #576d72;
+    --ink: #eefaf9;
+    --ink-soft: #b2cbd2;
+    --accent: #9bd7ea;
+    --accent-hover: #d3eef4;
+    --accent-tint: #142c36;
+    --accent-alt: #e8bd67;
+    --accent-alt-soft: #493b23;
+    --positive: #5fae87;
+    --gm-glyph: #96d9ea;
+    --gm-glass: rgba(14,28,35,0.72);
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    margin: 0;
+    background:
+      radial-gradient(circle at 78% 4%, rgba(0, 91, 170, 0.12), transparent 16%),
+      radial-gradient(circle at 12% 100%, rgba(242, 169, 0, 0.20), transparent 22%),
+      linear-gradient(135deg, var(--paper-mid), var(--paper));
+    color: var(--ink);
+    font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.7;
+    letter-spacing: -0.002em;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background-image:
+      linear-gradient(120deg, transparent 0%, rgba(120,93,45,0.06) 49%, transparent 100%),
+      repeating-linear-gradient(115deg, transparent 0 2px, rgba(80, 55, 30, 0.05) 2px 3px);
+    opacity: 0.84;
+    z-index: -1;
+  }
+
+  h1, h2, h3 {
+    font-family: "Source Serif 4", Georgia, "Times New Roman", serif;
+    font-weight: 400;
+    line-height: 1.14;
+    letter-spacing: -0.008em;
+    color: var(--ink);
+    margin: 0;
+  }
+  h1 { font-size: clamp(2.3rem, 5.2vw, 3.6rem); font-weight: 400; }
+  h2 { font-size: clamp(1.5rem, 3vw, 2.05rem); font-weight: 500; }
+  h3 { font-family: "Inter", sans-serif; font-size: 1.08rem; font-weight: 600; letter-spacing: -0.005em; }
+
+  .eyebrow {
+    font-family: "SF Mono", "IBM Plex Mono", "Cascadia Code", "Consolas", monospace;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--accent);
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+  }
+  .eyebrow::before {
+    content: "";
+    width: 5px;
+    height: 5px;
+    background: var(--accent);
+    display: inline-block;
+  }
+  .eyebrow.on-dark { color: #e7ddc9; }
+  .eyebrow.on-dark::before { background: #e7ddc9; }
+  .eyebrow.muted { color: var(--ink-soft); }
+  .eyebrow.muted::before { background: var(--paper-line-dark); }
+
+  code, .mono {
+    font-family: "SF Mono", "IBM Plex Mono", "Consolas", monospace;
+    font-size: 13px;
+  }
+  code {
+    background: var(--paper-mid);
+    border: 1px solid var(--paper-line);
+    color: var(--accent-hover);
+    padding: 0.12em 0.45em;
+    border-radius: 4px;
+    white-space: nowrap;
+  }
+
+  a { color: var(--accent); text-decoration: none; }
+
+  .link-underline {
+    position: relative;
+    padding-bottom: 1px;
+    background-image: linear-gradient(var(--accent), var(--accent));
+    background-size: 0% 1px;
+    background-repeat: no-repeat;
+    background-position: left bottom;
+    transition: background-size 0.3s ease;
+  }
+  .link-underline:hover { background-size: 100% 1px; }
+
+  /* ---------- Fixed corner brand mark ---------- */
+  .gm-badge {
+    position: fixed;
+    top: 14px;
+    left: 14px;
+    z-index: 60;
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 7px 14px 7px 7px;
+    min-height: 54px;
+    border-radius: 14px;
+    background: linear-gradient(135deg, #072b3b, var(--accent));
+    border: 1px solid rgba(255,255,255,0.38);
+    color: #ffffff;
+    box-shadow: 0 12px 30px -20px rgba(0,0,0,0.95), inset 0 0 0 1px rgba(255,255,255,0.24);
+    font-family: "Inter", sans-serif;
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: 0.05em;
+    opacity: 1;
+    transform: translateY(0);
+    animation: badge-in 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.15s forwards;
+  }
+  .gm-badge::after {
+    content: "";
+    position: absolute;
+    left: 12px;
+    right: 12px;
+    bottom: -4px;
+    height: 2px;
+    border-radius: 999px;
+    background: linear-gradient(90deg, var(--accent-alt), transparent);
+    transform-origin: left;
+    transform: scaleX(0.35);
+    transition: transform 0.4s ease;
+  }
+  .gm-badge:hover::after { transform: scaleX(1); }
+  .gm-badge .gm-badge-mark {
+    width: 56px;
+    height: 56px;
+    border-radius: 12px;
+    object-fit: cover;
+    border: 1px solid rgba(255,255,255,0.55);
+    background: linear-gradient(135deg, #ffffff, #daddde);
+    display: inline-block;
+    box-shadow: inset 0 0 0 2px rgba(23,59,87,0.26), 0 0 0 2px rgba(255,255,255,0.20);
+    padding: 2px;
+  }
+  .gm-badge .gm-badge-copy {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.05;
+  }
+  .gm-badge .gm-badge-kicker {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    color: rgba(255,255,255,0.76);
+    text-transform: uppercase;
+  }
+  .gm-badge .gm-badge-text {
+    margin-top: 4px;
+    font-size: 12px;
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: 0.10em;
+    color: rgba(255,255,255,0.98);
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  @keyframes badge-in { to { opacity: 1; transform: translateY(0); } }
+
+  /* ---------- Sticky header ---------- */
+  .site-header.is-sticky {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: linear-gradient(135deg, color-mix(in srgb, var(--paper) 94%, transparent), rgba(245, 250, 251, 0.88));
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--paper-line);
+    transition: box-shadow 0.3s ease;
+  }
+  .site-header.is-sticky.is-scrolled { box-shadow: 0 6px 18px -16px rgba(28, 26, 23, 0.4); }
+  .header-inner {
+    max-width: 1220px;
+    margin: 0 auto;
+    padding: 14px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+  }
+  .brand-title {
+    font-family: "SF Mono", "IBM Plex Mono", "Consolas", monospace;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.17em;
+    color: var(--ink);
+    text-transform: uppercase;
+  }
+  .brand-subtitle { font-size: 13px; color: var(--ink-soft); margin-top: 3px; }
+  .brand-block {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 260px;
+  }
+  .brand-block .brand-mark {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    background: linear-gradient(135deg, var(--accent), var(--accent-hover));
+    border: 1px solid color-mix(in srgb, var(--accent-alt) 90%, white);
+    font-family: "Inter", sans-serif;
+    font-size: 12px;
+    font-weight: 900;
+    letter-spacing: 0.05em;
+  }
+  .nav-links {
+    display: flex;
+    gap: 10px;
+    flex-shrink: 0;
+    justify-content: flex-end;
+    margin-left: auto;
+  }
+  .btn {
+    font-size: 13.5px;
+    font-weight: 700;
+    padding: 10px 20px;
+    border-radius: 999px;
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .btn-ghost { color: var(--accent); border-color: var(--paper-line-dark); background: transparent; }
+  .btn-ghost:hover { color: var(--accent-hover); border-color: var(--accent); background: var(--accent-tint); transform: translateY(-2px); }
+
+  .btn-solid { color: #ffffff; background: var(--accent); border-color: var(--accent); box-shadow: 0 12px 24px -22px var(--accent-hover); }
+  .btn-solid:hover { background: var(--accent-hover); border-color: var(--accent-hover); transform: translateY(-2px); }
+
+  .btn-outline-on-image { color: #ffffff; border-color: rgba(255,255,255,0.5); background: rgba(255,255,255,0.05); }
+  .btn-outline-on-image:hover { background: rgba(255,255,255,0.16); border-color: #ffffff; transform: translateY(-2px); }
+
+  /* ---------- Hero with background photo ---------- */
+  .hero-cover {
+    position: relative;
+    margin-top: -1px;
+    padding: 120px 24px 100px;
+    background-image:
+      linear-gradient(120deg, rgba(0, 45, 72, 0.88), rgba(5, 65, 91, 0.84) 58%, rgba(31, 80, 96, 0.90)),
+      url('https://general-motors-be.glean.com/api/v1/downloadchatfile/a2d6466e537d4ba19b279b63ad840d67');
+    background-size: cover;
+    background-position: center 30%;
+    color: #ffffff;
+    border-bottom: 1px solid rgba(255,255,255,0.26);
+  }
+  .hero-cover::before {
+    content: "";
+    position: absolute;
+    inset: -12%;
+    background:
+      radial-gradient(circle at 11% 9%, rgba(242,169,0,0.15), transparent 14%),
+      radial-gradient(circle at 87% 12%, rgba(255,255,255,0.13), transparent 15%),
+      radial-gradient(circle at 52% 112%, rgba(255,255,255,0.08), transparent 16%);
+    filter: blur(28px);
+    pointer-events: none;
+    animation: theaterGlow 8s ease-in-out infinite alternate;
+  }
+  @keyframes theaterGlow {
+    from { transform: scale(1); opacity: 0.9; }
+    to { transform: scale(1.06); opacity: 1; }
+  }
+  .hero-cover::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 80% 10%, rgba(255,255,255,0.10), transparent 25%), linear-gradient(135deg, transparent, rgba(255,255,255,0.04));
+    pointer-events: none;
+  }
+  .hero-cover-inner { max-width: 700px; margin: 0 auto; position: relative; z-index: 1; }
+  .hero-cover h1 { color: #ffffff; margin-top: 18px; }
+  .hero-cover p.lead { max-width: 600px; margin-top: 20px; font-size: 17px; color: rgba(255,255,255,0.85); font-weight: 300; }
+  .hero-cta { display: flex; gap: 12px; margin-top: 36px; flex-wrap: wrap; }
+
+  .hero-stats {
+    display: flex;
+    margin-top: 48px;
+    border-top: 1px solid rgba(255,255,255,0.22);
+    padding-top: 26px;
+    flex-wrap: wrap;
+  }
+  .hero-stat { flex: 1; padding: 0 24px; border-left: 1px solid rgba(255,255,255,0.22); }
+  .hero-stat:first-child { border-left: none; padding-left: 0; }
+  .hero-stat-num { font-family: "Source Serif 4", serif; font-size: 1.9rem; font-weight: 400; color: #ffffff; }
+  .hero-stat-label { font-size: 11.5px; color: rgba(255,255,255,0.65); margin-top: 4px; letter-spacing: 0.02em; }
+
+  /* ---------- Shell / layout ---------- */
+  .shell { max-width: 1140px; margin: 0 auto; padding: 0 24px 88px; }
+  .layout { display: grid; grid-template-columns: 224px minmax(0, 1fr); gap: 56px; align-items: start; padding-top: 56px; }
+
+  /* ---------- Floating TOC ---------- */
+  .toc { position: sticky; top: 100px; align-self: start; }
+  .toc-label {
+    font-family: "SF Mono", "IBM Plex Mono", "Consolas", monospace;
+    font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--ink-soft); margin-bottom: 16px; display: block;
+  }
+  .toc ol { list-style: none; margin: 0; padding: 0; border-left: 1px solid var(--paper-line); }
+  .toc li { margin: 0; }
+  .toc a {
+    display: block; padding: 8px 0 8px 16px; margin-left: -1px;
+    border-left: 2px solid transparent; font-size: 13.5px; color: var(--ink-soft);
+    transition: color 0.2s ease, border-color 0.2s ease;
+  }
+  .toc a:hover { color: var(--accent); }
+  .toc a.active { color: var(--accent); border-left-color: var(--accent); font-weight: 600; }
+
+  /* ---------- Content sections ---------- */
+  .content { min-width: 0; }
+  .content article {
+    background: linear-gradient(180deg, rgba(255,255,255,0.62), transparent);
+    position: relative;
+  }
+  .content article::before {
+    content: "";
+    position: absolute;
+    top: -12px;
+    left: 14px;
+    width: 120px;
+    height: 4px;
+    border-radius: 99px;
+    background: linear-gradient(90deg, var(--accent), var(--accent-alt));
+    box-shadow: 0 0 14px rgba(0,91,170,0.6);
+  }
+  .section-block {
+    padding: 48px 0;
+    border-bottom: 1px solid var(--paper-line);
+    scroll-margin-top: 96px;
+  }
+  .section-block:last-child { border-bottom: none; padding-bottom: 0; }
+  .section-block h2 {
+    position: relative;
+    display: inline-block;
+  }
+  .section-block h2::after {
+    content: "";
+    display: block;
+    width: 56px;
+    height: 2px;
+    margin-top: 10px;
+    background: var(--accent);
+    opacity: 0.55;
+  }
+
+  .section-num {
+    font-family: "SF Mono", "IBM Plex Mono", "Consolas", monospace;
+    font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 12px; display: block;
+  }
+
+  .section-block p { color: var(--ink-soft); max-width: 700px; }
+  .section-block h2 + p { margin-top: 16px; }
+
+  ul.field-list { margin: 16px 0 0; padding-left: 0; list-style: none; max-width: 700px; }
+  ul.field-list li { position: relative; padding-left: 20px; margin-bottom: 11px; color: var(--ink-soft); font-size: 14.5px; }
+  ul.field-list li::before {
+    content: ""; position: absolute; left: 0; top: 9px; width: 6px; height: 6px;
+    background: var(--accent);
+  }
+  ul.field-list li strong { color: var(--ink); font-weight: 600; }
+
+  /* ---------- Info callout ---------- */
+  .callout {
+    margin-top: 24px;
+    padding: 20px 26px;
+    background: var(--accent-tint);
+    border-left: 2px solid var(--accent);
+    font-size: 14.5px;
+    color: var(--ink);
+    max-width: 680px;
+  }
+  .callout strong { color: var(--accent-hover); font-weight: 600; }
+
+  /* ---------- Chip list (greetings) ---------- */
+  .chip-list { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 22px; }
+  .chip {
+    padding: 10px 18px; border: 1px solid var(--paper-line-dark); border-radius: 2px;
+    font-size: 14px; background: var(--paper); color: var(--ink);
+    transition: border-color 0.2s ease, background-color 0.2s ease;
+  }
+  .chip:hover { border-color: var(--accent); background: var(--accent-tint); }
+
+  /* ---------- Video embed ---------- */
+  .video-card {
+    margin-top: 26px; max-width: 700px; border-radius: 4px; overflow: hidden;
+    border: 1px solid var(--paper-line); background: var(--paper-mid);
+  }
+  .video-frame-wrap { position: relative; width: 100%; padding-top: 56.25%; background: #000; }
+  .video-frame-wrap iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
+  .video-caption { padding: 15px 20px; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .video-caption span { font-size: 12.5px; color: var(--ink-soft); letter-spacing: 0.03em; text-transform: uppercase; }
+  .video-caption strong { font-family: "Source Serif 4", serif; font-size: 15px; color: var(--ink); font-weight: 500; }
+
+  /* ---------- Practice CTA panel ---------- */
+  .practice-panel {
+    margin-top: 20px; padding: 32px 34px; border-radius: 4px;
+    background: var(--accent);
+    color: #fff; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 24px;
+  }
+  .practice-panel h3 { font-family: "Source Serif 4", serif; color: #fff; font-weight: 400; font-size: 1.2rem; margin-bottom: 8px; }
+  .practice-panel p { margin: 0; max-width: 440px; color: rgba(255,255,255,0.82); }
+  .practice-panel .btn-solid { background: #fff; color: var(--accent); border-color: #fff; }
+  .practice-panel .btn-solid:hover { background: var(--accent-tint); }
+
+  /* ---------- Source cards (alphabet references) ---------- */
+  .source-cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin-top: 24px; }
+  .source-card {
+    display: flex; flex-direction: column; gap: 10px; padding: 22px 20px;
+    border-radius: 3px; border: 1px solid var(--paper-line); background: var(--paper);
+    transition: border-color 0.25s ease, background-color 0.25s ease;
+  }
+  .source-card:hover { border-color: var(--accent); background: var(--accent-tint); }
+  .source-card .source-tag {
+    font-family: "SF Mono", "IBM Plex Mono", "Consolas", monospace;
+    font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent);
+  }
+  .source-card h4 { margin: 0; font-family: "Source Serif 4", serif; font-size: 16px; font-weight: 500; color: var(--ink); line-height: 1.4; }
+  .source-card p { margin: 0; font-size: 13px; color: var(--ink-soft); max-width: none; line-height: 1.55; }
+  .source-card .source-link { font-size: 13px; font-weight: 600; margin-top: 4px; display: inline-flex; align-items: center; gap: 5px; color: var(--accent); }
+  .source-card .source-link::after { content: "→"; }
+
+  /* ---------- LSM image reference gallery ---------- */
+  .reference-gallery {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 18px;
+    margin-top: 26px;
+    max-width: 780px;
+  }
+  .reference-card {
+    background: linear-gradient(180deg, var(--paper), var(--paper-mid));
+    border: 1px solid var(--paper-line);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 12px 30px -26px rgba(0,0,0,0.9);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  }
+  .reference-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 18px 44px -24px rgba(0,0,0,0.88);
+    border-color: var(--accent);
+  }
+  .reference-card img {
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    object-fit: cover;
+    display: block;
+    border-bottom: 1px solid var(--paper-line);
+  }
+  .reference-card figcaption {
+    padding: 14px;
+    font-size: 12px;
+    color: var(--ink-soft);
+    background: linear-gradient(180deg, color-mix(in srgb, var(--paper-mid) 88%, white), var(--paper));
+    line-height: 1.54;
+  }
+  .reference-card figcaption strong {
+    display: block;
+    color: var(--accent);
+    font-family: "Source Serif 4", Georgia, serif;
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+
+  /* ---------- Tables ---------- */
+  .table-wrap {
+    margin-top: 20px; border: 1px solid var(--paper-line); border-radius: 3px; overflow: hidden;
+    overflow-x: auto; max-width: 700px;
+  }
+  .table-wrap.wide { max-width: 100%; }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  thead th {
+    font-family: "SF Mono", "IBM Plex Mono", "Consolas", monospace;
+    font-size: 10.5px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--ink-soft); background: var(--paper-mid); text-align: left; padding: 13px 18px;
+    border-bottom: 1px solid var(--paper-line);
+  }
+  tbody td, tbody th { padding: 13px 18px; border-bottom: 1px solid var(--paper-line); color: var(--ink); text-align: left; vertical-align: top; }
+  tbody th { font-weight: 500; color: var(--ink-soft); background: var(--paper-mid); width: 160px; }
+  tbody tr:last-child td, tbody tr:last-child th { border-bottom: none; }
+  tbody tr { transition: background-color 0.18s ease; }
+  tbody tr:hover td, tbody tr:hover th { background: var(--accent-tint); }
+
+  .closing-note {
+    margin-top: 24px; padding-top: 22px; border-top: 1px solid var(--paper-line);
+    color: var(--ink-soft); font-size: 14.5px; max-width: 700px;
+  }
+
+  /* ---------- Sources ---------- */
+  .sources { margin-top: 22px; font-size: 13px; color: var(--ink-soft); }
+  .sources a { color: var(--ink-soft); border-bottom: 1px dotted var(--paper-line-dark); }
+  .sources a:hover { color: var(--accent); border-color: var(--accent); }
+
+  /* ---------- Footer ---------- */
+  footer {
+    margin-top: 36px; padding: 32px 24px 44px; text-align: center; font-size: 12.5px;
+    letter-spacing: 0.04em; color: var(--ink-soft); border-top: 1px solid var(--paper-line);
+  }
+
+  /* ---------- Scroll reveal ---------- */
+  .reveal { opacity: 0; transform: translateY(18px); transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1); }
+  .reveal.is-visible { opacity: 1; transform: translateY(0); }
+
+  @media (max-width: 860px) {
+    .layout { grid-template-columns: 1fr; }
+    .toc { position: static; margin-bottom: 26px; }
+    .toc ol { display: flex; flex-wrap: wrap; gap: 4px 18px; border-left: none; }
+    .header-inner { padding: 14px 20px 14px 64px; }
+    .hero-cover { padding: 100px 20px 72px; }
+    .source-cards { grid-template-columns: 1fr; }
+    .reference-gallery { grid-template-columns: 1fr; }
+    .hero-stats { gap: 14px 0; }
+    .hero-stat { flex: 1 1 45%; border-left: none; padding: 10px 0; border-top: 1px solid rgba(255,255,255,0.22); }
+    .hero-stat:first-child { border-top: none; }
+    .practice-panel { padding: 26px; }
+  }
+
+  @media print {
+    body { margin: 0; padding: 0.4in 0.6in; background: #fff; print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+    .shell, main { max-width: 100% !important; width: 100% !important; }
+    [style*="position:sticky"], [style*="position: sticky"] { position: static !important; }
+    section { break-inside: avoid; margin-bottom: 20px !important; }
+    table, thead { break-inside: avoid; }
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+    button, [role="button"] { display: none !important; }
+    .toc, .gm-badge, .video-card { display: none !important; }
+    .layout { display: block !important; }
+    .hero-cover { background-image: none !important; color: var(--ink) !important; padding: 20px 0 !important; }
+    .hero-cover h1, .hero-cover p.lead { color: var(--ink) !important; }
+    .hero-cta, .hero-stats { display: none !important; }
+    .practice-panel { background: none !important; color: var(--ink) !important; border: 1px solid var(--paper-line) !important; }
+  }
+</style>
+</head>
+<body>
+
+  <div class="gm-badge">
+    <img class="gm-badge-mark" src="assets/gm-symbol-black.png" alt="GM" />
+    <span class="gm-badge-copy">
+      <span class="gm-badge-kicker">General Motors</span>
+      <span class="gm-badge-text">Complejo Toluca</span>
+    </span>
+  </div>
+
+  <header class="site-header is-sticky" id="site-header">
+    <div class="header-inner">
+      <div class="brand-block">
+        <span class="brand-mark">LSM</span>
+        <div>
+          <div class="brand-title">Lengua de Señas</div>
+          <div class="brand-subtitle">GM Complejo Toluca</div>
+        </div>
+      </div>
+      <nav class="nav-links" aria-label="Navegación principal">
+        <a class="btn btn-ghost" href="index.html">← Inicio</a>
+        <a class="btn btn-solid" href="practica.html">Práctica 3D</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero-cover reveal">
+    <div class="hero-cover-inner">
+      <span class="eyebrow on-dark">Guía introductoria · Comunidad GM Complejo Toluca</span>
+      <h1>Lengua de Señas Mexicana</h1>
+      <p class="lead">
+        La LSM es la lengua natural de la comunidad sorda de México: un sistema completo, con su propia
+        gramática y vocabulario, que se articula con las manos, el cuerpo y las expresiones faciales.
+        Esta guía te da lo esencial para empezar a comunicarte.
+      </p>
+      <div class="hero-cta">
+        <a class="btn btn-solid" href="practica.html">Practicar en 3D →</a>
+        <a class="btn btn-outline-on-image" href="#alfabeto">Ver el alfabeto manual</a>
+      </div>
+      <div class="hero-stats">
+        <div class="hero-stat">
+          <div class="hero-stat-num" data-count="2003" data-suffix="">2003</div>
+          <div class="hero-stat-label">Reconocida como lengua nacional</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-num" data-count="300" data-suffix="k">300k</div>
+          <div class="hero-stat-label">Personas la usan en México</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-num" data-count="27" data-suffix="">27</div>
+          <div class="hero-stat-label">Señas en el alfabeto manual</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="shell">
+    <div class="layout">
+      <aside class="toc reveal">
+        <span class="toc-label">En esta página</span>
+        <ol id="toc-list">
+          <li><a href="#que-es">1. ¿Qué es la LSM?</a></li>
+          <li><a href="#importancia">2. Por qué es importante</a></li>
+          <li><a href="#parametros-linguisticos">3. Los parámetros de una seña</a></li>
+          <li><a href="#alfabeto">4. Alfabeto manual</a></li>
+          <li><a href="#saludos">5. Saludos básicos</a></li>
+          <li><a href="#practicar">6. Para practicar</a></li>
+        </ol>
+      </aside>
+
+      <main class="content">
+        <article>
+
+          <section class="section-block reveal" id="que-es">
+            <span class="section-num">Capítulo 01</span>
+            <h2>¿Qué es la Lengua de Señas Mexicana?</h2>
+            <p>
+              La Lengua de Señas Mexicana (LSM) es la lengua de señas mayoritaria de la comunidad sorda de
+              México. Es un sistema lingüístico completo: se articula con las manos y se acompaña de
+              movimiento corporal, expresiones faciales y mirada intencional, y cuenta con su propia
+              gramática, vocabulario y estructura de oración, muy distinta a la del español oral. No es una
+              traducción del español signo por signo, sino un idioma independiente con reglas propias.
+            </p>
+            <ul class="field-list">
+              <li><strong>Reconocimiento oficial:</strong> declarada lengua nacional en 2003, junto con el español y las lenguas indígenas, por la Ley General para la Inclusión de las Personas con Discapacidad.</li>
+              <li><strong>Día Nacional de la LSM:</strong> se conmemora cada 10 de junio desde 2005.</li>
+              <li><strong>Comunidad:</strong> se estima que la usan alrededor de 300,000 personas en México, concentradas principalmente en la Ciudad de México, Guadalajara y Monterrey.</li>
+              <li><strong>Historia:</strong> sus primeros antecedentes formales datan de 1867, con la fundación de la Escuela Nacional de Sordomudos por Eduardo Huet.</li>
+            </ul>
+
+            <div class="reference-gallery">
+              <figure class="reference-card">
+                <img src="assets/Abecedario de lenguaje de señas.jpg" alt="Abecedario de lengua de señas" />
+                <figcaption><strong>Abecedario LSM</strong>Referencia visual del alfabeto manual y las letras.</figcaption>
+              </figure>
+              <figure class="reference-card">
+                <img src="assets/Columna-Lenguajesenas.gif" alt="Columna de lengua de señas" />
+                <figcaption><strong>Columna de señas</strong>Referencia de estructura y posicionamiento corporal.</figcaption>
+              </figure>
+              <figure class="reference-card">
+                <img src="assets/Columna-Lenguajesenas.gif" alt="Referencia adicional de lengua de señas" />
+                <figcaption><strong>Lengua de Señas</strong>Ejemplo de uso visual y gestual en la comunidad.</figcaption>
+              </figure>
+            </div>
+
+            <div class="video-card">
+              <div class="video-frame-wrap">
+                <iframe src="https://www.youtube.com/embed/Chn-xm1szEM" title="Lengua de Señas Mexicana - video introductorio" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+              </div>
+              <div class="video-caption">
+                <strong>Lengua de Señas Mexicana</strong>
+                <span>Video introductorio · YouTube</span>
+              </div>
+            </div>
+          </section>
+
+          <section class="section-block reveal" id="importancia">
+            <span class="section-num">Capítulo 02</span>
+            <h2>Por qué es importante</h2>
+            <p>Para la comunidad sorda, la LSM no es una herramienta opcional: es su lengua materna y su principal puerta de acceso al mundo.</p>
+            <ul class="field-list">
+              <li><strong>Acceso e inclusión:</strong> es el medio principal para la educación, la información y la vida diaria de las personas sordas.</li>
+              <li><strong>Derecho cultural:</strong> es un derecho lingüístico reconocido legalmente, no solo un recurso de apoyo.</li>
+              <li><strong>Comunicación directa:</strong> aprender aunque sea lo básico reduce la dependencia de un intérprete para interacciones cotidianas.</li>
+              <li><strong>Beneficio cognitivo:</strong> practicarla desarrolla memoria visual y percepción espacial en quien la aprende.</li>
+            </ul>
+            <div class="callout">
+              <strong>Un matiz importante:</strong> deletrear palabra por palabra con el alfabeto manual —lo que se conoce como
+              "español señado"— es un buen primer paso para practicar, pero no sustituye aprender la gramática real de la LSM,
+              que tiene su propio orden de oración y no sigue la sintaxis del español.
+            </div>
+          </section>
+
+          <section class="section-block reveal" id="parametros-linguisticos">
+            <span class="section-num">Capítulo 03</span>
+            <h2>Los parámetros de una seña</h2>
+            <p>Toda seña —en la LSM y en cualquier lengua de señas del mundo— combina al mismo tiempo cinco parámetros:</p>
+            <div class="table-wrap wide">
+              <table>
+                <thead>
+                  <tr><th>Parámetro</th><th>Qué describe</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>Configuración manual</td><td>La forma que toman los dedos y la mano: puño, mano plana, dedos cruzados, un solo dedo extendido, etc.</td></tr>
+                  <tr><td>Ubicación</td><td>En qué zona del cuerpo o del espacio se realiza la seña. Normalmente entre el pecho y el mentón.</td></tr>
+                  <tr><td>Movimiento</td><td>La trayectoria que sigue la mano mientras se signa.</td></tr>
+                  <tr><td>Orientación</td><td>Hacia dónde apunta la palma o los dedos.</td></tr>
+                  <tr><td>Rasgos no manuales</td><td>Expresión facial, mirada y movimientos de cabeza o cuerpo. Pueden cambiar por completo el significado de una seña.</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <p class="closing-note">
+              El modelo 3D de este sitio (<code>model2.glb</code>) es el que realiza las señas:
+              reproduce estos mismos parámetros para animar cada letra. Para verlo en acción,
+              ve a la <a class="link-underline" href="practica.html">Práctica 3D</a>.
+            </p>
+          </section>
+
+          <section class="section-block reveal" id="alfabeto">
+            <span class="section-num">Capítulo 04</span>
+            <h2>Alfabeto manual (dactilológico)</h2>
+            <p>
+              El Alfabeto Dactilológico Mexicano tiene 27 señas, una por cada letra del español. En la práctica,
+              las personas sordas lo usan principalmente para deletrear nombres propios, lugares o palabras que
+              aún no tienen una seña asignada — no como su forma cotidiana de comunicarse.
+            </p>
+
+            <div class="video-card">
+              <div class="video-frame-wrap">
+                <iframe src="https://www.youtube.com/embed/abCY24or4uA" title="ABECEDARIO en Lengua de Señas Mexicana (LSM)" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+              </div>
+              <div class="video-caption">
+                <strong>Abecedario completo en LSM</strong>
+                <span>Video · YouTube</span>
+              </div>
+            </div>
+
+            <div class="table-wrap wide" style="margin-top:30px;">
+              <table>
+                <thead>
+                  <tr><th>Letra</th><th>Cómo se forma, a grandes rasgos</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>A</td><td>Puño cerrado con el pulgar apoyado a un costado, ligeramente separado.</td></tr>
+                  <tr><td>B</td><td>Palma abierta con los cuatro dedos juntos y extendidos; el pulgar se dobla hacia la palma.</td></tr>
+                  <tr><td>C</td><td>Mano semicerrada, vista de perfil, formando la curva de la letra.</td></tr>
+                  <tr><td>D · I · L</td><td>Un solo dedo extendido hacia arriba (índice, meñique o índice con pulgar abierto) mientras el resto se mantiene cerrado.</td></tr>
+                  <tr><td>R</td><td>Índice y medio extendidos y cruzados entre sí.</td></tr>
+                  <tr><td>V · W</td><td>Dedos extendidos y claramente separados entre sí (dos para V, tres para W).</td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <p class="closing-note" style="margin-top:28px; border-top:none; padding-top:0;">
+              Para ver la fotografía real de cada seña, consulta directamente estas fuentes oficiales:
+            </p>
+            <div class="source-cards">
+              <a class="source-card" href="https://nuevaescuelamexicana.sep.gob.mx/contenido/recurso/abecedario-en-lengua-de-senas-mexicana/" target="_blank" rel="noopener">
+                <span class="source-tag">SEP · Nueva Escuela Mexicana</span>
+                <h4>Abecedario en Lengua de Señas Mexicana</h4>
+                <p>Infografía oficial con las 27 señas del alfabeto manual, ilustraciones de posición de dedos y flechas de movimiento.</p>
+                <span class="source-link">Ver infografía</span>
+              </a>
+              <a class="source-card" href="https://educacionespecial.sep.gob.mx/storage/recursos/2023/05/xzrfl019nV-4Diccionario_lengua_%20Senas.pdf" target="_blank" rel="noopener">
+                <span class="source-tag">CONAPRED · Libre Acceso A.C.</span>
+                <h4>Manos con Voz — Diccionario de LSM</h4>
+                <p>Diccionario oficial de CONAPRED con fotografías a color y descripción de cada letra del abecedario, página por página.</p>
+                <span class="source-link">Ver diccionario</span>
+              </a>
+              <a class="source-card" href="https://pdh.cdmx.gob.mx/storage/app/media/banner/Dic_LSM%202.pdf" target="_blank" rel="noopener">
+                <span class="source-tag">Gobierno CDMX</span>
+                <h4>Diccionario de LSM de la Ciudad de México</h4>
+                <p>Diccionario elaborado por Indepedi CDMX, con el abecedario dactilológico y vocabulario adicional en fotografías.</p>
+                <span class="source-link">Ver diccionario</span>
+              </a>
+            </div>
+          </section>
+
+          <section class="section-block reveal" id="saludos">
+            <span class="section-num">Capítulo 05</span>
+            <h2>Saludos y frases básicas</h2>
+            <p>Antes de memorizar el alfabeto completo, muchos cursos de LSM recomiendan empezar por un puñado de frases de uso diario:</p>
+            <div class="chip-list">
+              <span class="chip">Hola</span>
+              <span class="chip">¿Cómo estás?</span>
+              <span class="chip">Bienvenido/a</span>
+              <span class="chip">Por favor</span>
+              <span class="chip">Buenos días</span>
+              <span class="chip">Buenas tardes</span>
+              <span class="chip">Buenas noches</span>
+              <span class="chip">Adiós</span>
+              <span class="chip">¿Necesitas ayuda?</span>
+            </div>
+            <p class="closing-note">
+              Un dato útil: la posición neutral para signar es a la altura del pecho, entre el hombro y el mentón —
+              ahí es donde conviene mantener las manos mientras aprendes.
+            </p>
+          </section>
+
+          <section class="section-block reveal" id="practicar">
+            <span class="section-num">Capítulo 06</span>
+            <h2>Para practicar</h2>
+            <div class="practice-panel">
+              <div>
+                <h3>Aprende viendo, no solo leyendo</h3>
+                <p>La mejor forma de aprender LSM es observarla y repetirla. Usa la práctica 3D para ver cómo se
+                forma cada letra sobre el modelo de mano, a tu propio ritmo.</p>
+              </div>
+              <a class="btn btn-solid" href="practica.html">Ir a Práctica 3D →</a>
+            </div>
+            <div class="sources">
+              Fuentes: <a class="link-underline" href="https://es.wikipedia.org/wiki/Lengua_de_se%C3%B1as_mexicana" target="_blank" rel="noopener">Wikipedia — Lengua de señas mexicana</a>,
+              <a class="link-underline" href="https://www.cndh.org.mx/noticia/dia-nacional-de-la-lengua-de-senas-mexicana-10-de-junio-0" target="_blank" rel="noopener">CNDH — Día Nacional de la LSM</a>,
+              <a class="link-underline" href="https://www.univa.mx/agora/lengua-de-senas-mexicana-por-que-es-importante/" target="_blank" rel="noopener">Universidad del Valle de Atemajac — Ágora</a>,
+              <a class="link-underline" href="https://www.conapred.org.mx/publicaciones/manos-con-voz-diccionario-de-lengua-de-senas-mexicana/" target="_blank" rel="noopener">CONAPRED — Manos con Voz</a>.
+            </div>
+          </section>
+
+        </article>
+      </main>
+    </div>
+  </div>
+
+  <footer>
+    Guía introductoria a la Lengua de Señas Mexicana (LSM) · Prototipo educativo interno · GM Complejo Toluca
+  </footer>
+
+<script>
+  // Scroll shadow on header
+  var header = document.getElementById('site-header');
+  window.addEventListener('scroll', function () {
+    if (window.scrollY > 8) header.classList.add('is-scrolled');
+    else header.classList.remove('is-scrolled');
+  }, { passive: true });
+
+  // Scroll-reveal animation
+  var revealEls = document.querySelectorAll('.reveal');
+  var revealObserver = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry, i) {
+      if (entry.isIntersecting) {
+        setTimeout(function () { entry.target.classList.add('is-visible'); }, i * 40);
+        revealObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+  revealEls.forEach(function (el) { revealObserver.observe(el); });
+
+  // Active TOC tracking
+  var sections = document.querySelectorAll('.section-block');
+  var tocLinks = document.querySelectorAll('#toc-list a');
+  var tocObserver = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (entry.isIntersecting) {
+        tocLinks.forEach(function (link) {
+          link.classList.toggle('active', link.getAttribute('href') === '#' + entry.target.id);
+        });
+      }
+    });
+  }, { rootMargin: '-30% 0px -55% 0px', threshold: 0 });
+  sections.forEach(function (s) { if (s.id) tocObserver.observe(s); });
+
+  // Count-up animation for hero stats
+  var statEls = document.querySelectorAll('.hero-stat-num');
+  var statObserver = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (entry.isIntersecting) {
+        var el = entry.target;
+        var target = parseInt(el.getAttribute('data-count'), 10);
+        var suffix = el.getAttribute('data-suffix') || '';
+        var duration = 1200;
+        var startTime = null;
+        function step(ts) {
+          if (!startTime) startTime = ts;
+          var progress = Math.min((ts - startTime) / duration, 1);
+          var eased = 1 - Math.pow(1 - progress, 3);
+          el.textContent = Math.round(eased * target) + suffix;
+          if (progress < 1) requestAnimationFrame(step);
+        }
+        requestAnimationFrame(step);
+        statObserver.unobserve(el);
+      }
+    });
+  }, { threshold: 0.4 });
+  statEls.forEach(function (el) { statObserver.observe(el); });
+
+  // PDF export
+  window.GleanBridge && window.GleanBridge.postMessage({
+    actionId: 'export-pdf',
+    type: 'glean-add-menu',
+    metadata: { label: 'Export as PDF', icon: 'export' }
+  });
+  window.GleanBridge && window.GleanBridge.onMessage('action', function (data) {
+    if (data.actionId === 'export-pdf') window.print();
+  });
+</script>
+
+</body>
+</html>

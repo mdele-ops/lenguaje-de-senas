@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Avatar original — visor GLB</title>
+  <style>
+    html, body { margin: 0; height: 100%; background: #10141f; overflow: hidden; font-family: sans-serif; }
+    canvas { display: block; }
+    .label {
+      position: fixed; left: 16px; bottom: 16px; color: #d7e0ef;
+      background: rgba(16,20,31,.72); padding: 10px 14px; border-radius: 12px;
+      font-size: 13px; line-height: 1.4;
+    }
+  </style>
+</head>
+<body>
+  <div class="label">
+    <strong>avatar.glb</strong> — personaje original (no es Vivian)<br />
+    Arrastra para girar · rueda para zoom
+  </div>
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+        "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+      }
+    }
+  </script>
+  <script type="module">
+    import * as THREE from "three";
+    import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+    import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0x10141f);
+
+    const camera = new THREE.PerspectiveCamera(35, innerWidth / innerHeight, 0.1, 50);
+    camera.position.set(0, 1.35, 3.4);
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+    renderer.setSize(innerWidth, innerHeight);
+    renderer.outputColorSpace = THREE.SRGBColorSpace;
+    document.body.appendChild(renderer.domElement);
+
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.target.set(0, 1.05, 0);
+    controls.enableDamping = true;
+
+    scene.add(new THREE.AmbientLight(0xffffff, 0.85));
+    const key = new THREE.DirectionalLight(0xffffff, 1.6);
+    key.position.set(1.5, 3, 2.5);
+    scene.add(key);
+    const fill = new THREE.DirectionalLight(0x88aadd, 0.6);
+    fill.position.set(-2, 1.5, -1);
+    scene.add(fill);
+    const rim = new THREE.PointLight(0xffffff, 1.1);
+    rim.position.set(0, 2, 2);
+    scene.add(rim);
+
+    scene.add(new THREE.AxesHelper(1.2));
+    scene.add(new THREE.GridHelper(4, 8, 0x445566, 0x223344));
+
+    const loader = new GLTFLoader();
+    loader.load("./models/avatar.glb", (gltf) => {
+      scene.add(gltf.scene);
+      const box = new THREE.Box3().setFromObject(gltf.scene);
+      const size = new THREE.Vector3();
+      const center = new THREE.Vector3();
+      box.getSize(size);
+      box.getCenter(center);
+      document.querySelector(".label").innerHTML =
+        `<strong>avatar.glb</strong> cargado<br>size ${size.x.toFixed(2)} × ${size.y.toFixed(2)} × ${size.z.toFixed(2)}<br>center y=${center.y.toFixed(2)}`;
+      controls.target.copy(center);
+      camera.position.set(center.x, center.y + 0.2, Math.max(size.y * 2.2, 2.4));
+      camera.lookAt(center);
+      window.__avatar = gltf.scene;
+    }, undefined, (err) => {
+      document.querySelector(".label").textContent = "No se pudo cargar models/avatar.glb: " + err;
+    });
+
+    addEventListener("resize", () => {
+      camera.aspect = innerWidth / innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(innerWidth, innerHeight);
+    });
+
+    (function tick() {
+      requestAnimationFrame(tick);
+      controls.update();
+      renderer.render(scene, camera);
+    })();
+  </script>
+</body>
+</html>
