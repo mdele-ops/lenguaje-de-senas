@@ -5,6 +5,7 @@ deja en cola el resto de la pagina, y el visor se queda colgado en
 "Descargando visor 3D". Con ThreadingHTTPServer eso no pasa.
 """
 import shutil
+import socket
 import sys
 from functools import partial
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
@@ -43,13 +44,23 @@ class Silencioso(SimpleHTTPRequestHandler):
         shutil.copyfileobj(source, outputfile, length=256 * 1024)
 
 
+def direccion_lan():
+    """IP de esta máquina en la red, sin dejar escrita una dirección vieja."""
+    try:
+        with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as sonda:
+            sonda.connect(("10.255.255.255", 1))
+            return sonda.getsockname()[0]
+    except OSError:
+        return "127.0.0.1"
+
+
 def main():
     puerto = int(sys.argv[1]) if len(sys.argv) > 1 else PUERTO
     handler = partial(Silencioso, directory=str(ROOT))
     with ThreadingHTTPServer((HOST, puerto), handler) as httpd:
         print(f"sirviendo {ROOT}", flush=True)
         print(f"  local:   http://127.0.0.1:{puerto}", flush=True)
-        print(f"  red:     http://10.4.145.88:{puerto}", flush=True)
+        print(f"  red:     http://{direccion_lan()}:{puerto}", flush=True)
         httpd.serve_forever()
 
 
