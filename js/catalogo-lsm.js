@@ -6,11 +6,16 @@ window.LSM_CATALOG = {
   "modelo": {
     "archivo": "model2.glb",
     "descripcion": "Modelo oficial para la realización de las señas LSM. Rig Mixamo articulado (model2.glb); se anima la mano derecha para el alfabeto dactilológico.",
-    "escala": [1, 1, 1]
+    "escala": [
+      1,
+      1,
+      1
+    ]
   },
   "rig": {
     "ejeCurl": "x",
-    "curlSign": 1,
+    "curlSign": -1,
+    "thumbCurlSign": 1,
     "transitionMs": 2000,
     "wristBone": "Right_Wrist",
     "cameraKnuckle": "Right_Middle_1",
@@ -24,19 +29,51 @@ window.LSM_CATALOG = {
     "restCorrections": [
       {
         "hueso": "Right_UpperArm",
-        "rotaciones": [["z", -80], ["x", 40]]
+        "rotaciones": [
+          [
+            "z",
+            -80
+          ],
+          [
+            "x",
+            40
+          ]
+        ]
       },
       {
         "hueso": "Right_Forearm",
-        "rotaciones": [["x", -60]]
+        "rotaciones": [
+          [
+            "x",
+            -60
+          ]
+        ]
       },
       {
         "hueso": "Right_Wrist",
-        "rotaciones": [["x", -80], ["z", -30]]
+        "rotaciones": [
+          [
+            "x",
+            -80
+          ],
+          [
+            "z",
+            -30
+          ]
+        ]
       },
       {
         "hueso": "Left_UpperArm",
-        "rotaciones": [["z", -40], ["x", 80]]
+        "rotaciones": [
+          [
+            "z",
+            -40
+          ],
+          [
+            "x",
+            80
+          ]
+        ]
       }
     ],
     "jointOrder": {

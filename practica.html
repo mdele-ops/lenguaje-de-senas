@@ -758,8 +758,8 @@
     </footer>
   </div>
 
-  <script src="js/catalogo-lsm.js?v=20260921c"></script>
-  <script src="js/hand-controller.js?v=20260921c"></script>
+  <script src="js/catalogo-lsm.js?v=20260922a"></script>
+  <script src="js/hand-controller.js?v=20260922c"></script>
   <script>
     (function () {
       const MODEL_URL = "model2.glb?v=20260921c";
@@ -875,8 +875,6 @@
               return;
             }
             modelReady = true;
-            console.log("Animaciones en model2.glb:", info.animations);
-            console.log("Nodos/huesos indexados:", info.bones);
             setStatus(
               "Modelo listo · " +
                 info.animations.length +
@@ -1163,8 +1161,6 @@
           modelViewer: handViewer,
           onStatus: function () {},
         });
-        window.__LSM_CONTROLLER__ = controller;
-
         controller
           .loadCatalog(window.LSMHand.CATALOG_URL)
           .then(function () {

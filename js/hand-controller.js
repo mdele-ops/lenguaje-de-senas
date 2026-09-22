@@ -16,43 +16,30 @@
     if (/^(Left|Right)(Shoulder|Arm|ForeArm|Hand|UpLeg|Leg|Foot|ToeBase)/.test(n)) return true;
     if (/^(Left|Right)Hand(Thumb|Index|Middle|Ring|Pinky)\d/.test(n)) return true;
     if (/^(Hips|Spine|Spine1|Spine2|Neck|Head)(_\d+)?$/.test(n)) return true;
-    if (/^girl_armature/i.test(n)) return true;
-    if (/^mixamorig/i.test(n)) return true;
-    if (/^_rootJoint$/i.test(n)) return true;
     return false;
   }
 
   function isPoseNode(obj) {
     if (!obj || !obj.name) return false;
-    if (/Mesh|GEO|scaleCompensation/i.test(obj.name)) return false;
+    if (/Mesh|GEO|scaleCompensation|AvatarBody|outfit|haircut|earring/i.test(obj.name)) return false;
     if (obj.isBone || obj.type === "Bone") return true;
-    if (/mixamo/i.test(obj.name)) return true;
-    if (/^Boy_/i.test(obj.name)) return true;
-    if (isMixamoStyleName(obj.name)) return true;
-    if (/^(Left|Right)_/.test(obj.name)) return true;
-    if (/\.(L|R)$/.test(obj.name)) return true;
-    return /^(Hips|Spine|Chest|Neck|Head|AvatarRoot|Pelvis)$/.test(obj.name);
+    return isMixamoStyleName(obj.name);
   }
 
   function scoreScene(scene) {
     if (!scene || typeof scene.traverse !== "function") return 0;
-    let mixamo = 0;
     let avatar = 0;
     let bones = 0;
     try {
       scene.traverse(function (obj) {
         if (!obj) return;
         if (obj.isBone || obj.type === "Bone") bones++;
-        if (obj.name && /mixamo/i.test(obj.name)) mixamo++;
-        if (obj.name && /^Boy_/i.test(obj.name) && !/scaleCompensation|GEO/i.test(obj.name)) avatar++;
         if (obj.name && isMixamoStyleName(obj.name)) avatar++;
-        if (obj.name && /^(Left|Right)_/.test(obj.name)) avatar++;
-        if (obj.name && /\.(L|R)$/.test(obj.name) && !/Mesh/i.test(obj.name)) avatar++;
       });
     } catch (_) {
       return 0;
     }
-    return mixamo * 10 + avatar * 10 + bones;
+    return avatar * 10 + bones;
   }
 
   function collectSceneCandidates(modelViewer) {
@@ -130,65 +117,11 @@
     );
   }
 
-  function boneAliases(name) {
-    const aliases = [name];
-    if (/[:.]/.test(name)) aliases.push(name.replace(/[:.]/g, ""));
-    return aliases;
-  }
-
-  function stripBonePrefix(name) {
-    return String(name || "")
-      .replace(/^mixamorig\d*:/i, "")
-      .replace(/^mixamorig\d*/i, "")
-      .replace(/^Boy_/i, "")
-      .replace(/_\d+$/, "");
-  }
-
-  const FINGER_FROM_MIXAMO = {
-    Thumb: "Thumb",
-    Index: "Index",
-    Middle: "Middle",
-    Ring: "Ring",
-    Pinky: "Little",
-  };
-
-  function sideFromName(name) {
-    return /^left/i.test(name) ? "Left" : "Right";
-  }
-
-  // model2.glb (Mixamo: RightArm, RightHandIndex1, …) es el modelo oficial de señas.
-  // También se aceptan boy.glb, hip.glb, girl.glb, Arely y Boy.
   function catalogNameForBone(name) {
-    const raw = String(name || "");
-    if (!raw) return null;
-    if (BONE_TO_CATALOG[raw]) return BONE_TO_CATALOG[raw];
-    const stripped = stripBonePrefix(raw);
-    if (BONE_TO_CATALOG[stripped]) return BONE_TO_CATALOG[stripped];
-    const compact = raw.replace(/[.:]/g, "");
-    if (BONE_TO_CATALOG[compact]) return BONE_TO_CATALOG[compact];
-
-    const finger = stripped.match(
-      /^(Left|Right)Hand(Thumb|Index|Middle|Ring|Pinky)(\d)$/i
-    );
-    if (finger) {
-      const key =
-        finger[2].charAt(0).toUpperCase() + finger[2].slice(1).toLowerCase();
-      const mapped = FINGER_FROM_MIXAMO[key];
-      if (mapped) return sideFromName(finger[1]) + "_" + mapped + "_" + finger[3];
-    }
-    if (/^(Left|Right)Arm$/i.test(stripped)) {
-      return sideFromName(stripped) + "_UpperArm";
-    }
-    if (/^(Left|Right)ForeArm$/i.test(stripped)) {
-      return sideFromName(stripped) + "_Forearm";
-    }
-    if (/^(Left|Right)Hand$/i.test(stripped)) {
-      return sideFromName(stripped) + "_Wrist";
-    }
-    return null;
+    return BONE_TO_CATALOG[String(name || "")] || null;
   }
 
-  // Nombres del catálogo LSM ← Mixamo de model2.glb (RightArm, RightHandIndex1), boy.glb, hip.glb, girl.glb, Arely y Boy.
+  // Nombres del catálogo LSM ← huesos Mixamo de model2.glb.
   const BONE_TO_CATALOG = {
     RightArm: "Right_UpperArm",
     RightForeArm: "Right_Forearm",
@@ -211,181 +144,6 @@
     RightHandPinky1: "Right_Little_1",
     RightHandPinky2: "Right_Little_2",
     RightHandPinky3: "Right_Little_3",
-    "UpperArm.R": "Right_UpperArm",
-    "LowerArm.R": "Right_Forearm",
-    "Hand.R": "Right_Wrist",
-    "UpperArm.L": "Left_UpperArm",
-    "LowerArm.L": "Left_Forearm",
-    "Hand.L": "Left_Wrist",
-    "Thumb1.R": "Right_Thumb_1",
-    "Thumb2.R": "Right_Thumb_2",
-    "Thumb3.R": "Right_Thumb_3",
-    "Index1.R": "Right_Index_1",
-    "Index2.R": "Right_Index_2",
-    "Index3.R": "Right_Index_3",
-    "Middle1.R": "Right_Middle_1",
-    "Middle2.R": "Right_Middle_2",
-    "Middle3.R": "Right_Middle_3",
-    "Ring1.R": "Right_Ring_1",
-    "Ring2.R": "Right_Ring_2",
-    "Ring3.R": "Right_Ring_3",
-    "Little1.R": "Right_Little_1",
-    "Little2.R": "Right_Little_2",
-    "Little3.R": "Right_Little_3",
-    UpperArmR: "Right_UpperArm",
-    LowerArmR: "Right_Forearm",
-    HandR: "Right_Wrist",
-    UpperArmL: "Left_UpperArm",
-    LowerArmL: "Left_Forearm",
-    HandL: "Left_Wrist",
-    Thumb1R: "Right_Thumb_1",
-    Thumb2R: "Right_Thumb_2",
-    Thumb3R: "Right_Thumb_3",
-    Index1R: "Right_Index_1",
-    Index2R: "Right_Index_2",
-    Index3R: "Right_Index_3",
-    Middle1R: "Right_Middle_1",
-    Middle2R: "Right_Middle_2",
-    Middle3R: "Right_Middle_3",
-    Ring1R: "Right_Ring_1",
-    Ring2R: "Right_Ring_2",
-    Ring3R: "Right_Ring_3",
-    Little1R: "Right_Little_1",
-    Little2R: "Right_Little_2",
-    Little3R: "Right_Little_3",
-    // boy.glb — rig Mixamo mixamorig6 (compatibilidad)
-    "mixamorig6:RightArm_033": "Right_UpperArm",
-    "mixamorig6:RightForeArm_034": "Right_Forearm",
-    "mixamorig6:RightHand_035": "Right_Wrist",
-    "mixamorig6:LeftArm_09": "Left_UpperArm",
-    "mixamorig6:LeftForeArm_010": "Left_Forearm",
-    "mixamorig6:LeftHand_011": "Left_Wrist",
-    "mixamorig6:RightHandThumb1_036": "Right_Thumb_1",
-    RightHandThumb2_037: "Right_Thumb_2",
-    RightHandThumb3_038: "Right_Thumb_3",
-    "mixamorig6:RightHandIndex1_040": "Right_Index_1",
-    "mixamorig6:RightHandIndex2_041": "Right_Index_2",
-    "mixamorig6:RightHandIndex3_042": "Right_Index_3",
-    "mixamorig6:RightHandMiddle1_044": "Right_Middle_1",
-    "mixamorig6:RightHandMiddle2_045": "Right_Middle_2",
-    "mixamorig6:RightHandMiddle3_046": "Right_Middle_3",
-    "mixamorig6:RightHandRing1_048": "Right_Ring_1",
-    "mixamorig6:RightHandRing2_049": "Right_Ring_2",
-    "mixamorig6:RightHandRing3_050": "Right_Ring_3",
-    "mixamorig6:RightHandPinky1_052": "Right_Little_1",
-    "mixamorig6:RightHandPinky2_053": "Right_Little_2",
-    "mixamorig6:RightHandPinky3_054": "Right_Little_3",
-    "mixamorig6:LeftHandThumb1_012": "Left_Thumb_1",
-    LeftHandThumb2_013: "Left_Thumb_2",
-    LeftHandThumb3_014: "Left_Thumb_3",
-    "mixamorig6:LeftHandIndex1_016": "Left_Index_1",
-    "mixamorig6:LeftHandIndex2_017": "Left_Index_2",
-    "mixamorig6:LeftHandIndex3_018": "Left_Index_3",
-    "mixamorig6:LeftHandMiddle1_020": "Left_Middle_1",
-    "mixamorig6:LeftHandMiddle2_021": "Left_Middle_2",
-    "mixamorig6:LeftHandMiddle3_022": "Left_Middle_3",
-    "mixamorig6:LeftHandRing1_024": "Left_Ring_1",
-    "mixamorig6:LeftHandRing2_025": "Left_Ring_2",
-    "mixamorig6:LeftHandRing3_026": "Left_Ring_3",
-    "mixamorig6:LeftHandPinky1_028": "Left_Little_1",
-    "mixamorig6:LeftHandPinky2_029": "Left_Little_2",
-    "mixamorig6:LeftHandPinky3_030": "Left_Little_3",
-    // hip.glb — rig Mixamo con sufijo numérico (compatibilidad)
-    RightArm_044: "Right_UpperArm",
-    RightForeArm_045: "Right_Forearm",
-    RightHand_046: "Right_Wrist",
-    LeftArm_024: "Left_UpperArm",
-    LeftForeArm_025: "Left_Forearm",
-    LeftHand_026: "Left_Wrist",
-    RightHandThumb1_047: "Right_Thumb_1",
-    RightHandThumb2_048: "Right_Thumb_2",
-    RightHandThumb3_049: "Right_Thumb_3",
-    RightHandIndex1_050: "Right_Index_1",
-    RightHandIndex2_051: "Right_Index_2",
-    RightHandIndex3_052: "Right_Index_3",
-    RightHandMiddle1_00: "Right_Middle_1",
-    RightHandMiddle2_053: "Right_Middle_2",
-    RightHandMiddle3_054: "Right_Middle_3",
-    RightHandRing1_055: "Right_Ring_1",
-    RightHandRing2_056: "Right_Ring_2",
-    RightHandRing3_057: "Right_Ring_3",
-    RightHandPinky1_058: "Right_Little_1",
-    RightHandPinky2_059: "Right_Little_2",
-    RightHandPinky3_060: "Right_Little_3",
-    LeftHandThumb1_027: "Left_Thumb_1",
-    LeftHandThumb2_028: "Left_Thumb_2",
-    LeftHandThumb3_029: "Left_Thumb_3",
-    LeftHandIndex1_030: "Left_Index_1",
-    LeftHandIndex2_031: "Left_Index_2",
-    LeftHandIndex3_032: "Left_Index_3",
-    LeftHandMiddle1_033: "Left_Middle_1",
-    LeftHandMiddle2_034: "Left_Middle_2",
-    LeftHandMiddle3_035: "Left_Middle_3",
-    LeftHandRing1_036: "Left_Ring_1",
-    LeftHandRing2_037: "Left_Ring_2",
-    LeftHandRing3_038: "Left_Ring_3",
-    LeftHandPinky1_039: "Left_Little_1",
-    LeftHandPinky2_040: "Left_Little_2",
-    LeftHandPinky3_041: "Left_Little_3",
-    // girl.glb — rig Mixamo con sufijo numérico (compatibilidad)
-    RightArm_39: "Right_UpperArm",
-    RightForeArm_38: "Right_Forearm",
-    RightHand_37: "Right_Wrist",
-    LeftArm_20: "Left_UpperArm",
-    LeftForeArm_19: "Left_Forearm",
-    LeftHand_18: "Left_Wrist",
-    RightHandThumb1_24: "Right_Thumb_1",
-    RightHandThumb2_23: "Right_Thumb_2",
-    RightHandThumb3_22: "Right_Thumb_3",
-    RightHandIndex1_27: "Right_Index_1",
-    RightHandIndex2_26: "Right_Index_2",
-    RightHandIndex3_25: "Right_Index_3",
-    RightHandMiddle1_30: "Right_Middle_1",
-    RightHandMiddle2_29: "Right_Middle_2",
-    RightHandMiddle3_28: "Right_Middle_3",
-    RightHandRing1_33: "Right_Ring_1",
-    RightHandRing2_32: "Right_Ring_2",
-    RightHandRing3_31: "Right_Ring_3",
-    RightHandPinky1_36: "Right_Little_1",
-    RightHandPinky2_35: "Right_Little_2",
-    RightHandPinky3_34: "Right_Little_3",
-    LeftHandThumb1_5: "Left_Thumb_1",
-    LeftHandThumb2_4: "Left_Thumb_2",
-    LeftHandThumb3_3: "Left_Thumb_3",
-    LeftHandIndex1_8: "Left_Index_1",
-    LeftHandIndex2_7: "Left_Index_2",
-    LeftHandIndex3_6: "Left_Index_3",
-    LeftHandMiddle1_11: "Left_Middle_1",
-    LeftHandMiddle2_10: "Left_Middle_2",
-    LeftHandMiddle3_9: "Left_Middle_3",
-    LeftHandRing1_14: "Left_Ring_1",
-    LeftHandRing2_13: "Left_Ring_2",
-    LeftHandRing3_12: "Left_Ring_3",
-    LeftHandPinky1_17: "Left_Little_1",
-    LeftHandPinky2_16: "Left_Little_2",
-    LeftHandPinky3_15: "Left_Little_3",
-    // kid.glb — rig Boy (compatibilidad)
-    Boy_RightArm_024: "Right_UpperArm",
-    Boy_RightForeArm_027: "Right_Forearm",
-    Boy_RightHand_030: "Right_Wrist",
-    Boy_LeftArm_0160: "Left_UpperArm",
-    Boy_LeftForeArm_0163: "Left_Forearm",
-    Boy_LeftHand_00: "Left_Wrist",
-    Boy_RightHandThumb1_035: "Right_Thumb_1",
-    Boy_RightHandThumb2_036: "Right_Thumb_2",
-    Boy_RightHandThumb3_037: "Right_Thumb_3",
-    Boy_RightHandIndex1_039: "Right_Index_1",
-    Boy_RightHandIndex2_040: "Right_Index_2",
-    Boy_RightHandIndex3_041: "Right_Index_3",
-    Boy_RightHandMiddle1_031: "Right_Middle_1",
-    Boy_RightHandMiddle2_032: "Right_Middle_2",
-    Boy_RightHandMiddle3_033: "Right_Middle_3",
-    Boy_RightHandRing1_048: "Right_Ring_1",
-    Boy_RightHandRing2_049: "Right_Ring_2",
-    Boy_RightHandRing3_050: "Right_Ring_3",
-    Boy_RightHandPinky1_044: "Right_Little_1",
-    Boy_RightHandPinky2_045: "Right_Little_2",
-    Boy_RightHandPinky3_046: "Right_Little_3",
   };
 
   function indexBones(scene) {
@@ -394,11 +152,7 @@
 
     function remember(obj) {
       if (!obj || !obj.name) return;
-      boneAliases(obj.name).forEach(function (alias) {
-        map[alias] = obj;
-      });
-      const stripped = stripBonePrefix(obj.name);
-      if (stripped) map[stripped] = obj;
+      map[obj.name] = obj;
       const catalogName = catalogNameForBone(obj.name);
       if (catalogName) map[catalogName] = obj;
     }
@@ -1006,6 +760,9 @@
       const thumbMax = rig.thumbCurlMaxGrados || {};
       const axis = rig.ejeCurl || "z";
       const curlSign = rig.curlSign == null ? 1 : Number(rig.curlSign);
+      // En model2 el pulgar no comparte el sentido de flexión de los otros dedos.
+      const thumbCurlSign =
+        rig.thumbCurlSign == null ? 1 : Number(rig.thumbCurlSign);
       const curl = Math.max(-1, Math.min(1, amount == null ? 0 : amount));
       const jointOrderCfg = rig.jointOrder || {};
       const jointOrder = finger === "thumb"
@@ -1025,7 +782,8 @@
             ? sumDeg(joint, curl, thumbMax, THUMB_CURL_DEFAULTS)
             : sumDeg(joint, curl, curlMax, FINGER_CURL_DEFAULTS);
 
-        rotateLocal(bone, modelAxis(boneName, axis), curlSign * deltaDeg * DEG);
+        const sign = finger === "thumb" ? thumbCurlSign : curlSign;
+        rotateLocal(bone, modelAxis(boneName, axis), sign * deltaDeg * DEG);
 
         if (typeof twist === "number" && hasKey(joint, "prox")) {
           rotateLocal(bone, modelAxis(boneName, "y"), twist * DEG);
@@ -1069,12 +827,18 @@
       }
 
       // Rotaciones extra por hueso (se aplican encima de curl/spread/muñeca).
+      // En los dedos largos, X del catálogo es flexión: usa el mismo sentido
+      // que curlSign. El pulgar y el brazo conservan el signo escrito.
       if (pose.extra) {
+        const rig = catalog.rig || {};
+        const curlSign = rig.curlSign == null ? 1 : Number(rig.curlSign);
         Object.keys(pose.extra).forEach(function (name) {
           const bone = bones[name];
           const rots = pose.extra[name];
           if (!bone || !rots) return;
-          if (rots.x) rotateLocal(bone, modelAxis(name, "x"), rots.x * DEG);
+          const fingerFlex = /_(Index|Middle|Ring|Little|Pinky)_/i.test(name);
+          const xMul = fingerFlex ? curlSign : 1;
+          if (rots.x) rotateLocal(bone, modelAxis(name, "x"), xMul * rots.x * DEG);
           if (rots.y) rotateLocal(bone, modelAxis(name, "y"), rots.y * DEG);
           if (rots.z) rotateLocal(bone, modelAxis(name, "z"), rots.z * DEG);
         });
@@ -1331,7 +1095,7 @@
       if (wrist) names.push(wrist);
       if (rig.cameraKnuckle) names.push(rig.cameraKnuckle);
       const huesos = rig.huesos || {};
-      ["thumb", "index", "middle", "ring", "little"].forEach(function (finger) {
+      ["thumb", "index", "middle", "ring", "pinky"].forEach(function (finger) {
         const chain = huesos[finger] || [];
         if (chain.length) {
           names.push(chain[0]);
@@ -1364,32 +1128,7 @@
 
     function getPersonFocusPoint() {
       const rig = (catalog && catalog.rig) || {};
-      const names = [
-        "Hips_01",
-        "Hips_54",
-        "Hips",
-        "mixamorig6:Hips_01",
-        "Spine2_017",
-        "Spine2_43",
-        "Spine2",
-        "mixamorig6:Spine2_04",
-        "Spine1_016",
-        "Spine1_44",
-        "Spine1",
-        "mixamorig6:Spine1_03",
-        "Spine_015",
-        "Spine_45",
-        "Spine",
-        "mixamorig6:Spine_02",
-        "Neck_018",
-        "Neck_2",
-        "Neck",
-        "mixamorig6:Neck_05",
-        "Head_019",
-        "Head_1",
-        "Head",
-        "mixamorig6:Head_06",
-      ];
+      const names = ["Hips", "Spine", "Spine1", "Spine2", "Neck", "Neck1", "Neck2", "Head"];
       const scene = getScene(mv);
       const off =
         (scene && scene.target && scene.target.position) || { x: 0, y: 0, z: 0 };
@@ -1528,15 +1267,6 @@
       },
       isAlphabetBuilt: function () {
         return alphabetBuilt;
-      },
-      applyTestPose: function (pose) {
-        stopPoseLoop();
-        pauseMixer();
-        if (!Object.keys(bones).length) refreshSkeleton();
-        bakePoseToBones(pose);
-        holdTarget = captureQuats(bones);
-        ensureLoop();
-        forceRender({ aggressive: true });
       },
     };
   }

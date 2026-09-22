@@ -9,7 +9,8 @@
   },
   "rig": {
     "ejeCurl": "x",
-    "curlSign": 1,
+    "curlSign": -1,
+    "thumbCurlSign": 1,
     "transitionMs": 2000,
     "wristBone": "Right_Wrist",
     "cameraKnuckle": "Right_Middle_1",

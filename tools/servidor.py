@@ -1,4 +1,4 @@
-"""Servidor estatico para las pruebas, multihilo.
+"""Servidor estatico local, multihilo.
 
 `python -m http.server` atiende de uno en uno: mientras manda el .glb
 deja en cola el resto de la pagina, y el visor se queda colgado en
