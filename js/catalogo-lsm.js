@@ -1,77 +1,57 @@
 /* Generado desde data/catalogo-lsm.json — no editar a mano */
 window.LSM_CATALOG = {
-  "version": "1.5.1",
+  "version": "1.3.49",
   "idioma": "LSM",
   "nombre": "Alfabeto dactilológico mexicano",
   "modelo": {
-    "archivo": "model2.glb",
-    "descripcion": "Modelo oficial para la realización de las señas LSM. Rig Mixamo articulado (model2.glb); se anima la mano derecha para el alfabeto dactilológico.",
-    "escala": [
-      1,
-      1,
-      1
-    ]
+    "archivo": "model.glb",
+    "descripcion": "Personaje 3D riggeado (esqueleto Mixamo) — se anima la mano derecha para el alfabeto"
   },
   "rig": {
     "ejeCurl": "x",
-    "curlSign": -1,
-    "thumbCurlSign": 1,
+    "curlSign": 1,
     "transitionMs": 2000,
-    "wristBone": "Right_Wrist",
-    "cameraKnuckle": "Right_Middle_1",
-    "framePerson": true,
-    "cameraTarget": "0m 1.55m 0.04m",
-    "cameraOrbit": "0deg 82deg 4.8m",
-    "fieldOfView": "30deg",
-    "cameraOffsetX": 0,
-    "cameraOffsetY": 0.04,
-    "cameraOffsetZ": 0.04,
+    "wristBone": "mixamorig1RightHand_035",
+    "cameraTarget": "0m 2.45m 0.15m",
+    "cameraOrbit": "0deg 84deg 2.5m",
     "restCorrections": [
       {
-        "hueso": "Right_UpperArm",
+        "hueso": "mixamorig1RightArm_033",
         "rotaciones": [
           [
-            "z",
-            -80
-          ],
-          [
             "x",
-            40
+            90
           ]
         ]
       },
       {
-        "hueso": "Right_Forearm",
+        "hueso": "mixamorig1RightForeArm_034",
         "rotaciones": [
           [
-            "x",
-            -60
+            "z",
+            -90
+          ],
+          [
+            "y",
+            -77
           ]
         ]
       },
       {
-        "hueso": "Right_Wrist",
+        "hueso": "mixamorig1RightHand_035",
         "rotaciones": [
           [
             "x",
-            -80
-          ],
-          [
-            "z",
-            -30
+            -88
           ]
         ]
       },
       {
-        "hueso": "Left_UpperArm",
+        "hueso": "mixamorig1LeftArm_09",
         "rotaciones": [
           [
-            "z",
-            -40
-          ],
-          [
             "x",
-            80
+            90
           ]
         ]
       }
@@ -83,12 +63,14 @@ window.LSM_CATALOG = {
           "meta",
           "prox"
         ],
-        "dist"
+        "dist",
+        null
       ],
       "dedo": [
         "prox",
         "midd",
-        "dist"
+        "dist",
+        null
       ]
     },
     "curlMaxGrados": {
@@ -104,29 +86,34 @@ window.LSM_CATALOG = {
     },
     "huesos": {
       "thumb": [
-        "Right_Thumb_1",
-        "Right_Thumb_2",
-        "Right_Thumb_3"
+        "mixamorig1RightHandThumb1_036",
+        "mixamorig1RightHandThumb2_037",
+        "mixamorig1RightHandThumb3_038",
+        "mixamorig1RightHandThumb4_039"
       ],
       "index": [
-        "Right_Index_1",
-        "Right_Index_2",
-        "Right_Index_3"
+        "mixamorig1RightHandIndex1_040",
+        "mixamorig1RightHandIndex2_041",
+        "mixamorig1RightHandIndex3_042",
+        "mixamorig1RightHandIndex4_043"
       ],
       "middle": [
-        "Right_Middle_1",
-        "Right_Middle_2",
-        "Right_Middle_3"
+        "mixamorig1RightHandMiddle1_044",
+        "mixamorig1RightHandMiddle2_045",
+        "mixamorig1RightHandMiddle3_046",
+        "mixamorig1RightHandMiddle4_047"
       ],
       "ring": [
-        "Right_Ring_1",
-        "Right_Ring_2",
-        "Right_Ring_3"
+        "mixamorig1RightHandRing1_048",
+        "mixamorig1RightHandRing2_049",
+        "mixamorig1RightHandRing3_050",
+        "mixamorig1RightHandRing4_051"
       ],
       "pinky": [
-        "Right_Little_1",
-        "Right_Little_2",
-        "Right_Little_3"
+        "mixamorig1RightHandPinky1_052",
+        "mixamorig1RightHandPinky2_053",
+        "mixamorig1RightHandPinky3_054",
+        "mixamorig1RightHandPinky4_055"
       ]
     }
   },
@@ -148,7 +135,7 @@ window.LSM_CATALOG = {
     {
       "letra": "A",
       "nombre": "A",
-      "descripcion": "Puño cerrado con los cuatro dedos recogidos y juntos; el pulgar se queda de pie al costado del índice, sin tumbarse por delante del puño (eso es la S) ni meterse entre índice y medio (eso es la T).",
+      "descripcion": "Puño cerrado; pulgar extendido al costado del índice.",
       "animacion": "Letra_A",
       "aliases": [
         "A",
@@ -157,76 +144,19 @@ window.LSM_CATALOG = {
       ],
       "pose": {
         "thumb": {
-          "curl": 0.02
+          "curl": 0.4
         },
         "index": {
-          "curl": 1.0
+          "curl": 0.95
         },
         "middle": {
-          "curl": 1.0
+          "curl": 0.95
         },
         "ring": {
-          "curl": 1.0
+          "curl": 0.95
         },
         "pinky": {
-          "curl": 1.0
-        },
-        "muneca": {
-          "x": -18,
-          "y": 12,
-          "z": 8
-        },
-        "extra": {
-          "Right_UpperArm": {
-            "z": -18
-          },
-          "Right_Index_1": {
-            "z": 16
-          },
-          "Right_Index_2": {
-            "z": 28
-          },
-          "Right_Index_3": {
-            "z": 22
-          },
-          "Right_Middle_1": {
-            "z": 16
-          },
-          "Right_Middle_2": {
-            "z": 28
-          },
-          "Right_Middle_3": {
-            "z": 22
-          },
-          "Right_Ring_1": {
-            "z": 16
-          },
-          "Right_Ring_2": {
-            "z": 28
-          },
-          "Right_Ring_3": {
-            "z": 22
-          },
-          "Right_Little_1": {
-            "z": 16
-          },
-          "Right_Little_2": {
-            "z": 28
-          },
-          "Right_Little_3": {
-            "z": 22
-          },
-          "Right_Thumb_1": {
-            "x": 82,
-            "y": -55,
-            "z": 4
-          },
-          "Right_Thumb_2": {
-            "x": -10
-          },
-          "Right_Thumb_3": {
-            "x": -4
-          }
+          "curl": 0.95
         }
       }
     },
@@ -262,7 +192,7 @@ window.LSM_CATALOG = {
           "spread": 6
         },
         "extra": {
-          "Right_Thumb_1": {
+          "mixamorig1RightHandThumb1_036": {
             "y": -60
           }
         }
@@ -303,47 +233,47 @@ window.LSM_CATALOG = {
           "y": 90
         },
         "extra": {
-          "Right_Index_1": {
+          "mixamorig1RightHandIndex1_040": {
             "x": 20
           },
-          "Right_Middle_1": {
+          "mixamorig1RightHandMiddle1_044": {
             "x": 20
           },
-          "Right_Ring_1": {
+          "mixamorig1RightHandRing1_048": {
             "x": 20
           },
-          "Right_Little_1": {
+          "mixamorig1RightHandPinky1_052": {
             "x": 20
           },
-          "Right_Index_2": {
+          "mixamorig1RightHandIndex2_041": {
             "x": 34
           },
-          "Right_Middle_2": {
+          "mixamorig1RightHandMiddle2_045": {
             "x": 34
           },
-          "Right_Ring_2": {
+          "mixamorig1RightHandRing2_049": {
             "x": 34
           },
-          "Right_Little_2": {
+          "mixamorig1RightHandPinky2_053": {
             "x": 34
           },
-          "Right_Index_3": {
+          "mixamorig1RightHandIndex3_042": {
             "x": 12
           },
-          "Right_Middle_3": {
+          "mixamorig1RightHandMiddle3_046": {
             "x": 12
           },
-          "Right_Ring_3": {
+          "mixamorig1RightHandRing3_050": {
             "x": 12
           },
-          "Right_Little_3": {
+          "mixamorig1RightHandPinky3_054": {
             "x": 12
           },
-          "Right_Thumb_1": {
+          "mixamorig1RightHandThumb1_036": {
             "y": 34,
             "z": 8
           },
-          "Right_UpperArm": {
+          "mixamorig1RightArm_033": {
             "z": -18
           }
         }
@@ -361,14 +291,14 @@ window.LSM_CATALOG = {
       ],
       "pose": {
         "thumb": {
-          "curl": 0.58,
-          "aside": 0.4
+          "curl": 0.54,
+          "aside": 0.38
         },
         "index": {
           "curl": 0.0
         },
         "middle": {
-          "curl": 0.61
+          "curl": 0.56
         },
         "ring": {
           "curl": 0.92
@@ -377,21 +307,12 @@ window.LSM_CATALOG = {
           "curl": 0.92
         },
         "extra": {
-          "Right_Thumb_1": {
-            "z": 41,
-            "y": -6
+          "mixamorig1RightHandThumb1_036": {
+            "z": 38,
+            "y": -5
           },
-          "Right_Thumb_2": {
-            "x": -41
-          },
-          "Right_Thumb_3": {
-            "x": -10
-          },
-          "Right_Middle_2": {
-            "x": 10
-          },
-          "Right_Middle_3": {
-            "x": 16
+          "mixamorig1RightHandThumb2_037": {
+            "x": -37
           }
         }
       }
@@ -428,48 +349,48 @@ window.LSM_CATALOG = {
           "spread": 12
         },
         "extra": {
-          "Right_Thumb_1": {
+          "mixamorig1RightHandThumb1_036": {
             "x": 60,
             "y": -35,
             "z": 78
           },
-          "Right_Thumb_2": {
+          "mixamorig1RightHandThumb2_037": {
             "x": 24
           },
-          "Right_Thumb_3": {
+          "mixamorig1RightHandThumb3_038": {
             "x": -11
           },
-          "Right_Index_1": {
+          "mixamorig1RightHandIndex1_040": {
             "x": 4.8
           },
-          "Right_Index_2": {
+          "mixamorig1RightHandIndex2_041": {
             "x": 6.6
           },
-          "Right_Index_3": {
+          "mixamorig1RightHandIndex3_042": {
             "x": 20.2
           },
-          "Right_Middle_2": {
+          "mixamorig1RightHandMiddle2_045": {
             "x": 4.8
           },
-          "Right_Middle_3": {
+          "mixamorig1RightHandMiddle3_046": {
             "x": 31
           },
-          "Right_Ring_1": {
+          "mixamorig1RightHandRing1_048": {
             "x": -8.5
           },
-          "Right_Ring_2": {
+          "mixamorig1RightHandRing2_049": {
             "x": 9.7
           },
-          "Right_Ring_3": {
+          "mixamorig1RightHandRing3_050": {
             "x": 47.1
           },
-          "Right_Little_1": {
+          "mixamorig1RightHandPinky1_052": {
             "x": -6.5
           },
-          "Right_Little_3": {
+          "mixamorig1RightHandPinky3_054": {
             "x": 22.8
           },
-          "Right_UpperArm": {
+          "mixamorig1RightArm_033": {
             "z": -18
           }
         }
@@ -506,7 +427,7 @@ window.LSM_CATALOG = {
           "spread": 6
         },
         "extra": {
-          "Right_Thumb_1": {
+          "mixamorig1RightHandThumb1_036": {
             "z": 30
           }
         }
@@ -648,7 +569,7 @@ window.LSM_CATALOG = {
               "z": 0
             },
             "extra": {
-              "Right_Forearm": {
+              "mixamorig1RightForeArm_034": {
                 "x": 0
               }
             }
@@ -661,7 +582,7 @@ window.LSM_CATALOG = {
               "z": -14
             },
             "extra": {
-              "Right_Forearm": {
+              "mixamorig1RightForeArm_034": {
                 "x": 12
               }
             }
@@ -674,7 +595,7 @@ window.LSM_CATALOG = {
               "z": -16
             },
             "extra": {
-              "Right_Forearm": {
+              "mixamorig1RightForeArm_034": {
                 "x": 27
               }
             }
@@ -687,7 +608,7 @@ window.LSM_CATALOG = {
               "z": -4
             },
             "extra": {
-              "Right_Forearm": {
+              "mixamorig1RightForeArm_034": {
                 "x": 38
               }
             }
@@ -700,7 +621,7 @@ window.LSM_CATALOG = {
               "z": 20
             },
             "extra": {
-              "Right_Forearm": {
+              "mixamorig1RightForeArm_034": {
                 "x": 42
               }
             }
@@ -713,7 +634,7 @@ window.LSM_CATALOG = {
               "z": 46
             },
             "extra": {
-              "Right_Forearm": {
+              "mixamorig1RightForeArm_034": {
                 "x": 34
               }
             }
@@ -726,7 +647,7 @@ window.LSM_CATALOG = {
               "z": 68
             },
             "extra": {
-              "Right_Forearm": {
+              "mixamorig1RightForeArm_034": {
                 "x": 18
               }
             }
@@ -739,7 +660,7 @@ window.LSM_CATALOG = {
               "z": 84
             },
             "extra": {
-              "Right_Forearm": {
+              "mixamorig1RightForeArm_034": {
                 "x": 2
               }
             }
@@ -874,11 +795,11 @@ window.LSM_CATALOG = {
           "x": 150
         },
         "extra": {
-          "Right_Thumb_1": {
+          "mixamorig1RightHandThumb1_036": {
             "y": -60,
             "x": -12
           },
-          "Right_UpperArm": {
+          "mixamorig1RightArm_033": {
             "z": -18
           }
         }
@@ -917,29 +838,29 @@ window.LSM_CATALOG = {
           "x": 150
         },
         "extra": {
-          "Right_Thumb_1": {
+          "mixamorig1RightHandThumb1_036": {
             "y": -60,
             "x": -12
           },
-          "Right_Ring_1": {
+          "mixamorig1RightHandRing1_048": {
             "x": 8
           },
-          "Right_Ring_2": {
+          "mixamorig1RightHandRing2_049": {
             "x": 24
           },
-          "Right_Ring_3": {
+          "mixamorig1RightHandRing3_050": {
             "x": 26
           },
-          "Right_Little_1": {
+          "mixamorig1RightHandPinky1_052": {
             "x": 8
           },
-          "Right_Little_2": {
+          "mixamorig1RightHandPinky2_053": {
             "x": 24
           },
-          "Right_Little_3": {
+          "mixamorig1RightHandPinky3_054": {
             "x": 26
           },
-          "Right_UpperArm": {
+          "mixamorig1RightArm_033": {
             "z": -18
           }
         }
@@ -980,29 +901,29 @@ window.LSM_CATALOG = {
           "y": 12
         },
         "extra": {
-          "Right_Thumb_1": {
+          "mixamorig1RightHandThumb1_036": {
             "y": -60,
             "x": -12
           },
-          "Right_Ring_1": {
+          "mixamorig1RightHandRing1_048": {
             "x": 8
           },
-          "Right_Ring_2": {
+          "mixamorig1RightHandRing2_049": {
             "x": 24
           },
-          "Right_Ring_3": {
+          "mixamorig1RightHandRing3_050": {
             "x": 26
           },
-          "Right_Little_1": {
+          "mixamorig1RightHandPinky1_052": {
             "x": 8
           },
-          "Right_Little_2": {
+          "mixamorig1RightHandPinky2_053": {
             "x": 24
           },
-          "Right_Little_3": {
+          "mixamorig1RightHandPinky3_054": {
             "x": 26
           },
-          "Right_UpperArm": {
+          "mixamorig1RightArm_033": {
             "z": -18
           }
         }
@@ -1023,7 +944,7 @@ window.LSM_CATALOG = {
               "z": 0
             },
             "extra": {
-              "Right_UpperArm": {
+              "mixamorig1RightArm_033": {
                 "y": 22,
                 "z": -18
               }
@@ -1037,7 +958,7 @@ window.LSM_CATALOG = {
               "z": 0
             },
             "extra": {
-              "Right_UpperArm": {
+              "mixamorig1RightArm_033": {
                 "y": 10,
                 "z": -18
               }
@@ -1051,7 +972,7 @@ window.LSM_CATALOG = {
               "z": 0
             },
             "extra": {
-              "Right_UpperArm": {
+              "mixamorig1RightArm_033": {
                 "y": -2,
                 "z": -18
               }
@@ -1095,54 +1016,54 @@ window.LSM_CATALOG = {
           "y": 70
         },
         "extra": {
-          "Right_Thumb_1": {
+          "mixamorig1RightHandThumb1_036": {
             "x": -15,
             "y": 10,
             "z": 15
           },
-          "Right_Thumb_2": {
+          "mixamorig1RightHandThumb2_037": {
             "x": 25
           },
-          "Right_Thumb_3": {
+          "mixamorig1RightHandThumb3_038": {
             "x": 35
           },
-          "Right_Index_1": {
+          "mixamorig1RightHandIndex1_040": {
             "x": 14.1
           },
-          "Right_Index_2": {
+          "mixamorig1RightHandIndex2_041": {
             "x": 2
           },
-          "Right_Index_3": {
+          "mixamorig1RightHandIndex3_042": {
             "x": -16.2
           },
-          "Right_Middle_1": {
+          "mixamorig1RightHandMiddle1_044": {
             "x": 12
           },
-          "Right_Middle_2": {
+          "mixamorig1RightHandMiddle2_045": {
             "x": 2
           },
-          "Right_Middle_3": {
+          "mixamorig1RightHandMiddle3_046": {
             "x": -6
           },
-          "Right_Ring_1": {
+          "mixamorig1RightHandRing1_048": {
             "x": 7.1
           },
-          "Right_Ring_2": {
+          "mixamorig1RightHandRing2_049": {
             "x": 6.6
           },
-          "Right_Ring_3": {
+          "mixamorig1RightHandRing3_050": {
             "x": 10.9
           },
-          "Right_Little_1": {
+          "mixamorig1RightHandPinky1_052": {
             "x": 14.6
           },
-          "Right_Little_2": {
+          "mixamorig1RightHandPinky2_053": {
             "x": -3.9
           },
-          "Right_Little_3": {
+          "mixamorig1RightHandPinky3_054": {
             "x": -13.5
           },
-          "Right_UpperArm": {
+          "mixamorig1RightArm_033": {
             "z": -18
           }
         }
@@ -1181,20 +1102,20 @@ window.LSM_CATALOG = {
           "y": 95
         },
         "extra": {
-          "Right_Wrist": {
+          "mixamorig1RightHand_035": {
             "x": 24,
             "y": 10
           },
-          "Right_Middle_1": {
+          "mixamorig1RightHandMiddle1_044": {
             "x": 55
           },
-          "Right_Thumb_1": {
+          "mixamorig1RightHandThumb1_036": {
             "y": -85
           },
-          "Right_Thumb_2": {
+          "mixamorig1RightHandThumb2_037": {
             "x": 25
           },
-          "Right_UpperArm": {
+          "mixamorig1RightArm_033": {
             "z": -30
           }
         }
@@ -1232,14 +1153,14 @@ window.LSM_CATALOG = {
           "z": 45
         },
         "extra": {
-          "Right_Index_3": {
+          "mixamorig1RightHandIndex3_042": {
             "x": 45
           },
-          "Right_Thumb_1": {
+          "mixamorig1RightHandThumb1_036": {
             "y": -40,
             "z": -20
           },
-          "Right_UpperArm": {
+          "mixamorig1RightArm_033": {
             "z": -18
           }
         }
@@ -1261,11 +1182,11 @@ window.LSM_CATALOG = {
               "z": 45
             },
             "extra": {
-              "Right_UpperArm": {
+              "mixamorig1RightArm_033": {
                 "x": 0.11,
                 "z": -18
               },
-              "Right_Forearm": {
+              "mixamorig1RightForeArm_034": {
                 "x": -8.86
               }
             }
@@ -1278,11 +1199,11 @@ window.LSM_CATALOG = {
               "z": 45
             },
             "extra": {
-              "Right_UpperArm": {
+              "mixamorig1RightArm_033": {
                 "x": 5.19,
                 "z": -18
               },
-              "Right_Forearm": {
+              "mixamorig1RightForeArm_034": {
                 "x": -8.77
               }
             }
@@ -1295,11 +1216,11 @@ window.LSM_CATALOG = {
               "z": 45
             },
             "extra": {
-              "Right_UpperArm": {
+              "mixamorig1RightArm_033": {
                 "x": 8.89,
                 "z": -18
               },
-              "Right_Forearm": {
+              "mixamorig1RightForeArm_034": {
                 "x": -6.32
               }
             }
@@ -1312,11 +1233,11 @@ window.LSM_CATALOG = {
               "z": 45
             },
             "extra": {
-              "Right_UpperArm": {
+              "mixamorig1RightArm_033": {
                 "x": 10.2,
                 "z": -18
               },
-              "Right_Forearm": {
+              "mixamorig1RightForeArm_034": {
                 "x": -2.18
               }
             }
@@ -1329,11 +1250,11 @@ window.LSM_CATALOG = {
               "z": 45
             },
             "extra": {
-              "Right_UpperArm": {
+              "mixamorig1RightArm_033": {
                 "x": 8.77,
                 "z": -18
               },
-              "Right_Forearm": {
+              "mixamorig1RightForeArm_034": {
                 "x": 2.54
               }
             }
@@ -1346,11 +1267,11 @@ window.LSM_CATALOG = {
               "z": 45
             },
             "extra": {
-              "Right_UpperArm": {
+              "mixamorig1RightArm_033": {
                 "x": 5.0,
                 "z": -18
               },
-              "Right_Forearm": {
+              "mixamorig1RightForeArm_034": {
                 "x": 6.59
               }
             }
@@ -1363,11 +1284,11 @@ window.LSM_CATALOG = {
               "z": 45
             },
             "extra": {
-              "Right_UpperArm": {
+              "mixamorig1RightArm_033": {
                 "x": -0.11,
                 "z": -18
               },
-              "Right_Forearm": {
+              "mixamorig1RightForeArm_034": {
                 "x": 8.86
               }
             }
@@ -1380,11 +1301,11 @@ window.LSM_CATALOG = {
               "z": 45
             },
             "extra": {
-              "Right_UpperArm": {
+              "mixamorig1RightArm_033": {
                 "x": -5.19,
                 "z": -18
               },
-              "Right_Forearm": {
+              "mixamorig1RightForeArm_034": {
                 "x": 8.77
               }
             }
@@ -1397,11 +1318,11 @@ window.LSM_CATALOG = {
               "z": 45
             },
             "extra": {
-              "Right_UpperArm": {
+              "mixamorig1RightArm_033": {
                 "x": -8.89,
                 "z": -18
               },
-              "Right_Forearm": {
+              "mixamorig1RightForeArm_034": {
                 "x": 6.32
               }
             }
@@ -1414,11 +1335,11 @@ window.LSM_CATALOG = {
               "z": 45
             },
             "extra": {
-              "Right_UpperArm": {
+              "mixamorig1RightArm_033": {
                 "x": -10.2,
                 "z": -18
               },
-              "Right_Forearm": {
+              "mixamorig1RightForeArm_034": {
                 "x": 2.18
               }
             }
@@ -1431,11 +1352,11 @@ window.LSM_CATALOG = {
               "z": 45
             },
             "extra": {
-              "Right_UpperArm": {
+              "mixamorig1RightArm_033": {
                 "x": -8.77,
                 "z": -18
               },
-              "Right_Forearm": {
+              "mixamorig1RightForeArm_034": {
                 "x": -2.54
               }
             }
@@ -1448,11 +1369,11 @@ window.LSM_CATALOG = {
               "z": 45
             },
             "extra": {
-              "Right_UpperArm": {
+              "mixamorig1RightArm_033": {
                 "x": -5.0,
                 "z": -18
               },
-              "Right_Forearm": {
+              "mixamorig1RightForeArm_034": {
                 "x": -6.59
               }
             }
@@ -1465,11 +1386,11 @@ window.LSM_CATALOG = {
               "z": 45
             },
             "extra": {
-              "Right_UpperArm": {
+              "mixamorig1RightArm_033": {
                 "x": 0.11,
                 "z": -18
               },
-              "Right_Forearm": {
+              "mixamorig1RightForeArm_034": {
                 "x": -8.86
               }
             }
@@ -1505,25 +1426,25 @@ window.LSM_CATALOG = {
           "curl": 0.95
         },
         "extra": {
-          "Right_UpperArm": {
+          "mixamorig1RightArm_033": {
             "z": -18
           },
-          "Right_Index_1": {
+          "mixamorig1RightHandIndex1_040": {
             "x": 32,
             "z": 22
           },
-          "Right_Index_2": {
+          "mixamorig1RightHandIndex2_041": {
             "x": -40,
             "z": -10
           },
-          "Right_Middle_1": {
+          "mixamorig1RightHandMiddle1_044": {
             "z": -26
           },
-          "Right_Thumb_1": {
+          "mixamorig1RightHandThumb1_036": {
             "y": -30,
             "z": 40
           },
-          "Right_Thumb_2": {
+          "mixamorig1RightHandThumb2_037": {
             "x": 60
           }
         }
@@ -1556,26 +1477,26 @@ window.LSM_CATALOG = {
           "curl": 0.9
         },
         "extra": {
-          "Right_UpperArm": {
+          "mixamorig1RightArm_033": {
             "z": -18
           },
-          "Right_Index_1": {
+          "mixamorig1RightHandIndex1_040": {
             "x": 30
           },
-          "Right_Middle_1": {
+          "mixamorig1RightHandMiddle1_044": {
             "x": 30
           },
-          "Right_Ring_1": {
+          "mixamorig1RightHandRing1_048": {
             "x": 30
           },
-          "Right_Little_1": {
+          "mixamorig1RightHandPinky1_052": {
             "x": 30
           },
-          "Right_Thumb_1": {
+          "mixamorig1RightHandThumb1_036": {
             "x": 20,
             "y": -75
           },
-          "Right_Thumb_2": {
+          "mixamorig1RightHandThumb2_037": {
             "x": 45,
             "y": -25
           }
@@ -1611,27 +1532,27 @@ window.LSM_CATALOG = {
           "curl": 0.9
         },
         "extra": {
-          "Right_Thumb_1": {
+          "mixamorig1RightHandThumb1_036": {
             "x": -55,
             "y": 30,
             "z": 56
           },
-          "Right_Thumb_3": {
+          "mixamorig1RightHandThumb3_038": {
             "x": -5
           },
-          "Right_Index_1": {
+          "mixamorig1RightHandIndex1_040": {
             "x": 30
           },
-          "Right_Middle_1": {
+          "mixamorig1RightHandMiddle1_044": {
             "x": 30
           },
-          "Right_Ring_1": {
+          "mixamorig1RightHandRing1_048": {
             "x": 30
           },
-          "Right_Little_1": {
+          "mixamorig1RightHandPinky1_052": {
             "x": 30
           },
-          "Right_UpperArm": {
+          "mixamorig1RightArm_033": {
             "z": -18
           }
         }
@@ -1665,17 +1586,17 @@ window.LSM_CATALOG = {
           "curl": 0.95
         },
         "extra": {
-          "Right_Index_1": {
+          "mixamorig1RightHandIndex1_040": {
             "z": 8
           },
-          "Right_Middle_1": {
+          "mixamorig1RightHandMiddle1_044": {
             "z": -8
           },
-          "Right_Thumb_1": {
+          "mixamorig1RightHandThumb1_036": {
             "y": -30,
             "z": 40
           },
-          "Right_Thumb_2": {
+          "mixamorig1RightHandThumb2_037": {
             "x": 60
           }
         }
@@ -1711,11 +1632,11 @@ window.LSM_CATALOG = {
           "curl": 0.95
         },
         "extra": {
-          "Right_Thumb_1": {
+          "mixamorig1RightHandThumb1_036": {
             "y": -30,
             "z": 40
           },
-          "Right_Thumb_2": {
+          "mixamorig1RightHandThumb2_037": {
             "x": 60
           }
         }
@@ -1751,11 +1672,11 @@ window.LSM_CATALOG = {
           "curl": 0.95
         },
         "extra": {
-          "Right_Thumb_1": {
+          "mixamorig1RightHandThumb1_036": {
             "y": -30,
             "z": 50
           },
-          "Right_Thumb_2": {
+          "mixamorig1RightHandThumb2_037": {
             "x": 60
           }
         }
@@ -1794,19 +1715,19 @@ window.LSM_CATALOG = {
           "z": -90
         },
         "extra": {
-          "Right_Index_1": {
+          "mixamorig1RightHandIndex1_040": {
             "x": 18
           },
-          "Right_Index_2": {
+          "mixamorig1RightHandIndex2_041": {
             "x": 78
           },
-          "Right_Index_3": {
+          "mixamorig1RightHandIndex3_042": {
             "x": 58
           },
-          "Right_Thumb_1": {
+          "mixamorig1RightHandThumb1_036": {
             "y": -12
           },
-          "Right_UpperArm": {
+          "mixamorig1RightArm_033": {
             "z": -18
           }
         }
@@ -1827,10 +1748,10 @@ window.LSM_CATALOG = {
               "z": -90
             },
             "extra": {
-              "Right_UpperArm": {
+              "mixamorig1RightArm_033": {
                 "z": -18
               },
-              "Right_Forearm": {
+              "mixamorig1RightForeArm_034": {
                 "x": 0,
                 "z": 0
               }
@@ -1844,10 +1765,10 @@ window.LSM_CATALOG = {
               "z": -90
             },
             "extra": {
-              "Right_UpperArm": {
+              "mixamorig1RightArm_033": {
                 "z": -18
               },
-              "Right_Forearm": {
+              "mixamorig1RightForeArm_034": {
                 "x": 12,
                 "z": -12
               }
@@ -1885,14 +1806,14 @@ window.LSM_CATALOG = {
           "spread": 22
         },
         "extra": {
-          "Right_UpperArm": {
+          "mixamorig1RightArm_033": {
             "z": -18
           },
-          "Right_Forearm": {
+          "mixamorig1RightForeArm_034": {
             "x": 8,
             "z": 6
           },
-          "Right_Thumb_1": {
+          "mixamorig1RightHandThumb1_036": {
             "z": 16
           }
         },
@@ -1930,10 +1851,10 @@ window.LSM_CATALOG = {
           "curl": 0.98
         },
         "extra": {
-          "Right_UpperArm": {
+          "mixamorig1RightArm_033": {
             "z": -18
           },
-          "Right_Forearm": {
+          "mixamorig1RightForeArm_034": {
             "x": -21.58,
             "z": 12.87
           }
@@ -1951,10 +1872,10 @@ window.LSM_CATALOG = {
           {
             "t": 0.0,
             "extra": {
-              "Right_UpperArm": {
+              "mixamorig1RightArm_033": {
                 "z": -18
               },
-              "Right_Forearm": {
+              "mixamorig1RightForeArm_034": {
                 "x": -21.58,
                 "z": 12.87
               }
@@ -1963,10 +1884,10 @@ window.LSM_CATALOG = {
           {
             "t": 0.293,
             "extra": {
-              "Right_UpperArm": {
+              "mixamorig1RightArm_033": {
                 "z": -18
               },
-              "Right_Forearm": {
+              "mixamorig1RightForeArm_034": {
                 "x": -17.38,
                 "z": -14.0
               }
@@ -1975,10 +1896,10 @@ window.LSM_CATALOG = {
           {
             "t": 0.707,
             "extra": {
-              "Right_UpperArm": {
+              "mixamorig1RightArm_033": {
                 "z": -18
               },
-              "Right_Forearm": {
+              "mixamorig1RightForeArm_034": {
                 "x": 17.38,
                 "z": 14.0
               }
@@ -1987,10 +1908,10 @@ window.LSM_CATALOG = {
           {
             "t": 1.0,
             "extra": {
-              "Right_UpperArm": {
+              "mixamorig1RightArm_033": {
                 "z": -18
               },
-              "Right_Forearm": {
+              "mixamorig1RightForeArm_034": {
                 "x": 21.58,
                 "z": -12.87
               }

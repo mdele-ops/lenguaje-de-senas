@@ -11,35 +11,20 @@
   const TRANSITION_MAX_MS = 3000;
   const TRANSITION_DEFAULT_MS = 2000;
 
-  function isMixamoStyleName(name) {
-    const n = String(name || "");
-    if (/^(Left|Right)(Shoulder|Arm|ForeArm|Hand|UpLeg|Leg|Foot|ToeBase)/.test(n)) return true;
-    if (/^(Left|Right)Hand(Thumb|Index|Middle|Ring|Pinky)\d/.test(n)) return true;
-    if (/^(Hips|Spine|Spine1|Spine2|Neck|Head)(_\d+)?$/.test(n)) return true;
-    return false;
-  }
-
-  function isPoseNode(obj) {
-    if (!obj || !obj.name) return false;
-    if (/Mesh|GEO|scaleCompensation|AvatarBody|outfit|haircut|earring/i.test(obj.name)) return false;
-    if (obj.isBone || obj.type === "Bone") return true;
-    return isMixamoStyleName(obj.name);
-  }
-
   function scoreScene(scene) {
     if (!scene || typeof scene.traverse !== "function") return 0;
-    let avatar = 0;
+    let mixamo = 0;
     let bones = 0;
     try {
       scene.traverse(function (obj) {
         if (!obj) return;
         if (obj.isBone || obj.type === "Bone") bones++;
-        if (obj.name && isMixamoStyleName(obj.name)) avatar++;
+        if (obj.name && /mixamo/i.test(obj.name)) mixamo++;
       });
     } catch (_) {
       return 0;
     }
-    return avatar * 10 + bones;
+    return mixamo * 10 + bones;
   }
 
   function collectSceneCandidates(modelViewer) {
@@ -49,7 +34,6 @@
         out.push(value);
       }
     }
-    add(modelViewer.scene);
     if (modelViewer.model) {
       add(modelViewer.model);
       add(modelViewer.model.scene);
@@ -63,14 +47,6 @@
         add(value.scene);
         add(value.target);
         if (value.target) add(value.target.scene);
-        try {
-          const inner = Object.getOwnPropertySymbols(value);
-          for (let j = 0; j < inner.length; j++) {
-            add(value[inner[j]]);
-          }
-        } catch (_) {
-          /* ignore */
-        }
       }
     }
     return out;
@@ -91,60 +67,11 @@
     return best || candidates[0] || null;
   }
 
-  function getGltfParser(modelViewer) {
-    if (!modelViewer) return null;
-    const symbols = Object.getOwnPropertySymbols(modelViewer);
-    for (let i = 0; i < symbols.length; i++) {
-      const desc = symbols[i].description || String(symbols[i]);
-      const value = modelViewer[symbols[i]];
-      if (/currentGLTF|gltf/i.test(desc) && value && value.parser) {
-        return value.parser;
-      }
-      if (value && value.parser && typeof value.parser.getDependency === "function") {
-        return value.parser;
-      }
-    }
-    return null;
+  function boneAliases(name) {
+    const aliases = [name];
+    if (/[:.]/.test(name)) aliases.push(name.replace(/[:.]/g, ""));
+    return aliases;
   }
-
-  function specGlossExt(mat) {
-    return (
-      (mat &&
-        mat.userData &&
-        mat.userData.gltfExtensions &&
-        mat.userData.gltfExtensions.KHR_materials_pbrSpecularGlossiness) ||
-      null
-    );
-  }
-
-  function catalogNameForBone(name) {
-    return BONE_TO_CATALOG[String(name || "")] || null;
-  }
-
-  // Nombres del catálogo LSM ← huesos Mixamo de model2.glb.
-  const BONE_TO_CATALOG = {
-    RightArm: "Right_UpperArm",
-    RightForeArm: "Right_Forearm",
-    RightHand: "Right_Wrist",
-    LeftArm: "Left_UpperArm",
-    LeftForeArm: "Left_Forearm",
-    LeftHand: "Left_Wrist",
-    RightHandThumb1: "Right_Thumb_1",
-    RightHandThumb2: "Right_Thumb_2",
-    RightHandThumb3: "Right_Thumb_3",
-    RightHandIndex1: "Right_Index_1",
-    RightHandIndex2: "Right_Index_2",
-    RightHandIndex3: "Right_Index_3",
-    RightHandMiddle1: "Right_Middle_1",
-    RightHandMiddle2: "Right_Middle_2",
-    RightHandMiddle3: "Right_Middle_3",
-    RightHandRing1: "Right_Ring_1",
-    RightHandRing2: "Right_Ring_2",
-    RightHandRing3: "Right_Ring_3",
-    RightHandPinky1: "Right_Little_1",
-    RightHandPinky2: "Right_Little_2",
-    RightHandPinky3: "Right_Little_3",
-  };
 
   function indexBones(scene) {
     const map = Object.create(null);
@@ -152,19 +79,16 @@
 
     function remember(obj) {
       if (!obj || !obj.name) return;
-      map[obj.name] = obj;
-      const catalogName = catalogNameForBone(obj.name);
-      if (catalogName) map[catalogName] = obj;
+      boneAliases(obj.name).forEach(function (alias) {
+        map[alias] = obj;
+      });
     }
 
     scene.traverse(function (obj) {
-      if (isPoseNode(obj)) remember(obj);
-    });
-    if (Object.keys(map).length < 8) {
-      scene.traverse(function (obj) {
+      if (obj && (obj.isBone || obj.type === "Bone" || (obj.name && /mixamo/i.test(obj.name)))) {
         remember(obj);
-      });
-    }
+      }
+    });
 
     return map;
   }
@@ -343,18 +267,6 @@
     else if (bone.rotateZ) bone.rotateZ(radians);
   }
 
-  // model2.glb (Mixamo) flexiona los dedos en X. El pulgar trae los ejes
-  // locales cruzados respecto al catálogo: X del catálogo es Z del modelo,
-  // Y del catálogo es X, y Z del catálogo es Y.
-  function modelAxis(boneName, axis) {
-    if (boneName && /Thumb/i.test(boneName)) {
-      if (axis === "x") return "z";
-      if (axis === "y") return "x";
-      if (axis === "z") return "y";
-    }
-    return axis;
-  }
-
   function normalize(text) {
     return String(text || "")
       .normalize("NFD")
@@ -493,76 +405,6 @@
       }
     }
 
-    function hideNonAvatarProps(scene) {
-      if (!scene || !scene.traverse) return;
-      scene.traverse(function (obj) {
-        if (!obj || !obj.name) return;
-        if (/bluetooth|earpiece|headset/i.test(obj.name)) {
-          obj.visible = false;
-        }
-      });
-    }
-
-    function prepareAvatarMeshes(scene) {
-      if (!scene || !scene.traverse) return;
-      hideNonAvatarProps(scene);
-      scene.traverse(function (obj) {
-        if (!obj) return;
-        obj.frustumCulled = false;
-        const mats = obj.material
-          ? Array.isArray(obj.material)
-            ? obj.material
-            : [obj.material]
-          : [];
-        for (let i = 0; i < mats.length; i++) {
-          const mat = mats[i];
-          if (!mat) continue;
-          const name = String(mat.name || "").toLowerCase();
-          const meshName = String(obj.name || "").toLowerCase();
-          const label = name + " " + meshName;
-          const spec = specGlossExt(mat);
-          const hasAlbedo = !!(mat.map || (spec && spec.diffuseTexture));
-          const isSkin =
-            !hasAlbedo && /skin|face|head|iris|lip|eyeball/.test(label);
-          const isHair = /hair|lash/.test(label);
-          const isCloth = /top|bottom|shoe|pant|jean|shirt|tshirt|cloth|short|socket/.test(
-            label
-          );
-
-          // Mixamo / Sketchfab: quitar metal y bajar el entorno para que
-          // se lea el albedo (si no, el personaje queda blanco).
-          if ("metalness" in mat) mat.metalness = 0;
-          if ("metalnessMap" in mat) mat.metalnessMap = null;
-          if (hasAlbedo) {
-            mat.roughness = 0.78;
-            if ("envMapIntensity" in mat) mat.envMapIntensity = 0.22;
-            if (mat.color && mat.color.setRGB) mat.color.setRGB(1, 1, 1);
-          } else if (isSkin) {
-            mat.roughness = 0.52;
-            if ("envMapIntensity" in mat) mat.envMapIntensity = 0.58;
-            if (mat.color && typeof mat.color.r === "number") {
-              mat.color.r = Math.min(1, mat.color.r * 1.04 + 0.02);
-              mat.color.g = Math.min(1, mat.color.g * 1.015);
-              mat.color.b = Math.min(1, mat.color.b * 0.97);
-            }
-          } else if (isHair) {
-            mat.roughness = 0.64;
-            if ("envMapIntensity" in mat) mat.envMapIntensity = 0.42;
-          } else if (isCloth) {
-            mat.roughness = 0.86;
-            if ("roughnessMap" in mat) mat.roughnessMap = null;
-            if ("envMapIntensity" in mat) mat.envMapIntensity = 0.32;
-          } else {
-            mat.roughness = 0.72;
-            if ("envMapIntensity" in mat) mat.envMapIntensity = 0.4;
-          }
-          // En personajes skinned el doble-cara aplana la iluminación.
-          if (!obj.isSkinnedMesh) mat.side = 2;
-          mat.needsUpdate = true;
-        }
-      });
-    }
-
     function updateSkinnedMeshes(scene) {
       if (!scene || !scene.traverse) return;
       scene.traverse(function (obj) {
@@ -664,57 +506,8 @@
       if (applied) restApplied = true;
     }
 
-    function restoreSpecGlossAlbedo() {
-      const scene = getScene(mv);
-      const parser = getGltfParser(mv);
-      if (!scene || !parser || typeof parser.getDependency !== "function") {
-        return Promise.resolve(false);
-      }
-      const jobs = [];
-      const seen = [];
-      scene.traverse(function (obj) {
-        const mats = obj && obj.material
-          ? Array.isArray(obj.material)
-            ? obj.material
-            : [obj.material]
-          : [];
-        for (let i = 0; i < mats.length; i++) {
-          const mat = mats[i];
-          if (!mat || seen.indexOf(mat) >= 0) continue;
-          seen.push(mat);
-          if (mat.map) continue;
-          const spec = specGlossExt(mat);
-          const index =
-            spec && spec.diffuseTexture && spec.diffuseTexture.index;
-          if (index == null) continue;
-          jobs.push(
-            parser.getDependency("texture", index).then(function (tex) {
-              if (!tex || mat.map) return false;
-              mat.map = tex;
-              if (mat.color && mat.color.setRGB) mat.color.setRGB(1, 1, 1);
-              if ("envMapIntensity" in mat) mat.envMapIntensity = 0.22;
-              if ("metalness" in mat) mat.metalness = 0;
-              mat.roughness = 0.78;
-              mat.needsUpdate = true;
-              return true;
-            })
-          );
-        }
-      });
-      if (!jobs.length) return Promise.resolve(false);
-      return Promise.all(jobs).then(function (results) {
-        return results.some(Boolean);
-      });
-    }
-
     function refreshSkeleton() {
       const scene = getScene(mv);
-      prepareAvatarMeshes(scene);
-      restoreSpecGlossAlbedo().then(function (changed) {
-        if (changed) forceRender({ aggressive: true });
-      }).catch(function () {
-        /* ignore */
-      });
       const nextBones = indexBones(scene);
       if (!Object.keys(nextBones).length && Object.keys(bones).length) {
         return Object.keys(bones).length;
@@ -760,9 +553,6 @@
       const thumbMax = rig.thumbCurlMaxGrados || {};
       const axis = rig.ejeCurl || "z";
       const curlSign = rig.curlSign == null ? 1 : Number(rig.curlSign);
-      // En model2 el pulgar no comparte el sentido de flexión de los otros dedos.
-      const thumbCurlSign =
-        rig.thumbCurlSign == null ? 1 : Number(rig.thumbCurlSign);
       const curl = Math.max(-1, Math.min(1, amount == null ? 0 : amount));
       const jointOrderCfg = rig.jointOrder || {};
       const jointOrder = finger === "thumb"
@@ -782,17 +572,16 @@
             ? sumDeg(joint, curl, thumbMax, THUMB_CURL_DEFAULTS)
             : sumDeg(joint, curl, curlMax, FINGER_CURL_DEFAULTS);
 
-        const sign = finger === "thumb" ? thumbCurlSign : curlSign;
-        rotateLocal(bone, modelAxis(boneName, axis), sign * deltaDeg * DEG);
+        rotateLocal(bone, axis, curlSign * deltaDeg * DEG);
 
         if (typeof twist === "number" && hasKey(joint, "prox")) {
-          rotateLocal(bone, modelAxis(boneName, "y"), twist * DEG);
+          rotateLocal(bone, "y", twist * DEG);
         }
         if (typeof spread === "number" && hasKey(joint, "prox")) {
-          rotateLocal(bone, modelAxis(boneName, "z"), spread * DEG);
+          rotateLocal(bone, "z", spread * DEG);
         }
         if (finger === "thumb" && typeof aside === "number" && hasKey(joint, "trapez")) {
-          rotateLocal(bone, modelAxis(boneName, "y"), aside * 32 * DEG);
+          rotateLocal(bone, "y", aside * 32 * DEG);
         }
       });
     }
@@ -827,20 +616,14 @@
       }
 
       // Rotaciones extra por hueso (se aplican encima de curl/spread/muñeca).
-      // En los dedos largos, X del catálogo es flexión: usa el mismo sentido
-      // que curlSign. El pulgar y el brazo conservan el signo escrito.
       if (pose.extra) {
-        const rig = catalog.rig || {};
-        const curlSign = rig.curlSign == null ? 1 : Number(rig.curlSign);
         Object.keys(pose.extra).forEach(function (name) {
           const bone = bones[name];
           const rots = pose.extra[name];
           if (!bone || !rots) return;
-          const fingerFlex = /_(Index|Middle|Ring|Little|Pinky)_/i.test(name);
-          const xMul = fingerFlex ? curlSign : 1;
-          if (rots.x) rotateLocal(bone, modelAxis(name, "x"), xMul * rots.x * DEG);
-          if (rots.y) rotateLocal(bone, modelAxis(name, "y"), rots.y * DEG);
-          if (rots.z) rotateLocal(bone, modelAxis(name, "z"), rots.z * DEG);
+          if (rots.x) rotateLocal(bone, "x", rots.x * DEG);
+          if (rots.y) rotateLocal(bone, "y", rots.y * DEG);
+          if (rots.z) rotateLocal(bone, "z", rots.z * DEG);
         });
       }
     }
@@ -891,7 +674,6 @@
           setQuat(bones[name], slerpQuat(fromQ, toQ, t));
         }
         forceRender({ aggressive: true });
-        applyCatalogCamera({ follow: true });
 
         if (raw >= 1) {
           const doneLabel = transition.label;
@@ -900,7 +682,6 @@
           transition = null;
           applyQuats(holdTarget);
           forceRender({ aggressive: true });
-          applyCatalogCamera({ follow: true });
           if (doneCycle && doneCycle.keyframes && doneCycle.keyframes.length) {
             poseCycle = Object.assign({ start: now }, doneCycle);
             holdTarget = null;
@@ -923,7 +704,6 @@
           sampleCyclePose(poseCycle.basePose, poseCycle.keyframes, t)
         );
         forceRender({ aggressive: true });
-        applyCatalogCamera({ follow: true });
         if (!poseCycle.loop) {
           const holdStart = Number(poseCycle.holdStartMs) || 0;
           const duration = Number(poseCycle.durationMs) || 1400;
@@ -972,7 +752,6 @@
       holdTarget = null;
       ensureLoop();
       forceRender({ aggressive: true });
-      applyCatalogCamera({ frame: true });
     }
 
     function playAnimation(animName) {
@@ -1088,99 +867,32 @@
       return { x: e[12], y: e[13], z: e[14] };
     }
 
-    function getHandFocusPoint() {
-      const rig = (catalog && catalog.rig) || {};
-      const names = [];
-      const wrist = getWristBoneName();
-      if (wrist) names.push(wrist);
-      if (rig.cameraKnuckle) names.push(rig.cameraKnuckle);
-      const huesos = rig.huesos || {};
-      ["thumb", "index", "middle", "ring", "pinky"].forEach(function (finger) {
-        const chain = huesos[finger] || [];
-        if (chain.length) {
-          names.push(chain[0]);
-          names.push(chain[chain.length - 1]);
-        }
-      });
-
-      const scene = getScene(mv);
-      const off =
-        (scene && scene.target && scene.target.position) || { x: 0, y: 0, z: 0 };
-      let sx = 0;
-      let sy = 0;
-      let sz = 0;
-      let n = 0;
-      for (let i = 0; i < names.length; i++) {
-        const p = worldPos(bones[names[i]]);
-        if (!p) continue;
-        sx += p.x - (off.x || 0);
-        sy += p.y - (off.y || 0);
-        sz += p.z - (off.z || 0);
-        n++;
-      }
-      if (!n) return null;
-      return {
-        x: sx / n + (rig.cameraOffsetX != null ? Number(rig.cameraOffsetX) : 0),
-        y: sy / n + (rig.cameraOffsetY != null ? Number(rig.cameraOffsetY) : 0.02),
-        z: sz / n + (rig.cameraOffsetZ != null ? Number(rig.cameraOffsetZ) : 0.04),
-      };
-    }
-
-    function getPersonFocusPoint() {
-      const rig = (catalog && catalog.rig) || {};
-      const names = ["Hips", "Spine", "Spine1", "Spine2", "Neck", "Neck1", "Neck2", "Head"];
-      const scene = getScene(mv);
-      const off =
-        (scene && scene.target && scene.target.position) || { x: 0, y: 0, z: 0 };
-      let sx = 0;
-      let sy = 0;
-      let sz = 0;
-      let n = 0;
-      for (let i = 0; i < names.length; i++) {
-        const p = worldPos(bones[names[i]]);
-        if (!p) continue;
-        sx += p.x - (off.x || 0);
-        sy += p.y - (off.y || 0);
-        sz += p.z - (off.z || 0);
-        n++;
-      }
-      if (!n) return null;
-      return {
-        x: sx / n + (rig.cameraOffsetX != null ? Number(rig.cameraOffsetX) : 0),
-        y: sy / n + (rig.cameraOffsetY != null ? Number(rig.cameraOffsetY) : 0.08),
-        z: sz / n + (rig.cameraOffsetZ != null ? Number(rig.cameraOffsetZ) : 0.04),
-      };
-    }
-
-    function applyCatalogCamera(opts) {
-      const options = opts || {};
+    function applyCatalogCamera() {
       const rig = (catalog && catalog.rig) || {};
       const scene = getScene(mv);
       if (scene && scene.updateMatrixWorld) scene.updateMatrixWorld(true);
 
-      const trackHand = rig.framePerson !== true;
-      const focus = trackHand ? getHandFocusPoint() : getPersonFocusPoint();
-      if (focus) {
+      const wrist = bones[getWristBoneName()];
+      const knuck = bones["mixamorig1RightHandMiddle1_044"];
+      const a = worldPos(wrist);
+      const b = worldPos(knuck);
+      if (a && b) {
+        const off =
+          (scene && scene.target && scene.target.position) ||
+          { x: 0, y: 0, z: 0 };
+        const x = (a.x + b.x) / 2 - (off.x || 0);
+        const y = (a.y + b.y) / 2 - (off.y || 0);
+        const z = (a.z + b.z) / 2 - (off.z || 0);
         mv.cameraTarget =
-          focus.x.toFixed(3) +
-          "m " +
-          focus.y.toFixed(3) +
-          "m " +
-          focus.z.toFixed(3) +
-          "m";
+          x.toFixed(3) + "m " + y.toFixed(3) + "m " + z.toFixed(3) + "m";
       } else if (rig.cameraTarget) {
         mv.cameraTarget = rig.cameraTarget;
       }
-
-      if (!options.follow) {
-        mv.cameraOrbit = rig.cameraOrbit || "12deg 78deg 1.15m";
-        if (typeof mv.fieldOfView === "string" || mv.fieldOfView) {
-          mv.fieldOfView = rig.fieldOfView || "30deg";
-        }
+      mv.cameraOrbit = rig.cameraOrbit || "0deg 84deg 2.5m";
+      if (typeof mv.fieldOfView === "string" || mv.fieldOfView) {
+        mv.fieldOfView = "30deg";
       }
-
-      const shouldJump = options.immediate || options.follow || options.frame;
-      if (shouldJump && typeof mv.jumpCameraToGoal === "function") {
+      if (typeof mv.jumpCameraToGoal === "function") {
         try {
           mv.jumpCameraToGoal();
         } catch (_) {
@@ -1189,35 +901,13 @@
       }
     }
 
-    function applyModelScale() {
-      const escala =
-        catalog && catalog.modelo && catalog.modelo.escala
-          ? catalog.modelo.escala
-          : null;
-      if (!escala || !escala.length) return;
-      const value = escala
-        .map(function (n) {
-          return String(n);
-        })
-        .join(" ");
-      try {
-        mv.scale = value;
-        if (typeof mv.setAttribute === "function") {
-          mv.setAttribute("scale", value);
-        }
-      } catch (_) {
-        /* ignore */
-      }
-    }
-
     function onModelLoad() {
       availableAnimations = mv.availableAnimations
         ? mv.availableAnimations.slice()
         : [];
       pauseMixer();
-      applyModelScale();
       const boneCount = refreshSkeleton();
-      applyCatalogCamera({ frame: true, immediate: true });
+      applyCatalogCamera();
       modelReady = hasRecognizedSkeleton() || boneCount > 10;
       forceRender({ aggressive: true });
       onStatus(
@@ -1237,7 +927,7 @@
       modelReady = false;
       restApplied = false;
       onStatus(
-        "Error al cargar el modelo 3D. Verifica model2.glb. " + (detail || "")
+        "Error al cargar el modelo 3D. Verifica model.glb. " + (detail || "")
       );
     }
 
@@ -1267,6 +957,15 @@
       },
       isAlphabetBuilt: function () {
         return alphabetBuilt;
+      },
+      applyTestPose: function (pose) {
+        stopPoseLoop();
+        pauseMixer();
+        if (!Object.keys(bones).length) refreshSkeleton();
+        bakePoseToBones(pose);
+        holdTarget = captureQuats(bones);
+        ensureLoop();
+        forceRender({ aggressive: true });
       },
     };
   }

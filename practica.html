@@ -420,31 +420,11 @@
       position: relative;
       z-index: 2;
       margin-top: 22px;
-      height: 520px;
       border-radius: 20px;
-      border: 1px solid rgba(255, 255, 255, 0.18);
-      background:
-        radial-gradient(ellipse 72% 58% at 50% 38%, #ffffff 0%, #eef4fb 42%, #d5e4f2 72%, #b7cbe0 100%);
+      border: 1px solid rgba(255, 255, 255, 0.12);
       box-shadow: 0 20px 50px rgba(0, 10, 25, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.06);
       isolation: isolate;
       transform: translateZ(0);
-    }
-    .glass-card #viewer-label {
-      background: rgba(255, 255, 255, 0.88);
-      color: #163a63;
-      letter-spacing: 0.08em;
-      border: 1px solid rgba(0, 92, 180, 0.14);
-    }
-    .glass-card #anim-info {
-      background: rgba(255, 255, 255, 0.86);
-      color: #2b4a6f;
-      border-color: rgba(0, 92, 180, 0.16);
-    }
-    .glass-card #anim-info.ok { color: #0f766e; border-color: rgba(15, 118, 110, 0.35); }
-    .glass-card #anim-info.warn { color: #92400e; border-color: rgba(146, 64, 14, 0.3); }
-    .glass-card #anim-info.err { color: #9f1239; border-color: rgba(159, 18, 57, 0.3); }
-    @media (max-width: 720px) {
-      .glass-card #viewer { height: 380px; }
     }
     .glass-card #viewer model-viewer {
       display: block;
@@ -649,37 +629,31 @@
             <div class="accent-rule"></div>
             <h2 class="practice-title">Modelo 3D y abecedario LSM</h2>
             <p class="practice-subtitle">
-              <code>model2.glb</code> es el modelo con el que se realizan las señas.
-              La cámara se centra en el personaje para ver el torso y la mano derecha.
-              Arrastra para rotar · rueda para acercar.
+              Arrastra para rotar · rueda para acercar. Cada letra usa el catálogo LSM:
+              clip de animación del <code>.glb</code> si existe, o pose por esqueleto.
             </p>
 
             <div id="viewer">
-              <div id="viewer-label">Modelo de señas · model2.glb</div>
+              <div id="viewer-label">Modelo 3D (model.glb)</div>
               <div id="anim-info">Cargando catálogo y modelo…</div>
 
               <model-viewer
                 id="handViewer"
-                alt="Instructor 3D de lengua de señas mexicana"
+                alt="Modelo 3D con la mano derecha riggeada para lengua de señas"
                 loading="eager"
                 reveal="auto"
                 camera-controls
                 touch-action="pan-y"
                 interaction-prompt="none"
-                tone-mapping="aces"
-                exposure="0.82"
-                shadow-intensity="0.72"
+                exposure="1.25"
+                shadow-intensity="0.45"
                 shadow-softness="1"
-                environment-image="assets/studio-env.jpg"
-                scale="1 1 1"
-                camera-target="0m 1.55m 0.04m"
-                camera-orbit="0deg 82deg 4.8m"
-                min-camera-orbit="auto 35deg 0.45m"
-                max-camera-orbit="auto 120deg 8m"
+                environment-image="neutral"
+                camera-target="0m 2.45m 0.15m"
+                camera-orbit="0deg 84deg 2.5m"
+                min-camera-orbit="auto 65deg 1.2m"
+                max-camera-orbit="auto 100deg 4m"
                 field-of-view="30deg"
-                min-field-of-view="18deg"
-                max-field-of-view="48deg"
-                interpolation-decay="80"
                 animation-crossfade-duration="250">
               </model-viewer>
             </div>
@@ -751,18 +725,18 @@
     </main>
 
     <footer class="anim-in">
-      <span>Prototipo educativo interno · Catálogo LSM + model2.glb</span>
+      <span>Prototipo educativo interno · Catálogo LSM + model.glb</span>
       <span class="footer-right mono-label">
         GM Complejo Toluca <span class="sep">·</span> v1.0
       </span>
     </footer>
   </div>
 
-  <script src="js/catalogo-lsm.js?v=20260922a"></script>
-  <script src="js/hand-controller.js?v=20260922c"></script>
+  <script src="js/catalogo-lsm.js?v=20260907z1"></script>
+  <script src="js/hand-controller.js?v=20260902v3"></script>
   <script>
     (function () {
-      const MODEL_URL = "model2.glb?v=20260921c";
+      const MODEL_URL = "model.glb";
       const MODEL_VIEWER_URLS = [
         "tools/vendor/model-viewer.min.js",
         "https://unpkg.com/@google/model-viewer@3.5.0/dist/model-viewer.min.js",
@@ -867,19 +841,23 @@
 
         handViewer.addEventListener("load", function () {
           let tries = 0;
-          function finishWhenReady() {
+          function finishWhenSkinned() {
             const info = controller.onModelLoad();
-            const boneCount = (info.bones || []).length;
-            if (!controller.isModelReady() && tries++ < 120) {
-              requestAnimationFrame(finishWhenReady);
+            const mixamo = (info.bones || []).filter(function (name) {
+              return /mixamo/i.test(name);
+            }).length;
+            if (mixamo < 10 && tries++ < 45) {
+              requestAnimationFrame(finishWhenSkinned);
               return;
             }
             modelReady = true;
+            console.log("Animaciones en model.glb:", info.animations);
+            console.log("Nodos/huesos indexados:", info.bones);
             setStatus(
               "Modelo listo · " +
                 info.animations.length +
                 " clips · " +
-                boneCount +
+                mixamo +
                 " huesos",
               "ok"
             );
@@ -890,7 +868,7 @@
             const idx = def ? letras.indexOf(def) : 0;
             seleccionarLetra(idx >= 0 ? idx : 0);
           }
-          finishWhenReady();
+          finishWhenSkinned();
         });
 
         handViewer.addEventListener("error", function (ev) {
@@ -899,18 +877,18 @@
           glbAttempts += 1;
           if (glbAttempts < 3) {
             setStatus(
-              "Reintentando model2.glb (" + glbAttempts + "/3)… " + detail,
+              "Reintentando model.glb (" + glbAttempts + "/3)… " + detail,
               "warn"
             );
             setTimeout(function () {
-              handViewer.setAttribute("src", MODEL_URL + (MODEL_URL.indexOf("?") >= 0 ? "&" : "?") + "r=" + Date.now());
+              handViewer.setAttribute("src", MODEL_URL + "?r=" + Date.now());
             }, 500);
             return;
           }
           modelReady = false;
           controller.onModelError(detail);
           setStatus(
-            "No se pudo cargar model2.glb. Abre la página con el servidor local (python tools/servidor.py). " +
+            "No se pudo cargar model.glb. Abre la página con el servidor local (python tools/servidor.py). " +
               detail,
             "err"
           );
@@ -918,7 +896,7 @@
       }
 
       function startModelLoad() {
-        setStatus("Descargando visor 3D y model2.glb…", "warn");
+        setStatus("Descargando visor 3D y model.glb…", "warn");
         wireModelEvents();
 
         return loadModelViewer()
@@ -1161,6 +1139,8 @@
           modelViewer: handViewer,
           onStatus: function () {},
         });
+        window.__LSM_CONTROLLER__ = controller;
+
         controller
           .loadCatalog(window.LSMHand.CATALOG_URL)
           .then(function () {

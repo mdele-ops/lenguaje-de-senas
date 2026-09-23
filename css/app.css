@@ -125,9 +125,8 @@ main { flex: 1; display: flex; flex-direction: column; gap: 20px; }
 .practice-subtitle { font-size: 0.8rem; color: var(--muted); margin-bottom: 8px; }
 
 #viewer {
-  width: 100%; height: 520px; border-radius: 18px;
-  background:
-    radial-gradient(ellipse 72% 58% at 50% 38%, #ffffff 0%, #eef4fb 42%, #d5e4f2 72%, #b7cbe0 100%);
+  width: 100%; height: 420px; border-radius: 18px;
+  background: radial-gradient(circle at top, #111827, #020617);
   overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.85);
   position: relative;
   isolation: isolate;
@@ -137,20 +136,19 @@ main { flex: 1; display: flex; flex-direction: column; gap: 20px; }
 #viewer-label {
   position: absolute; top: 8px; left: 10px;
   padding: 4px 9px; border-radius: 999px; font-size: 0.78rem;
-  background: rgba(255,255,255,0.88); color: #163a63;
-  text-transform: uppercase; letter-spacing: 0.08em; z-index: 2;
-  border: 1px solid rgba(0, 92, 180, 0.14);
+  background: rgba(15,23,42,0.9); color: #9ca3af;
+  text-transform: uppercase; letter-spacing: 0.14em; z-index: 2;
 }
 
 #anim-info {
   position: absolute; bottom: 8px; left: 10px; right: 10px;
   padding: 6px 10px; border-radius: 10px; font-size: 0.72rem;
-  background: rgba(255,255,255,0.86); border: 1px solid rgba(0, 92, 180, 0.16);
-  color: #2b4a6f; z-index: 2; display: block;
+  background: rgba(15,23,42,0.85); border: 1px solid rgba(148,163,184,0.35);
+  color: #cbd5e1; z-index: 2; display: block;
 }
-#anim-info.ok { border-color: rgba(15, 118, 110, 0.35); color: #0f766e; }
-#anim-info.warn { border-color: rgba(146, 64, 14, 0.3); color: #92400e; }
-#anim-info.err { border-color: rgba(159, 18, 57, 0.3); color: #9f1239; }
+#anim-info.ok { border-color: rgba(52,211,153,0.5); color: #a7f3d0; }
+#anim-info.warn { border-color: rgba(251,191,36,0.5); color: #fde68a; }
+#anim-info.err { border-color: rgba(248,113,113,0.5); color: #fecaca; }
 
 model-viewer {
   display: block;
@@ -265,7 +263,7 @@ footer { margin-top: 8px; font-size: 0.7rem; color: var(--muted); text-align: ce
 
 @media (max-width: 720px) {
   .hero { grid-template-columns: 1fr; }
-  #viewer { height: 380px; }
+  #viewer { height: 320px; }
 }
 
 /* ============ Deletreo de frases ============ */
