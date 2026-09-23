@@ -19,7 +19,7 @@
       scene.traverse(function (obj) {
         if (!obj) return;
         if (obj.isBone || obj.type === "Bone") bones++;
-        if (obj.name && /mixamo/i.test(obj.name)) mixamo++;
+        if (obj.name && /mixamo|^(Left|Right)(Hand|Arm|ForeArm|Shoulder)|^(Hips|Spine|Neck|Head)/i.test(obj.name)) mixamo++;
       });
     } catch (_) {
       return 0;
@@ -85,7 +85,7 @@
     }
 
     scene.traverse(function (obj) {
-      if (obj && (obj.isBone || obj.type === "Bone" || (obj.name && /mixamo/i.test(obj.name)))) {
+      if (obj && (obj.isBone || obj.type === "Bone" || (obj.name && /mixamo|^(Left|Right)(Hand|Arm|ForeArm|Shoulder)|^(Hips|Spine|Neck|Head)/i.test(obj.name)))) {
         remember(obj);
       }
     });
@@ -872,8 +872,10 @@
       const scene = getScene(mv);
       if (scene && scene.updateMatrixWorld) scene.updateMatrixWorld(true);
 
+      const rigBones = rig.huesos || {};
+      const middleName = (rigBones.middle && rigBones.middle[0]) || "";
       const wrist = bones[getWristBoneName()];
-      const knuck = bones["mixamorig1RightHandMiddle1_044"];
+      const knuck = bones[middleName];
       const a = worldPos(wrist);
       const b = worldPos(knuck);
       if (a && b) {
@@ -927,7 +929,7 @@
       modelReady = false;
       restApplied = false;
       onStatus(
-        "Error al cargar el modelo 3D. Verifica model.glb. " + (detail || "")
+        "Error al cargar el modelo 3D. Verifica model2.glb. " + (detail || "")
       );
     }
 

@@ -634,7 +634,7 @@
             </p>
 
             <div id="viewer">
-              <div id="viewer-label">Modelo 3D (model.glb)</div>
+              <div id="viewer-label">Modelo 3D (model2.glb)</div>
               <div id="anim-info">Cargando catálogo y modelo…</div>
 
               <model-viewer
@@ -649,10 +649,10 @@
                 shadow-intensity="0.45"
                 shadow-softness="1"
                 environment-image="neutral"
-                camera-target="0m 2.45m 0.15m"
-                camera-orbit="0deg 84deg 2.5m"
-                min-camera-orbit="auto 65deg 1.2m"
-                max-camera-orbit="auto 100deg 4m"
+                camera-target="0m 1.35m 0.1m"
+                camera-orbit="0deg 84deg 1.6m"
+                min-camera-orbit="auto 55deg 0.45m"
+                max-camera-orbit="auto 110deg 3.2m"
                 field-of-view="30deg"
                 animation-crossfade-duration="250">
               </model-viewer>
@@ -725,18 +725,18 @@
     </main>
 
     <footer class="anim-in">
-      <span>Prototipo educativo interno · Catálogo LSM + model.glb</span>
+      <span>Prototipo educativo interno · Catálogo LSM + model2.glb</span>
       <span class="footer-right mono-label">
         GM Complejo Toluca <span class="sep">·</span> v1.0
       </span>
     </footer>
   </div>
 
-  <script src="js/catalogo-lsm.js?v=20260907z1"></script>
-  <script src="js/hand-controller.js?v=20260902v3"></script>
+  <script src="js/catalogo-lsm.js?v=20260923m4"></script>
+  <script src="js/hand-controller.js?v=20260923m2"></script>
   <script>
     (function () {
-      const MODEL_URL = "model.glb";
+      const MODEL_URL = "model2.glb";
       const MODEL_VIEWER_URLS = [
         "tools/vendor/model-viewer.min.js",
         "https://unpkg.com/@google/model-viewer@3.5.0/dist/model-viewer.min.js",
@@ -843,22 +843,22 @@
           let tries = 0;
           function finishWhenSkinned() {
             const info = controller.onModelLoad();
-            const mixamo = (info.bones || []).filter(function (name) {
-              return /mixamo/i.test(name);
+            const handBones = (info.bones || []).filter(function (name) {
+              return /Hand|Arm|Thumb|Index|Middle|Ring|Pinky/i.test(name);
             }).length;
-            if (mixamo < 10 && tries++ < 45) {
+            if (handBones < 10 && tries++ < 45) {
               requestAnimationFrame(finishWhenSkinned);
               return;
             }
             modelReady = true;
-            console.log("Animaciones en model.glb:", info.animations);
+            console.log("Animaciones en model2.glb:", info.animations);
             console.log("Nodos/huesos indexados:", info.bones);
             setStatus(
               "Modelo listo · " +
                 info.animations.length +
                 " clips · " +
-                mixamo +
-                " huesos",
+                handBones +
+                " huesos de mano",
               "ok"
             );
 
@@ -877,7 +877,7 @@
           glbAttempts += 1;
           if (glbAttempts < 3) {
             setStatus(
-              "Reintentando model.glb (" + glbAttempts + "/3)… " + detail,
+              "Reintentando model2.glb (" + glbAttempts + "/3)… " + detail,
               "warn"
             );
             setTimeout(function () {
@@ -888,7 +888,7 @@
           modelReady = false;
           controller.onModelError(detail);
           setStatus(
-            "No se pudo cargar model.glb. Abre la página con el servidor local (python tools/servidor.py). " +
+            "No se pudo cargar model2.glb. Abre la página con el servidor local (python tools/servidor.py). " +
               detail,
             "err"
           );
@@ -896,7 +896,7 @@
       }
 
       function startModelLoad() {
-        setStatus("Descargando visor 3D y model.glb…", "warn");
+        setStatus("Descargando visor 3D y model2.glb…", "warn");
         wireModelEvents();
 
         return loadModelViewer()
