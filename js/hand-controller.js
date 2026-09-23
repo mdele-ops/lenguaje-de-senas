@@ -873,18 +873,40 @@
       if (scene && scene.updateMatrixWorld) scene.updateMatrixWorld(true);
 
       const rigBones = rig.huesos || {};
-      const middleName = (rigBones.middle && rigBones.middle[0]) || "";
-      const wrist = bones[getWristBoneName()];
-      const knuck = bones[middleName];
-      const a = worldPos(wrist);
-      const b = worldPos(knuck);
-      if (a && b) {
+      const names = [getWristBoneName()];
+      ["index", "middle", "ring", "pinky", "thumb"].forEach(function (finger) {
+        const list = rigBones[finger];
+        if (list && list.length) names.push(list[list.length - 1]);
+      });
+      const pts = [];
+      names.forEach(function (name) {
+        const p = worldPos(bones[name]);
+        if (p) pts.push(p);
+      });
+      if (pts.length >= 2) {
+        // El modelo cuelga del target de la cámara: el punto en espacio del
+        // modelo es la posición mundo menos la del target.
         const off =
           (scene && scene.target && scene.target.position) ||
           { x: 0, y: 0, z: 0 };
-        const x = (a.x + b.x) / 2 - (off.x || 0);
-        const y = (a.y + b.y) / 2 - (off.y || 0);
-        const z = (a.z + b.z) / 2 - (off.z || 0);
+        let x = 0;
+        let y = 0;
+        let z = 0;
+        pts.forEach(function (p) {
+          x += p.x;
+          y += p.y;
+          z += p.z;
+        });
+        x = x / pts.length - (off.x || 0);
+        y = y / pts.length - (off.y || 0);
+        z = z / pts.length - (off.z || 0);
+        // El visor es ancho. Si la cámara mira el centro geométrico de la
+        // mano, la palma queda a la derecha junto al torso. Este sesgo
+        // la deja en el centro del recuadro.
+        const bias = rig.cameraBias || [0, 0, 0];
+        x += bias[0] || 0;
+        y += bias[1] || 0;
+        z += bias[2] || 0;
         mv.cameraTarget =
           x.toFixed(3) + "m " + y.toFixed(3) + "m " + z.toFixed(3) + "m";
       } else if (rig.cameraTarget) {

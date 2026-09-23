@@ -1,6 +1,6 @@
 /* Generado desde data/catalogo-lsm.json — no editar a mano */
 window.LSM_CATALOG = {
-  "version": "1.3.54",
+  "version": "1.3.58",
   "idioma": "LSM",
   "nombre": "Alfabeto dactilológico mexicano",
   "modelo": {
@@ -12,8 +12,13 @@ window.LSM_CATALOG = {
     "curlSign": 1,
     "transitionMs": 2000,
     "wristBone": "RightHand",
-    "cameraTarget": "0m 1.4m 0.12m",
-    "cameraOrbit": "20deg 75deg 0.45m",
+    "cameraTarget": "-0.06m 1.35m 0.17m",
+    "cameraOrbit": "0deg 78deg 0.52m",
+    "cameraBias": [
+      0.12,
+      -0.04,
+      -0.02
+    ],
     "restCorrections": [
       {
         "hueso": "RightArm",
@@ -144,66 +149,79 @@ window.LSM_CATALOG = {
       ],
       "pose": {
         "thumb": {
-          "curl": 0.2,
-          "aside": 0
+          "curl": 0.08,
+          "aside": 0.15
         },
         "index": {
-          "curl": 1
+          "curl": 0.88,
+          "spread": -5
         },
         "middle": {
-          "curl": 1
+          "curl": 0.88,
+          "spread": -2
         },
         "ring": {
-          "curl": 1
+          "curl": 0.88,
+          "spread": 1
         },
         "pinky": {
-          "curl": 1
+          "curl": 0.88,
+          "spread": 3
+        },
+        "muneca": {
+          "x": 10
         },
         "extra": {
           "RightArm": {
-            "x": -26,
-            "z": -10
+            "x": -6,
+            "z": -6
           },
           "RightHandThumb1": {
-            "x": 35,
-            "y": -35,
-            "z": 30
+            "x": 18,
+            "y": -22,
+            "z": 55
+          },
+          "RightHandThumb2": {
+            "x": 18
+          },
+          "RightHandThumb3": {
+            "x": 6
           },
           "RightHandIndex1": {
-            "x": 40
+            "x": 24
           },
           "RightHandMiddle1": {
-            "x": 40
+            "x": 24
           },
           "RightHandRing1": {
-            "x": 40
+            "x": 24
           },
           "RightHandPinky1": {
-            "x": 40
+            "x": 24
           },
           "RightHandIndex2": {
-            "x": 32
+            "x": 10
           },
           "RightHandMiddle2": {
-            "x": 32
+            "x": 10
           },
           "RightHandRing2": {
-            "x": 32
+            "x": 10
           },
           "RightHandPinky2": {
-            "x": 32
+            "x": 10
           },
           "RightHandIndex3": {
-            "x": 24
+            "x": 6
           },
           "RightHandMiddle3": {
-            "x": 24
+            "x": 6
           },
           "RightHandRing3": {
-            "x": 24
+            "x": 6
           },
           "RightHandPinky3": {
-            "x": 24
+            "x": 6
           }
         }
       }
