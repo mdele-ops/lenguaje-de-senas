@@ -1,6 +1,6 @@
 /* Generado desde data/catalogo-lsm.json — no editar a mano */
 window.LSM_CATALOG = {
-  "version": "1.3.50",
+  "version": "1.3.54",
   "idioma": "LSM",
   "nombre": "Alfabeto dactilológico mexicano",
   "modelo": {
@@ -13,7 +13,7 @@ window.LSM_CATALOG = {
     "transitionMs": 2000,
     "wristBone": "RightHand",
     "cameraTarget": "0m 1.4m 0.12m",
-    "cameraOrbit": "0deg 84deg 1.6m",
+    "cameraOrbit": "20deg 75deg 0.45m",
     "restCorrections": [
       {
         "hueso": "RightArm",
@@ -54,15 +54,6 @@ window.LSM_CATALOG = {
             90
           ]
         ]
-      },
-      {
-        "hueso": "RightHandThumb1",
-        "rotaciones": [
-          [
-            "z",
-            48
-          ]
-        ]
       }
     ],
     "jointOrder": {
@@ -83,15 +74,15 @@ window.LSM_CATALOG = {
       ]
     },
     "curlMaxGrados": {
-      "prox": 156,
-      "midd": 174,
-      "dist": 153
+      "prox": 72,
+      "midd": 90,
+      "dist": 68
     },
     "thumbCurlMaxGrados": {
-      "trapez": 48,
-      "meta": 70,
-      "prox": 95,
-      "dist": 80
+      "trapez": 24,
+      "meta": 34,
+      "prox": 48,
+      "dist": 42
     },
     "huesos": {
       "thumb": [
@@ -144,7 +135,7 @@ window.LSM_CATALOG = {
     {
       "letra": "A",
       "nombre": "A",
-      "descripcion": "Puño cerrado; pulgar extendido al costado del índice.",
+      "descripcion": "Puño cerrado; el pulgar queda estirado hacia arriba, pegado al costado del índice.",
       "animacion": "Letra_A",
       "aliases": [
         "A",
@@ -153,19 +144,67 @@ window.LSM_CATALOG = {
       ],
       "pose": {
         "thumb": {
-          "curl": 0.4
+          "curl": 0.2,
+          "aside": 0
         },
         "index": {
-          "curl": 0.95
+          "curl": 1
         },
         "middle": {
-          "curl": 0.95
+          "curl": 1
         },
         "ring": {
-          "curl": 0.95
+          "curl": 1
         },
         "pinky": {
-          "curl": 0.95
+          "curl": 1
+        },
+        "extra": {
+          "RightArm": {
+            "x": -26,
+            "z": -10
+          },
+          "RightHandThumb1": {
+            "x": 35,
+            "y": -35,
+            "z": 30
+          },
+          "RightHandIndex1": {
+            "x": 40
+          },
+          "RightHandMiddle1": {
+            "x": 40
+          },
+          "RightHandRing1": {
+            "x": 40
+          },
+          "RightHandPinky1": {
+            "x": 40
+          },
+          "RightHandIndex2": {
+            "x": 32
+          },
+          "RightHandMiddle2": {
+            "x": 32
+          },
+          "RightHandRing2": {
+            "x": 32
+          },
+          "RightHandPinky2": {
+            "x": 32
+          },
+          "RightHandIndex3": {
+            "x": 24
+          },
+          "RightHandMiddle3": {
+            "x": 24
+          },
+          "RightHandRing3": {
+            "x": 24
+          },
+          "RightHandPinky3": {
+            "x": 24
+          }
         }
       }
     },
