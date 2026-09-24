@@ -112,6 +112,30 @@
     if (bone.quaternion.normalize) bone.quaternion.normalize();
   }
 
+  function capturePositions(bones) {
+    const out = Object.create(null);
+    Object.keys(bones).forEach(function (name) {
+      const bone = bones[name];
+      if (bone && bone.position) {
+        out[name] = { x: bone.position.x, y: bone.position.y, z: bone.position.z };
+      }
+    });
+    return out;
+  }
+
+  function setPos(bone, v) {
+    if (!bone || !v || !bone.position) return;
+    bone.position.set(v.x, v.y, v.z);
+  }
+
+  function lerpVec(a, b, t) {
+    return {
+      x: a.x + (b.x - a.x) * t,
+      y: a.y + (b.y - a.y) * t,
+      z: a.z + (b.z - a.z) * t,
+    };
+  }
+
   function slerpQuat(a, b, t) {
     var ax = a.x,
       ay = a.y,
@@ -327,6 +351,7 @@
     let catalog = null;
     let bones = Object.create(null);
     let restPose = Object.create(null);
+    let restPositions = Object.create(null);
     let availableAnimations = [];
     let letterMap = Object.create(null);
     let poseRaf = 0;
@@ -522,6 +547,7 @@
       bones = nextBones;
       applyRestCorrections();
       restPose = captureQuats(bones);
+      restPositions = capturePositions(bones);
       cacheNeedsRender();
       return Object.keys(bones).length;
     }
@@ -637,6 +663,8 @@
       Object.keys(restPose).forEach(function (name) {
         setQuat(bones[name], restPose[name]);
       });
+      applyKnuckleSqueeze(pose && pose.nudillos);
+      applyFingerLengths(pose && pose.largo);
 
       if (!pose) return;
 
@@ -671,6 +699,51 @@
           if (rots.z && flexed[name] !== "z") rotateLocal(bone, "z", rots.z * DEG);
         });
       }
+    }
+
+    // En este rig los nudillos están más separados que el grosor de los dedos:
+    // con los dedos rectos y verticales quedan huecos entre ellos, y para
+    // cerrarlos hay que abrirlos en abanico. `nudillos` acerca las cuatro raíces
+    // hacia la del dedo medio (0 = rig original, 1 = todas en el mismo punto),
+    // así los dedos se tocan sin perder la vertical.
+    function applyKnuckleSqueeze(amount) {
+      const huesos = ((catalog && catalog.rig) || {}).huesos || {};
+      const raices = ["index", "middle", "ring", "pinky"]
+        .map(function (finger) {
+          return (huesos[finger] || [])[0];
+        })
+        .filter(function (name) {
+          return name && bones[name] && restPositions[name];
+        });
+      raices.forEach(function (name) {
+        setPos(bones[name], restPositions[name]);
+      });
+
+      const t = Number(amount) || 0;
+      const centro = restPositions[(huesos.middle || [])[0]];
+      if (!t || !centro) return;
+      raices.forEach(function (name) {
+        setPos(bones[name], lerpVec(restPositions[name], centro, t));
+      });
+    }
+
+    // El meñique del rig es corto de más: con los dedos juntos y rectos su punta
+    // cae 28 mm por debajo del anular y el escalón se lee como un dedo doblado.
+    // `largo` estira las falanges de un dedo (1 = rig original) separando cada
+    // hueso hijo de su padre sobre el eje del dedo.
+    function applyFingerLengths(largos) {
+      const huesos = ((catalog && catalog.rig) || {}).huesos || {};
+      ["thumb", "index", "middle", "ring", "pinky"].forEach(function (finger) {
+        const k = Number((largos || {})[finger]) || 1;
+        (huesos[finger] || []).slice(1).forEach(function (name) {
+          const rest = restPositions[name];
+          if (!bones[name] || !rest) return;
+          setPos(
+            bones[name],
+            k === 1 ? rest : { x: rest.x * k, y: rest.y * k, z: rest.z * k }
+          );
+        });
+      });
     }
 
     function getWristBoneName() {
@@ -718,6 +791,13 @@
           if (!fromQ || !toQ || !bones[name]) continue;
           setQuat(bones[name], slerpQuat(fromQ, toQ, t));
         }
+        Object.keys(transition.toPos).forEach(function (name) {
+          const fromP = transition.fromPos[name];
+          const toP = transition.toPos[name];
+          if (fromP && toP && bones[name]) {
+            setPos(bones[name], lerpVec(fromP, toP, t));
+          }
+        });
         followHand();
         forceRender({ aggressive: true });
 
@@ -783,13 +863,17 @@
           ? sampleCyclePose(pose, cycle.keyframes, 0)
           : pose;
       const from = captureQuats(bones);
+      const fromPos = capturePositions(bones);
       bakePoseToBones(startPose);
       const to = captureQuats(bones);
+      const toPos = capturePositions(bones);
       applyQuats(from);
 
       transition = {
         from: from,
         to: to,
+        fromPos: fromPos,
+        toPos: toPos,
         start: performance.now(),
         duration: getTransitionMs(),
         label: label || "",

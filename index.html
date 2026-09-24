@@ -255,7 +255,7 @@
 
     @media (max-width: 640px) { .build-tag { display: none !important; } }
 
-    /* ============ Marca "Unidos por la inclusión" ============ */
+    /* ============ Marca "Unidos por la inclusión" (bajo el avatar) ============ */
     .top-right-stack {
       position: fixed;
       top: 16px;
@@ -273,12 +273,12 @@
     }
 
     .inclusion-mark {
-      width: 184px;
-      padding: 8px 10px 6px;
-      border-radius: 14px;
+      width: 100%;
+      padding: 6px 10px;
+      border-radius: 20px;
       background: #ffffff;
       border: 1px solid rgba(255, 255, 255, 0.45);
-      box-shadow: 0 0 0 1px rgba(0, 92, 180, 0.16), 0 8px 22px rgba(0, 8, 20, 0.28);
+      box-shadow: 0 0 0 1px rgba(0, 92, 180, 0.16), 0 10px 24px rgba(0, 8, 20, 0.32);
       line-height: 0;
     }
 
@@ -290,7 +290,6 @@
 
     @media (max-width: 640px) {
       .top-right-stack { top: 12px; right: 12px; }
-      .inclusion-mark { width: 132px; }
     }
 
     /* ============ Header con miga de pan institucional ============ */
@@ -540,7 +539,13 @@
     .hero-visual {
       position: relative;
       perspective: 800px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
     }
+
+    .hero-visual-card { position: relative; }
 
     .hero-visual-inner {
       position: relative;
@@ -584,6 +589,7 @@
     }
 
     /* ============ Avatar 3D señando dentro de la tarjeta ============ */
+    .hero-visual { width: 272px; }
     .hero-visual-inner {
       width: 272px !important;
       height: 336px !important;
@@ -591,6 +597,7 @@
     }
 
     @media (max-width: 900px) {
+      .hero-visual { width: 236px; }
       .hero-visual-inner { width: 236px !important; height: 292px !important; }
     }
 
@@ -867,7 +874,6 @@
     .anim-in { opacity: 0; }
 
     body.loaded .gm-badge.anim-in,
-    body.loaded .inclusion-mark.anim-in,
     body.loaded .build-tag.anim-in {
       animation: popIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 0.1s forwards;
     }
@@ -983,9 +989,6 @@
 
   <div class="top-right-stack">
     <div class="build-tag anim-in">En Servicio · Uso interno GM</div>
-    <div class="inclusion-mark anim-in">
-      <img src="assets/unidos-por-la-inclusion.png" alt="General Motors · Unidos por la inclusión" />
-    </div>
   </div>
 
   <div class="shell">
@@ -1021,7 +1024,7 @@
                 </div>
                 <div class="accent-rule anim-in"></div>
                 <h1 class="hero-title anim-in">
-                  Lengua de Señas<br />
+                  Lengua de Señas Mexicana<br />
                   <span>General Motors Complejo Toluca</span>
                 </h1>
                 <p class="hero-body anim-in">
@@ -1036,7 +1039,7 @@
                     </svg>
                   </a>
                   <a class="btn btn-ghost" href="glosario.html">
-                    Lengua de Señas Mexicana
+                    Aprende + LSM
                     <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                       <rect x="4" y="4" width="16" height="16" rx="2" />
                       <path d="M8 9h8M8 13h5" stroke-linecap="round" />
@@ -1045,42 +1048,47 @@
                 </div>
               </div>
               <div class="hero-visual anim-in">
-                <span class="pulse-ring"></span>
-                <span class="pulse-ring delay-1"></span>
-                <span class="pulse-ring delay-2"></span>
-                <div class="hero-visual-inner">
-                  <div class="hero-avatar-stage">
-                    <model-viewer
-                      id="heroViewer"
-                      alt="Personaje 3D deletreando el alfabeto en Lengua de Señas Mexicana"
-                      loading="lazy"
-                      reveal="auto"
-                      disable-zoom
-                      disable-pan
-                      disable-tap
-                      interaction-prompt="none"
-                      touch-action="pan-y"
-                      exposure="1.25"
-                      shadow-intensity="0.35"
-                      shadow-softness="1"
-                      environment-image="neutral"
-                      camera-target="-0.07m 1.42m 0.10m"
-                      camera-orbit="0deg 84deg 1.55m"
-                      min-camera-orbit="auto auto 0.3m"
-                      max-camera-orbit="auto auto 4m"
-                      field-of-view="30deg"
-                      animation-crossfade-duration="250">
-                    </model-viewer>
-                    <div class="hero-avatar-fallback" id="hero-avatar-fallback">
-                      <span>LSM</span>
-                      Catálogo A–Z + Ñ<br/>conectado al modelo 3D
-                    </div>
-                    <div class="hero-avatar-caption" id="hero-avatar-caption">
-                      <span class="hero-avatar-live"></span>
-                      <span class="hero-avatar-hint mono-label">Señando en vivo</span>
-                      <span class="hero-avatar-letter" id="hero-avatar-letter">—</span>
+                <div class="hero-visual-card">
+                  <span class="pulse-ring"></span>
+                  <span class="pulse-ring delay-1"></span>
+                  <span class="pulse-ring delay-2"></span>
+                  <div class="hero-visual-inner">
+                    <div class="hero-avatar-stage">
+                      <model-viewer
+                        id="heroViewer"
+                        alt="Personaje 3D deletreando el alfabeto en Lengua de Señas Mexicana"
+                        loading="lazy"
+                        reveal="auto"
+                        disable-zoom
+                        disable-pan
+                        disable-tap
+                        interaction-prompt="none"
+                        touch-action="pan-y"
+                        exposure="1.25"
+                        shadow-intensity="0.35"
+                        shadow-softness="1"
+                        environment-image="neutral"
+                        camera-target="-0.07m 1.42m 0.10m"
+                        camera-orbit="0deg 84deg 1.55m"
+                        min-camera-orbit="auto auto 0.3m"
+                        max-camera-orbit="auto auto 4m"
+                        field-of-view="30deg"
+                        animation-crossfade-duration="250">
+                      </model-viewer>
+                      <div class="hero-avatar-fallback" id="hero-avatar-fallback">
+                        <span>LSM</span>
+                        Catálogo A–Z + Ñ<br/>conectado al modelo 3D
+                      </div>
+                      <div class="hero-avatar-caption" id="hero-avatar-caption">
+                        <span class="hero-avatar-live"></span>
+                        <span class="hero-avatar-hint mono-label">Señando en vivo</span>
+                        <span class="hero-avatar-letter" id="hero-avatar-letter">—</span>
+                      </div>
                     </div>
                   </div>
+                </div>
+                <div class="inclusion-mark">
+                  <img src="assets/unidos-por-la-inclusion.png" alt="General Motors · Unidos por la inclusión" />
                 </div>
               </div>
             </div>
@@ -1142,8 +1150,8 @@
     </footer>
   </div>
 
-  <script src="js/catalogo-lsm.js?v=20260924n3"></script>
-  <script src="js/hand-controller.js?v=20260924n3"></script>
+  <script src="js/catalogo-lsm.js?v=20260924n11"></script>
+  <script src="js/hand-controller.js?v=20260924n11"></script>
   <script>
     /* Avatar 3D del hero: deletrea el alfabeto LSM en bucle, sin controles. */
     (function () {
@@ -1348,7 +1356,7 @@
       });
     }
 
-    var visualWrap = document.querySelector('.hero-visual');
+    var visualWrap = document.querySelector('.hero-visual-card');
     var visualCard = document.querySelector('.hero-visual-inner');
     var reduceMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
 

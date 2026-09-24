@@ -268,7 +268,7 @@ window.LSM_CATALOG = {
       ],
       "pose": {
         "thumb": {
-          "curl": 0.42,
+          "curl": 0.5,
           "aside": 0.8
         },
         "index": {
@@ -328,8 +328,12 @@ window.LSM_CATALOG = {
             "x": 12
           },
           "RightHandThumb1": {
+            "x": -30,
             "y": 34,
-            "z": 8
+            "z": 25
+          },
+          "RightHandThumb2": {
+            "x": -30
           },
           "RightHand": {
             "x": -24.108,
@@ -380,7 +384,7 @@ window.LSM_CATALOG = {
     {
       "letra": "E",
       "nombre": "E",
-      "descripcion": "Puño compacto con la palma al frente: los cuatro dedos, juntos y doblados por igual, se enrollan hasta que las yemas quedan justo debajo de los nudillos; el pulgar cruza la palma tumbado y en horizontal, justo por debajo de las yemas, que se apoyan encima de él.",
+      "descripcion": "Puño compacto con la palma al frente: los cuatro dedos, juntos y doblados por igual, se enrollan hasta que las cuatro yemas quedan a la misma altura, un poco por debajo de los nudillos, y se apoyan sobre el pulgar; el pulgar va tumbado cruzando la palma, con la uña al frente y la yema asomando junto a la del índice.",
       "animacion": "Letra_E",
       "aliases": [
         "E",
@@ -389,72 +393,79 @@ window.LSM_CATALOG = {
       ],
       "pose": {
         "thumb": {
-          "curl": 0.59,
-          "aside": -0.96
+          "curl": 0.4
         },
         "index": {
-          "curl": 0.92,
-          "spread": -12
+          "curl": 0.78,
+          "spread": -18
         },
         "middle": {
-          "curl": 0.92,
-          "spread": -4
+          "curl": 0.98,
+          "spread": -6
         },
         "ring": {
-          "curl": 0.92,
-          "spread": 4
+          "curl": 0.96,
+          "spread": 6
         },
         "pinky": {
-          "curl": 0.92,
-          "spread": 12
+          "curl": 0.98,
+          "spread": 18
+        },
+        "nudillos": 0.54,
+        "largo": {
+          "pinky": 1.02,
+          "ring": 1.04
         },
         "extra": {
           "RightHandThumb1": {
-            "x": 60,
-            "y": -35,
-            "z": 78
+            "x": -7,
+            "y": -65,
+            "z": 46
           },
           "RightHandThumb2": {
-            "x": 24
+            "x": 40,
+            "z": 22
           },
           "RightHandThumb3": {
-            "x": -11
+            "x": 55,
+            "y": -44,
+            "z": -22
           },
           "RightHandIndex1": {
             "x": 14
           },
           "RightHandIndex2": {
-            "x": 8
+            "x": 14
           },
           "RightHandIndex3": {
-            "x": 8
+            "x": 6
           },
           "RightHandMiddle1": {
-            "x": 12
+            "x": 14
           },
           "RightHandMiddle2": {
-            "x": 18
+            "x": 14
           },
           "RightHandMiddle3": {
-            "x": 8
+            "x": 6
           },
           "RightHandRing1": {
-            "x": 10
+            "x": 14
           },
           "RightHandRing2": {
-            "x": 18
+            "x": 14
           },
           "RightHandRing3": {
-            "x": 8
+            "x": 6
           },
           "RightHandPinky1": {
             "x": 14
           },
           "RightHandPinky2": {
-            "x": 18
+            "x": 14
           },
           "RightHandPinky3": {
-            "x": 8
+            "x": 6
           },
           "RightHand": {
             "x": -17.23,

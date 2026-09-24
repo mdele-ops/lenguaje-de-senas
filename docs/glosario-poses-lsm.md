@@ -225,7 +225,7 @@ consigue subiendo `curl`, sino repartiéndolo en las tres falanges con `extra`:
 
 ```json
 "pose": {
-  "thumb":  { "curl": 0.42, "aside": 0.8 },
+  "thumb":  { "curl": 0.5, "aside": 0.8 },
   "index":  { "curl": 0.26, "spread": 4 },
   "middle": { "curl": 0.26, "spread": 1 },
   "ring":   { "curl": 0.26, "spread": -1 },
@@ -235,7 +235,8 @@ consigue subiendo `curl`, sino repartiéndolo en las tres falanges con `extra`:
     "mixamorig1RightHandIndex1_040":  { "x": 20 },
     "mixamorig1RightHandIndex2_041":  { "x": 34 },
     "mixamorig1RightHandIndex3_042":  { "x": 12 },
-    "mixamorig1RightHandThumb1_036":  { "y": 34, "z": 8 },
+    "mixamorig1RightHandThumb1_036":  { "x": -30, "y": 34, "z": 25 },
+    "mixamorig1RightHandThumb2_037":  { "x": -30 },
     "mixamorig1RightArm_033":         { "z": -18 }
   }
 }
@@ -252,8 +253,12 @@ Interpretación:
    las puntas y la C se convierte en O.
 3. `spread` de +4 a −4 acerca los cuatro dedos para que el arco se lea como una
    sola banda.
-4. El pulgar con `curl` 0.42 y `aside` 0.8 se opone por debajo y cierra el arco
-   dejando el hueco visible.
+4. El pulgar con `curl` 0.5 y `aside` 0.8 se opone por debajo y cierra el arco
+   dejando el hueco visible. Lo que lo levanta no es el `curl` sino el `extra`
+   del trapecio: `z: 25` sube la punta y `x: -30` la orienta hacia los dedos;
+   el `x: -30` de Thumb2 evita que el pulgar se doble de más al subirlo. Sin
+   estas tres rotaciones el pulgar sale recto hacia el costado, por debajo de
+   la palma, en una postura que la mano real no alcanza.
 5. `mixamorig1RightArm_033` con `z: -18` separa la mano del pecho para que el
    hueco no se pierda contra el chaleco.
 
@@ -269,73 +274,89 @@ la distingue es dónde queda el pulgar:
 
 - **A** → pulgar estirado al costado del puño.
 - **S** → pulgar largo, cruzado por delante de los dedos.
-- **E** → pulgar **horizontal**, como una barra corta justo debajo de las yemas,
-  con las puntas de los cuatro dedos apoyadas encima.
+- **E** → pulgar **tumbado cruzando la palma**, con la uña al frente y la yema
+  asomando junto a la del índice; las cuatro yemas se apoyan encima.
 
 ```json
 "pose": {
-  "thumb":  { "curl": 0.59, "aside": -0.96 },
-  "index":  { "curl": 0.92, "spread": -12 },
-  "middle": { "curl": 0.92, "spread": -4 },
-  "ring":   { "curl": 0.92, "spread": 4 },
-  "pinky":  { "curl": 0.92, "spread": 12 },
+  "thumb":  { "curl": 0.4 },
+  "index":  { "curl": 0.78, "spread": -18 },
+  "middle": { "curl": 0.98, "spread": -6 },
+  "ring":   { "curl": 0.96, "spread": 6 },
+  "pinky":  { "curl": 0.98, "spread": 18 },
+  "nudillos": 0.54,
+  "largo":  { "pinky": 1.02, "ring": 1.04 },
   "extra": {
-    "mixamorig1RightHandThumb1_036": { "x": 60, "y": -35, "z": 78 },
-    "mixamorig1RightHandThumb2_037": { "x": 24 },
-    "mixamorig1RightHandThumb3_038": { "x": -11 },
-    "mixamorig1RightHandIndex1_040": { "x": 4.8 },
-    "mixamorig1RightHandIndex2_041": { "x": 6.6 },
-    "mixamorig1RightHandIndex3_042": { "x": 20.2 },
-    "mixamorig1RightHandMiddle2_045": { "x": 4.8 },
-    "mixamorig1RightHandMiddle3_046": { "x": 31 },
-    "mixamorig1RightHandRing1_048": { "x": -8.5 },
-    "mixamorig1RightHandRing2_049": { "x": 9.7 },
-    "mixamorig1RightHandRing3_050": { "x": 47.1 },
-    "mixamorig1RightHandPinky1_052": { "x": -6.5 },
-    "mixamorig1RightHandPinky3_054": { "x": 22.8 },
-    "mixamorig1RightArm_033":        { "z": -18 }
+    "RightHandThumb1":  { "x": -7, "y": -65, "z": 46 },
+    "RightHandThumb2":  { "x": 40, "z": 22 },
+    "RightHandThumb3":  { "x": 55, "y": -44, "z": -22 },
+    "RightHandIndex1":  { "x": 14 },
+    "RightHandIndex2":  { "x": 14 },
+    "RightHandIndex3":  { "x": 6 },
+    "RightHandMiddle1": { "x": 14 },
+    "RightHandMiddle2": { "x": 14 },
+    "RightHandMiddle3": { "x": 6 },
+    "RightHandRing1":   { "x": 14 },
+    "RightHandRing2":   { "x": 14 },
+    "RightHandRing3":   { "x": 6 },
+    "RightHandPinky1":  { "x": 14 },
+    "RightHandPinky2":  { "x": 14 },
+    "RightHandPinky3":  { "x": 6 },
+    "RightHand":        { "x": -17.23, "y": -4.999, "z": -2.462 }
   }
 }
 ```
 
 Interpretación:
 
-1. El grueso del doblez lo hace **`curl`**, no `extra`. `curl: 0.92` reparte la
-   flexión como el rig manda (72°/90°/68° por unidad) y sale un puño compacto;
-   la A y la S usan 0.95.
-2. Los `extra` de índice–meñique son un **retoque de simetría**, no la pose. El
-   reposo del `.glb` no es simétrico: cada dedo trae su propia curvatura
-   horneada, así que con el mismo `curl` en los cuatro los ángulos salían
-   distintos y la última falange se iba **27° entre el índice y el anular**. Esa
-   diferencia se ve en pantalla como una fila de yemas escalonada. Los retoques
-   (de −9° a +47°) igualan los cuatro dedos en **nudillo 70° / media 95° /
-   distal 90°**. No se pusieron a mano: los calcula `py tools/calibra_e.py`
-   midiendo el modelo y corrigiendo cada hueso por su error de ángulo.
-3. La falange **distal** lleva el retoque más grande a propósito. Con distal 60°
-   las yemas bajaban hasta 0.51 de palma por debajo de los nudillos: el dedo
-   bajaba arrastrándose por la palma y se leía como una garra. Con 90° el dedo
-   se enrolla sobre sí mismo y la yema queda a 0.21, que es donde está en la
-   foto de referencia (`py tools/reparto_e.py` hace ese barrido).
-4. `spread` va de −12° a +12°, **cerrando** el abanico para que los cuatro dedos
-   se toquen como en la foto. Los nudillos separan 0.23–0.26 de palma, así que
-   las yemas a 0.23 quedan juntas sin atravesarse.
-5. El pulgar va **horizontal**, y la clave está en *qué* hueso se toca. El giro
-   lo hace **`Thumb1`**, la base: orienta el dedo entero sin doblarlo. Con solo
-   `curl` y `aside` no se llega —esos dos mandos lo dejan en una diagonal de
-   unos 48° y no lo tumban más—, así que aquí el `extra` de la base sí hace
-   falta. Lo que hay que mantener corto es **`Thumb2`/`Thumb3`**, porque sus
-   grados se **suman** a los del `curl` y son los que cierran el pulgar sobre sí
-   mismo; van en 24° y −11°, y el dedo entero se dobla 87°, justo por debajo del
-   umbral de ~90° en que aparece el anillo.
+1. El grueso del doblez lo hace **`curl`**, no `extra`. Los cuatro dedos van
+   entre 0.78 y 0.98 y los `extra` son los mismos para todos (14° / 14° / 6°):
+   ya no hay un retoque distinto por dedo. La fila de yemas se nivela con las
+   dos herramientas que no tocan ángulos —el `curl` de cada dedo y `largo`—, y
+   eso deja el `extra` libre para lo que de verdad necesita retoque.
+2. El índice dobla **menos** que los otros tres (0.78 frente a 0.96–0.98) a
+   propósito: es el que tiene que dejar sitio a la yema del pulgar. Con los
+   cuatro al mismo `curl`, el índice se le echa encima y el pulgar desaparece.
+3. **`nudillos: 0.54`** es lo que junta los dedos. Aprieta las raíces de los
+   nudillos hacia el del medio y el frente índice→meñique pasa de 0.61 a 0.28
+   de palma; con eso las yemas quedan a 0.10–0.12 unas de otras, tocándose como
+   en la foto, sin necesidad de forzar el `spread`. **Cuidado al comparar
+   medidas de `ancho` entre letras**: la métrica se divide por ese mismo frente
+   índice→meñique, así que en cuanto hay `nudillos` los valores de `ancho` se
+   inflan y no son comparables con una letra que no lo lleva.
+4. **`largo`** sube 2% el meñique y 4% el anular. Son los dos dedos cortos del
+   rig y, con el mismo doblez que los demás, sus yemas se quedaban atrás; el
+   alargue los pone en la misma fila (yemas a 0.68–0.73 de palma, dentro de
+   0.05 unas de otras) sin cambiar ningún ángulo.
+5. El pulgar se **orienta** con `Thumb1` y se **acomoda** con `Thumb2`/`Thumb3`.
+   `Thumb1 { y: -65, z: 46 }` lo tumba cruzando la palma y le gira la uña al
+   frente; `Thumb2 { x: 40, z: 22 }` y `Thumb3 { x: 55, y: -44, z: -22 }` sacan
+   la yema hacia afuera, junto al índice, en vez de dejarla enterrada bajo los
+   dedos. Aquí los tres ejes hacen falta: con solo `x` el pulgar se dobla sobre
+   sí mismo hacia la muñeca. Ojo con el detalle de implementación: los `extra`
+   del pulgar **no** se recortan con `flexMaxGrados` (solo los de los otros
+   cuatro dedos), así que un valor exagerado sí rompe la malla y hay que
+   comprobar el resultado a ojo.
+6. `RightHand { x: -17.23, y: -4.999, z: -2.462 }` gira la mano para que la
+   palma mire al frente, que es la vista de la lámina.
 
-   Las tres versiones anteriores fallaron cada una por un lado distinto:
-   `Thumb1 x: -50, z: -30` + `Thumb3 x: 75` lo sacaba por el costado como un
-   cuerno; `Thumb1 x: -15, y: -7, z: 25` + `Thumb3 x: 46` lo doblaba **170°**
-   y lo cerraba en anillo con la punta mirando a la muñeca; y
-   `{ curl: 0.95, aside: 0.45 }` sin ningún `extra` lo dejaba en una diagonal
-   larga cruzando la palma entera.
-6. `mixamorig1RightArm_033` con `z: -18` separa la mano del pecho, igual que en
-   la C.
+El defecto de la versión anterior no era el doblez de los dedos sino que **el
+pulgar no se veía**: quedaba a la altura de los nudillos y **detrás** de la
+palma (punta en `alto 1.01`, `frente −0.15`), o sea escondido por el puño. Al
+mismo tiempo las yemas caían escalonadas (0.78 → 0.64) y separadas (huecos de
+0.15–0.22), así que el puño no leía como puño cerrado.
+
+Medidas en el marco de la palma (origen en la muñeca, `alto` hacia el nudillo
+del medio, `ancho` hacia el lado del pulgar, `frente` hacia la cámara, todo
+dividido por el largo de la palma):
+
+| Métrica | Qué mide | Antes | Ahora |
+|---|---|---|---|
+| `yemasAlto` | altura de las cuatro yemas | 0.78 / 0.70 / 0.67 / 0.64 (escalonadas) | 0.73 / 0.69 / 0.68 / 0.72 (a nivel) |
+| `gaps` | separación entre yemas vecinas | 0.20 / 0.22 / 0.15 | 0.11 / 0.12 / 0.10 |
+| `tocaDedos` | distancia de la yema más cercana al pulgar | 0.20 | 0.10 |
+| punta del pulgar | `alto` / `ancho` / `frente` | 1.01 / 0.17 / **−0.15** (detrás) | 0.66 / 0.24 / **0.28** (al frente) |
+| `mpAng` / `ipAng` | doblez del pulgar en el nudillo y en la última falange | 71° / 12° | 75° / 86° |
 
 Formas de equivocarse que ya se probaron y **no** funcionan:
 
@@ -343,70 +364,50 @@ Formas de equivocarse que ya se probaron y **no** funcionan:
   100° → distal 20°) saca el dedo entero por delante de la palma con la yema
   recta: queda una garra. El `extra` sirve para retocar, no para sustituir al
   `curl`.
-- Puntuar el pulgar solo por su **punta** (`across`, `tipoI`). La punta acaba
-  donde toca, pero el resto del dedo se despega de la palma y aparece el cuerno.
-  Hay que medir las tres articulaciones contra el marco de la palma, que es lo
-  que hace `tools/pulgar_e.py`.
-- Cargar `extra` en **`Thumb2`/`Thumb3`**. Sus grados se acumulan con los del
-  `curl`, así que un `Thumb3 x: 46` sobre un `curl: 0.89` deja la última falange
-  en 85° y el dedo entero doblado 170°: un anillo. Para **orientar** el pulgar
-  se gira `Thumb1`, que no lo dobla; `Thumb2`/`Thumb3` solo para retocar.
-- Juzgar el pulgar solo por **dónde cae la punta**, sin mirar su inclinación ni
-  su largo. Una diagonal que cruza la palma entera puede dejar la yema
-  exactamente donde toca y aun así no parecerse a la lámina, donde el pulgar es
-  una barra horizontal y corta. Eso es lo que miden `pantInclina` y `pantLargo`.
-- Fiarse de la **foto del usuario** para la orientación. Está tomada desde
-  abajo y ahí el pulgar se ve escorzado, como si fuera en diagonal; la lámina
-  `tools/screenshots/referencia/E.png`, de frente, enseña que va horizontal.
-- Deducir la altura del pulgar de la foto **en 3D**. En la E los dedos se
-  doblan hacia la cámara, así que "el pulgar queda por debajo de las yemas"
-  mezcla altura y profundidad y no se puede traducir al marco de la palma:
-  pedirlo así no tiene solución y la búsqueda se va a los extremos (pulgar al
-  aire, o enterrado detrás de la mano). Esa parte se puntúa **en pantalla**
-  (medidas `pant*` de `tools/pulgar_e.py`), en la misma proyección en que se
-  midió la foto.
-- Pedirle al pulgar una altura **absoluta** sacada de la foto. Las yemas de la
-  foto caen a 1.15 de palma y las del modelo a 0.76, porque este puño cierra
-  más; exigir a la vez la altura absoluta y la distancia a las yemas es
-  imposible. Solo se pide la posición **relativa a los dedos**.
-- Medir alturas en la **Y del mundo**. La E lleva `extra` en el brazo, que gira
+- Nivelar la fila de yemas con un `extra` distinto por dedo. Se puede, pero
+  cada valor depende del reposo horneado del `.glb` y hay que recalcular los
+  doce en cuanto se toca el `curl`. Sale más limpio con `curl` + `largo`.
+- Pedirle al pulgar la posición **exacta** de la foto. El pulgar de este rig
+  mide **1.007 de palma** —y su falange distal sola, 0.38, es desproporcionada—
+  así que no puede estar a la vez bajo (`alto 0.46`) y tumbado al frente
+  (`frente 0.30`) sin salirse de los topes de las articulaciones: se llega a uno
+  o al otro. El acuerdo es `alto 0.66` con `frente 0.28`, que en pantalla lee
+  como la lámina aunque el número no coincida.
+- Buscar la pose del pulgar a base de **tiros al azar**. Son diez grados de
+  libertad y el azar se va siempre a los extremos: pulgar doblado 141° en el
+  nudillo, o por debajo de la muñeca, o clavado 0.87 de palma hacia la cámara.
+  Hay que ir con búsqueda por patrones desde varias semillas y con objetivos de
+  dos lados (mínimo *y* máximo) más penalizaciones anatómicas sobre `mpAng`,
+  `ipAng` y el `frente` de las falanges.
+- Puntuar el pulgar solo por su **punta**. La punta acaba donde toca, pero el
+  resto del dedo se despega de la palma y aparece el cuerno. Hay que medir las
+  tres articulaciones contra el marco de la palma.
+- Cerrar los cuatro dedos **de más** buscando un puño más compacto. Con
+  `nudillos 0.57` y los cuatro `curl` altos el puño queda perfecto… y tapa el
+  pulgar otra vez, que es justo lo que distingue la E.
+- Fiarse de la **foto del usuario** para la orientación: está tomada desde abajo
+  y ahí el pulgar se ve escorzado.
+- Medir alturas en la **Y del mundo**. La E lleva `extra` en la muñeca, que gira
   la mano entera, así que esos números no se pueden comparar con letras que no
-  lo llevan. Todo se mide en el marco de la palma (largo muñeca→nudillos, ancho
-  índice→meñique, normal palmar).
+  lo llevan. Todo se mide en el marco de la palma.
+- Juzgar la vista sin comprobar la **cámara**. `practica.html` limita la órbita
+  (`min-camera-orbit="auto 55deg 0.45m"`), así que una captura puede enseñar la
+  mano desde arriba y hacer parecer que los dedos están casi rectos. Conviene
+  confirmar el punto de vista proyectando los huesos sobre la captura antes de
+  sacar conclusiones.
 
 Para revisar cambios en esta letra: `py tools/verifica_e15.py` (aplica la E por
 el camino real de la app —`mostrarSena`, no `applyTestPose`— comprueba que la
 pose del catálogo llega a la página y la pone al lado de A, S, T, O y C para ver
-que siguen distinguiéndose). `py tools/final_e15.py` es el que la recalcula y la
-escribe en el catálogo.
+que siguen distinguiéndose).
 
-Para juzgar si dos dedos se atraviesan no basta con mirar el render: el
-sombreado del avatar engaña mucho según el ángulo. `py tools/overlay_e.py` (lo
-usan `compare_e10.py` y `final_e.py`) dibuja el esqueleto proyectado encima de
-la captura.
-
-Medidas de simetría (`tools/simetria_e.py`), normalizadas al largo de la palma,
-con lo que daba la pose anterior y lo que da la actual:
-
-| Métrica | Qué mide | Antes | Ahora |
-|---|---|---|---|
-| `mcpD` / `pipD` / `dipD` | diferencia de grados entre el dedo que más dobla y el que menos, articulación por articulación | 7.6 / 10.5 / **27.0** | 1.0 / 0.9 / **0.1** |
-| `fold` | cuánto baja la yema respecto a su nudillo | 0.32 (garra) | 0.21 (como la foto) |
-| `gap` | separación entre yemas vecinas | 0.217 | 0.230 (nudillos: 0.23–0.26) |
-
-Medidas del pulgar (`tools/pulgar_e.py`). Las `pant*` van en el marco de
-pantalla —origen en la muñeca, "alto" hacia el nudillo del medio, "ancho" hacia
-el lado del pulgar, dividido por el largo de la palma proyectado— que es el
-mismo en que se midió la lámina. "Anillo" y "diagonal" son las dos versiones
-anteriores:
-
-| Métrica | Qué mide | Anillo | Diagonal | Ahora | Lámina |
-|---|---|---|---|---|---|
-| `pantInclina` | inclinación del pulgar en pantalla; 0° = horizontal apuntando al meñique, 90° = de pie | −15° | **−48°** | −22° | ~−15° |
-| `pantLargo` | largo del tramo visible, del nudillo a la yema | 0.31 | 0.50 | 0.51 | ~0.42 |
-| `pantBajoYemas` | cuánto asoma la yema del pulgar por debajo de las de los dedos | +0.22 | **+0.50** | +0.19 | ~+0.31 |
-| `dobla` | cuánto se dobla el pulgar sobre sí mismo; pasado de ~90° aparece el anillo | **170°** | 117° | 87° | — |
-| `ipAng` | doblez de la última falange | **105°** | 33° | 13° | — |
+Si en la máquina no hay Python ni Node, todo ese banco de pruebas queda
+inservible y se puede trabajar igual desde el navegador:
+`powershell -ExecutionPolicy Bypass -File tools\servidor.ps1 -Port 8124` levanta
+el sitio (el `.glb` no se puede cargar por `file://`) y la pose se mide y se
+ajusta con `Runtime.evaluate` sobre `window.__LSM_CONTROLLER__`. Para comparar
+muchos candidatos de una vez, `mv.toDataURL('image/png')` permite montar una
+hoja de contactos dentro de la propia página y sacarla en una sola captura.
 
 ---
 
