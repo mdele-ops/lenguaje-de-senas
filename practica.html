@@ -805,8 +805,8 @@
     </footer>
   </div>
 
-  <script src="js/catalogo-lsm.js?v=20260923n12"></script>
-  <script src="js/hand-controller.js?v=20260923n4"></script>
+  <script src="js/catalogo-lsm.js?v=20260924n3"></script>
+  <script src="js/hand-controller.js?v=20260924n3"></script>
   <script>
     (function () {
       const MODEL_URL = "model2.glb";
@@ -1224,6 +1224,7 @@
         controller = window.LSMHand.createController({
           modelViewer: handViewer,
           onStatus: function () {},
+          seguirMano: true,
         });
         window.__LSM_CONTROLLER__ = controller;
 

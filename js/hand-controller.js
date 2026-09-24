@@ -161,14 +161,19 @@
     return av + (bv - av) * t;
   }
 
+  // Solo se interpolan los ejes que algún keyframe declara. Si se devolvieran
+  // siempre x/y/z, un ciclo que mueve un eje borraría los otros de la pose base
+  // (p. ej. el giro de antebrazo de la Q y la X al entrar en el movimiento).
   function lerpXYZ(a, b, t) {
     a = a || {};
     b = b || {};
-    return {
-      x: lerpNum(a.x, b.x, t),
-      y: lerpNum(a.y, b.y, t),
-      z: lerpNum(a.z, b.z, t),
-    };
+    const out = {};
+    ["x", "y", "z"].forEach(function (axis) {
+      if (typeof a[axis] === "number" || typeof b[axis] === "number") {
+        out[axis] = lerpNum(a[axis], b[axis], t);
+      }
+    });
+    return out;
   }
 
   function clonePose(pose) {
@@ -317,6 +322,7 @@
     const mv = options.modelViewer;
     const onStatus =
       typeof options.onStatus === "function" ? options.onStatus : function () {};
+    const seguirMano = options.seguirMano === true;
 
     let catalog = null;
     let bones = Object.create(null);
@@ -331,6 +337,7 @@
     let alphabetBuilt = false;
     let needsRenderFns = [];
     let restApplied = false;
+    let lastHandTarget = null;
 
     function indexCatalog(data, fuente) {
       catalog = data;
@@ -711,6 +718,7 @@
           if (!fromQ || !toQ || !bones[name]) continue;
           setQuat(bones[name], slerpQuat(fromQ, toQ, t));
         }
+        followHand();
         forceRender({ aggressive: true });
 
         if (raw >= 1) {
@@ -719,6 +727,7 @@
           holdTarget = transition.to;
           transition = null;
           applyQuats(holdTarget);
+          followHand();
           forceRender({ aggressive: true });
           if (doneCycle && doneCycle.keyframes && doneCycle.keyframes.length) {
             poseCycle = Object.assign({ start: now }, doneCycle);
@@ -741,6 +750,7 @@
         bakePoseToBones(
           sampleCyclePose(poseCycle.basePose, poseCycle.keyframes, t)
         );
+        followHand();
         forceRender({ aggressive: true });
         if (!poseCycle.loop) {
           const holdStart = Number(poseCycle.holdStartMs) || 0;
@@ -905,7 +915,8 @@
       return { x: e[12], y: e[13], z: e[14] };
     }
 
-    function applyCatalogCamera() {
+    // Punto de la mano al que mira la cámara, en espacio del modelo.
+    function handTarget() {
       const rig = (catalog && catalog.rig) || {};
       const scene = getScene(mv);
       if (scene && scene.updateMatrixWorld) scene.updateMatrixWorld(true);
@@ -921,32 +932,54 @@
         const p = worldPos(bones[name]);
         if (p) pts.push(p);
       });
-      if (pts.length >= 2) {
-        // El modelo cuelga del target de la cámara: el punto en espacio del
-        // modelo es la posición mundo menos la del target.
-        const off =
-          (scene && scene.target && scene.target.position) ||
-          { x: 0, y: 0, z: 0 };
-        let x = 0;
-        let y = 0;
-        let z = 0;
-        pts.forEach(function (p) {
-          x += p.x;
-          y += p.y;
-          z += p.z;
-        });
-        x = x / pts.length - (off.x || 0);
-        y = y / pts.length - (off.y || 0);
-        z = z / pts.length - (off.z || 0);
-        // El visor es ancho. Si la cámara mira el centro geométrico de la
-        // mano, la palma queda a la derecha junto al torso. Este sesgo
-        // la deja en el centro del recuadro.
-        const bias = rig.cameraBias || [0, 0, 0];
-        x += bias[0] || 0;
-        y += bias[1] || 0;
-        z += bias[2] || 0;
-        mv.cameraTarget =
-          x.toFixed(3) + "m " + y.toFixed(3) + "m " + z.toFixed(3) + "m";
+      if (pts.length < 2) return null;
+
+      // El modelo cuelga del target de la cámara: el punto en espacio del
+      // modelo es la posición mundo menos la del target.
+      const off =
+        (scene && scene.target && scene.target.position) || { x: 0, y: 0, z: 0 };
+      let x = 0;
+      let y = 0;
+      let z = 0;
+      pts.forEach(function (p) {
+        x += p.x;
+        y += p.y;
+        z += p.z;
+      });
+      x = x / pts.length - (off.x || 0);
+      y = y / pts.length - (off.y || 0);
+      z = z / pts.length - (off.z || 0);
+      // El visor es ancho. Si la cámara mira el centro geométrico de la
+      // mano, la palma queda a la derecha junto al torso. Este sesgo
+      // la deja en el centro del recuadro.
+      const bias = rig.cameraBias || [0, 0, 0];
+      x += bias[0] || 0;
+      y += bias[1] || 0;
+      z += bias[2] || 0;
+      return x.toFixed(3) + "m " + y.toFixed(3) + "m " + z.toFixed(3) + "m";
+    }
+
+    // Las señas no ocurren todas a la misma altura: la mano sube al mentón en
+    // las letras verticales y baja al pecho en las que apuntan hacia abajo o de
+    // lado (G, H, M, N, Ñ, Q, X, Y). Con un target fijo esas se salían del
+    // recuadro, así que la cámara sigue la mano mientras la pose se mueve. No
+    // se toca la órbita: si la persona giró o acercó la vista, eso se respeta.
+    // Solo conviene en planos cerrados; en uno de cuerpo completo el
+    // seguimiento le cortaría la cabeza al avatar cuando la mano baja.
+    function followHand() {
+      if (!seguirMano) return;
+      const target = handTarget();
+      if (!target || target === lastHandTarget) return;
+      lastHandTarget = target;
+      mv.cameraTarget = target;
+    }
+
+    function applyCatalogCamera() {
+      const rig = (catalog && catalog.rig) || {};
+      const target = handTarget();
+      if (target) {
+        lastHandTarget = target;
+        mv.cameraTarget = target;
       } else if (rig.cameraTarget) {
         mv.cameraTarget = rig.cameraTarget;
       }
@@ -1026,6 +1059,7 @@
         if (!Object.keys(bones).length) refreshSkeleton();
         bakePoseToBones(pose);
         holdTarget = captureQuats(bones);
+        followHand();
         ensureLoop();
         forceRender({ aggressive: true });
       },
