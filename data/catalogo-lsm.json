@@ -1,5 +1,5 @@
 {
-  "version": "1.3.58",
+  "version": "1.3.65",
   "idioma": "LSM",
   "nombre": "Alfabeto dactilológico mexicano",
   "modelo": {
@@ -78,6 +78,11 @@
       "midd": 90,
       "dist": 68
     },
+    "flexMaxGrados": {
+      "prox": 80,
+      "midd": 100,
+      "dist": 70
+    },
     "thumbCurlMaxGrados": {
       "trapez": 24,
       "meta": 34,
@@ -135,7 +140,7 @@
     {
       "letra": "A",
       "nombre": "A",
-      "descripcion": "Puño cerrado; el pulgar queda estirado hacia arriba, pegado al costado del índice.",
+      "descripcion": "Puño cerrado con la mano vertical y la palma al frente; el pulgar sale estirado por el costado, apuntando hacia arriba.",
       "animacion": "Letra_A",
       "aliases": [
         "A",
@@ -144,79 +149,51 @@
       ],
       "pose": {
         "thumb": {
-          "curl": 0.08,
-          "aside": 0.15
+          "curl": 0,
+          "aside": -0.1
         },
         "index": {
-          "curl": 0.88,
-          "spread": -5
+          "curl": 1,
+          "spread": 4
         },
         "middle": {
-          "curl": 0.88,
-          "spread": -2
+          "curl": 1,
+          "spread": -4
         },
         "ring": {
-          "curl": 0.88,
-          "spread": 1
+          "curl": 1,
+          "spread": -10
         },
         "pinky": {
-          "curl": 0.88,
-          "spread": 3
+          "curl": 1,
+          "spread": -4
         },
         "muneca": {
-          "x": 10
+          "x": 27.6,
+          "y": 16.3,
+          "z": 1.4
         },
         "extra": {
           "RightArm": {
-            "x": -6,
-            "z": -6
+            "x": -11,
+            "y": -18.5,
+            "z": -16
+          },
+          "RightForeArm": {
+            "x": 0,
+            "y": -7,
+            "z": 16
           },
           "RightHandThumb1": {
-            "x": 18,
-            "y": -22,
-            "z": 55
+            "x": -10,
+            "y": -70,
+            "z": 30
           },
           "RightHandThumb2": {
-            "x": 18
+            "x": 10
           },
           "RightHandThumb3": {
-            "x": 6
-          },
-          "RightHandIndex1": {
-            "x": 24
-          },
-          "RightHandMiddle1": {
-            "x": 24
-          },
-          "RightHandRing1": {
-            "x": 24
-          },
-          "RightHandPinky1": {
-            "x": 24
-          },
-          "RightHandIndex2": {
-            "x": 10
-          },
-          "RightHandMiddle2": {
-            "x": 10
-          },
-          "RightHandRing2": {
-            "x": 10
-          },
-          "RightHandPinky2": {
-            "x": 10
-          },
-          "RightHandIndex3": {
-            "x": 6
-          },
-          "RightHandMiddle3": {
-            "x": 6
-          },
-          "RightHandRing3": {
-            "x": 6
-          },
-          "RightHandPinky3": {
-            "x": 6
+            "x": -10
           }
         }
       }
@@ -422,34 +399,40 @@
             "x": -11
           },
           "RightHandIndex1": {
-            "x": 4.8
+            "x": 14
           },
           "RightHandIndex2": {
-            "x": 6.6
+            "x": 8
           },
           "RightHandIndex3": {
-            "x": 20.2
+            "x": 8
+          },
+          "RightHandMiddle1": {
+            "x": 12
           },
           "RightHandMiddle2": {
-            "x": 4.8
+            "x": 18
           },
           "RightHandMiddle3": {
-            "x": 31
+            "x": 8
           },
           "RightHandRing1": {
-            "x": -8.5
+            "x": 10
           },
           "RightHandRing2": {
-            "x": 9.7
+            "x": 18
           },
           "RightHandRing3": {
-            "x": 47.1
+            "x": 8
           },
           "RightHandPinky1": {
-            "x": -6.5
+            "x": 14
+          },
+          "RightHandPinky2": {
+            "x": 18
           },
           "RightHandPinky3": {
-            "x": 22.8
+            "x": 8
           },
           "RightArm": {
             "z": -18

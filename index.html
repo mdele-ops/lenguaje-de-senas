@@ -222,7 +222,7 @@
       .gm-badge { padding: 6px; }
     }
 
-    /* ============ Tag "Prototipo · Uso interno" ============ */
+    /* ============ Tag de estado ============ */
     .build-tag {
       position: fixed !important;
       top: 20px !important;
@@ -254,6 +254,44 @@
     }
 
     @media (max-width: 640px) { .build-tag { display: none !important; } }
+
+    /* ============ Marca "Unidos por la inclusión" ============ */
+    .top-right-stack {
+      position: fixed;
+      top: 16px;
+      right: 24px;
+      z-index: 20;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .top-right-stack .build-tag {
+      position: static !important;
+      top: auto !important;
+      right: auto !important;
+    }
+
+    .inclusion-mark {
+      width: 184px;
+      padding: 8px 10px 6px;
+      border-radius: 14px;
+      background: #ffffff;
+      border: 1px solid rgba(255, 255, 255, 0.45);
+      box-shadow: 0 0 0 1px rgba(0, 92, 180, 0.16), 0 8px 22px rgba(0, 8, 20, 0.28);
+      line-height: 0;
+    }
+
+    .inclusion-mark img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    @media (max-width: 640px) {
+      .top-right-stack { top: 12px; right: 12px; }
+      .inclusion-mark { width: 132px; }
+    }
 
     /* ============ Header con miga de pan institucional ============ */
     .breadcrumb {
@@ -545,6 +583,104 @@
       50% { transform: translateY(-6px); }
     }
 
+    /* ============ Avatar 3D señando dentro de la tarjeta ============ */
+    .hero-visual-inner {
+      width: 272px !important;
+      height: 336px !important;
+      padding: 0 !important;
+    }
+
+    @media (max-width: 900px) {
+      .hero-visual-inner { width: 236px !important; height: 292px !important; }
+    }
+
+    .hero-avatar-stage {
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      overflow: hidden;
+    }
+
+    #heroViewer {
+      width: 100%;
+      height: 100%;
+      display: block;
+      background: transparent;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.7s ease;
+      --poster-color: transparent;
+      --progress-bar-color: transparent;
+      --progress-mask: transparent;
+    }
+
+    #heroViewer.is-visible { opacity: 1; }
+
+    .hero-avatar-fallback {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 16px;
+      transition: opacity 0.6s ease;
+    }
+
+    .hero-avatar-fallback.is-hidden { opacity: 0; }
+
+    .hero-avatar-caption {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      padding: 26px 14px 13px;
+      background: linear-gradient(to top, rgba(2, 6, 23, 0.94), rgba(2, 6, 23, 0));
+      opacity: 0;
+      transition: opacity 0.6s ease;
+      pointer-events: none;
+    }
+
+    .hero-avatar-caption.is-ready { opacity: 1; }
+
+    .hero-avatar-live {
+      width: 6px;
+      height: 6px;
+      flex: 0 0 auto;
+      border-radius: 50%;
+      background: #F2A900;
+      box-shadow: 0 0 0 0 rgba(242, 169, 0, 0.6);
+      animation: pulseDot 2.4s ease-out infinite;
+    }
+
+    .hero-avatar-hint {
+      flex: 1 1 auto;
+      font-size: 0.6rem !important;
+      letter-spacing: 0.15em !important;
+      text-transform: uppercase;
+      color: rgba(180, 210, 235, 0.82) !important;
+      text-align: left;
+      margin: 0 !important;
+    }
+
+    .hero-avatar-letter {
+      flex: 0 0 auto;
+      min-width: 30px;
+      font-family: 'Space Grotesk', 'Inter', system-ui, sans-serif;
+      font-size: 1.35rem !important;
+      font-weight: 700;
+      letter-spacing: 0.04em !important;
+      line-height: 1;
+      margin: 0 !important;
+      color: #fff;
+      text-align: right;
+      text-shadow: 0 0 18px rgba(0, 156, 222, 0.55);
+    }
+
     .pulse-ring {
       position: absolute;
       top: 50%;
@@ -731,6 +867,7 @@
     .anim-in { opacity: 0; }
 
     body.loaded .gm-badge.anim-in,
+    body.loaded .inclusion-mark.anim-in,
     body.loaded .build-tag.anim-in {
       animation: popIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 0.1s forwards;
     }
@@ -820,7 +957,7 @@
       }
       .btn, .btn .ripple, .btn::before,
       .kicker-dot, .hero-title span, .accent-rule,
-      .hero-visual-inner, .hero-visual-inner::after,
+      .hero-visual-inner, .hero-visual-inner::after, .hero-avatar-live,
       .pulse-ring, .aurora-bg, .aurora-bg-2, .mesh-sheen, .top-glow-bar,
       .hero-sweep::before {
         animation: none !important;
@@ -844,7 +981,12 @@
     <span class="gm-badge-text">General Motors México</span>
   </div>
 
-  <div class="build-tag anim-in">En Servicio · Uso interno GM</div>
+  <div class="top-right-stack">
+    <div class="build-tag anim-in">En Servicio · Uso interno GM</div>
+    <div class="inclusion-mark anim-in">
+      <img src="assets/unidos-por-la-inclusion.png" alt="General Motors · Unidos por la inclusión" />
+    </div>
+  </div>
 
   <div class="shell">
     <header class="anim-in">
@@ -883,8 +1025,8 @@
                   <span>General Motors Complejo Toluca</span>
                 </h1>
                 <p class="hero-body anim-in">
-                  Prototipo interactivo con un personaje 3D riggeado (<code>model2.glb</code>)
-                  conectado al catálogo del alfabeto en Lengua de Señas Mexicana (LSM).
+                  Aprende el alfabeto en Lengua de Señas Mexicana (LSM) con un guía
+                  en 3D que te muestra cada seña paso a paso.
                 </p>
                 <div class="hero-actions anim-in">
                   <a class="btn btn-primary" href="practica.html">
@@ -907,8 +1049,38 @@
                 <span class="pulse-ring delay-1"></span>
                 <span class="pulse-ring delay-2"></span>
                 <div class="hero-visual-inner">
-                  <span>LSM</span>
-                  Catálogo A–Z + Ñ<br/>conectado al modelo 3D
+                  <div class="hero-avatar-stage">
+                    <model-viewer
+                      id="heroViewer"
+                      alt="Personaje 3D deletreando el alfabeto en Lengua de Señas Mexicana"
+                      loading="lazy"
+                      reveal="auto"
+                      disable-zoom
+                      disable-pan
+                      disable-tap
+                      interaction-prompt="none"
+                      touch-action="pan-y"
+                      exposure="1.25"
+                      shadow-intensity="0.35"
+                      shadow-softness="1"
+                      environment-image="neutral"
+                      camera-target="-0.07m 1.42m 0.10m"
+                      camera-orbit="0deg 84deg 1.55m"
+                      min-camera-orbit="auto auto 0.3m"
+                      max-camera-orbit="auto auto 4m"
+                      field-of-view="30deg"
+                      animation-crossfade-duration="250">
+                    </model-viewer>
+                    <div class="hero-avatar-fallback" id="hero-avatar-fallback">
+                      <span>LSM</span>
+                      Catálogo A–Z + Ñ<br/>conectado al modelo 3D
+                    </div>
+                    <div class="hero-avatar-caption" id="hero-avatar-caption">
+                      <span class="hero-avatar-live"></span>
+                      <span class="hero-avatar-hint mono-label">Señando en vivo</span>
+                      <span class="hero-avatar-letter" id="hero-avatar-letter">—</span>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -963,12 +1135,156 @@
     </main>
 
     <footer class="anim-in">
-      <span>Prototipo educativo interno · Catálogo LSM + model2.glb</span>
+      <span>Material educativo interno · Alfabeto en Lengua de Señas Mexicana</span>
       <span class="footer-right mono-label">
         GM Complejo Toluca <span class="sep">·</span> v1.0
       </span>
     </footer>
   </div>
+
+  <script src="js/catalogo-lsm.js?v=20260923n12"></script>
+  <script src="js/hand-controller.js?v=20260923n4"></script>
+  <script>
+    /* Avatar 3D del hero: deletrea el alfabeto LSM en bucle, sin controles. */
+    (function () {
+      var viewer = document.getElementById('heroViewer');
+      var fallbackEl = document.getElementById('hero-avatar-fallback');
+      var captionEl = document.getElementById('hero-avatar-caption');
+      var letterEl = document.getElementById('hero-avatar-letter');
+      if (!viewer || !window.LSMHand) return;
+
+      var MODEL_URL = 'model2.glb';
+      var MODEL_VIEWER_URLS = [
+        'tools/vendor/model-viewer.min.js',
+        'https://unpkg.com/@google/model-viewer@3.5.0/dist/model-viewer.min.js',
+      ];
+      var HOLD_MS = 420;
+
+      var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      var controller = null;
+      var letras = [];
+      var indice = 0;
+      var timer = null;
+      var ready = false;
+      var onScreen = true;
+
+      function loadScript(url) {
+        return new Promise(function (resolve, reject) {
+          var script = document.createElement('script');
+          script.type = 'module';
+          script.src = url;
+          script.onload = function () {
+            customElements.whenDefined('model-viewer').then(resolve, reject);
+          };
+          script.onerror = function () {
+            reject(new Error('No se pudo cargar model-viewer desde ' + url));
+          };
+          document.head.appendChild(script);
+        });
+      }
+
+      function loadModelViewer() {
+        if (customElements.get('model-viewer')) return Promise.resolve();
+        return (function tryNext(i) {
+          if (i >= MODEL_VIEWER_URLS.length) {
+            return Promise.reject(new Error('Visor 3D no disponible'));
+          }
+          return loadScript(MODEL_VIEWER_URLS[i]).catch(function () {
+            return tryNext(i + 1);
+          });
+        })(0);
+      }
+
+      function detener() {
+        if (timer) clearTimeout(timer);
+        timer = null;
+      }
+
+      function siguienteLetra() {
+        timer = null;
+        if (!ready || !letras.length) return;
+
+        var letra = letras[indice % letras.length];
+        indice++;
+        letterEl.textContent = letra;
+        controller.mostrarSena(letra);
+
+        if (reduceMotion || !onScreen) return;
+        timer = setTimeout(siguienteLetra, controller.getLetterPlayMs(letra) + HOLD_MS);
+      }
+
+      function reanudar() {
+        if (!ready || timer || reduceMotion || !onScreen) return;
+        siguienteLetra();
+      }
+
+      viewer.addEventListener('load', function () {
+        var intentos = 0;
+        (function esperarEsqueleto() {
+          var info = controller.onModelLoad();
+          var huesosMano = (info.bones || []).filter(function (name) {
+            return /Hand|Arm|Thumb|Index|Middle|Ring|Pinky/i.test(name);
+          }).length;
+          if (huesosMano < 10 && intentos++ < 45) {
+            requestAnimationFrame(esperarEsqueleto);
+            return;
+          }
+          ready = true;
+          viewer.classList.add('is-visible');
+          captionEl.classList.add('is-ready');
+          fallbackEl.classList.add('is-hidden');
+          siguienteLetra();
+        })();
+      });
+
+      viewer.addEventListener('error', function () {
+        ready = false;
+        detener();
+        viewer.classList.remove('is-visible');
+        captionEl.classList.remove('is-ready');
+        fallbackEl.classList.remove('is-hidden');
+      });
+
+      var observer = new IntersectionObserver(function (entries) {
+        onScreen = entries[0].isIntersecting;
+        if (onScreen) reanudar();
+        else detener();
+      }, { threshold: 0.15 });
+      observer.observe(viewer);
+
+      document.addEventListener('visibilitychange', function () {
+        if (document.hidden) detener();
+        else reanudar();
+      });
+
+      function arrancar() {
+        controller = window.LSMHand.createController({
+          modelViewer: viewer,
+          onStatus: function () {},
+        });
+
+        controller
+          .loadCatalog(window.LSMHand.CATALOG_URL)
+          .then(function () {
+            letras = controller.getLetters().filter(function (letra) {
+              var sena = controller.getSena(letra);
+              return sena && !sena.neutral;
+            });
+            if (!letras.length) throw new Error('Catálogo sin señas');
+            return loadModelViewer();
+          })
+          .then(function () {
+            viewer.setAttribute('src', MODEL_URL);
+          })
+          .catch(function () {
+            fallbackEl.classList.remove('is-hidden');
+          });
+      }
+
+      if (document.readyState === 'complete') arrancar();
+      else window.addEventListener('load', arrancar);
+    })();
+  </script>
 
   <script>
     window.addEventListener('DOMContentLoaded', function () {

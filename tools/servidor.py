@@ -1,11 +1,10 @@
-"""Servidor estatico local, multihilo.
+"""Servidor estatico para las pruebas, multihilo.
 
-`python -m http.server` atiende de uno en uno: mientras manda el .glb
-deja en cola el resto de la pagina, y el visor se queda colgado en
+`python -m http.server` atiende de uno en uno: mientras manda los 48 MB de
+model.glb deja en cola el resto de la pagina, y el visor se queda colgado en
 "Descargando visor 3D". Con ThreadingHTTPServer eso no pasa.
 """
 import shutil
-import socket
 import sys
 from functools import partial
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
@@ -26,14 +25,11 @@ class Silencioso(SimpleHTTPRequestHandler):
         ".wasm": "application/wasm",
         ".css": "text/css",
         ".json": "application/json",
-        ".hdr": "image/vnd.radiance",
-        ".jpg": "image/jpeg",
-        ".jpeg": "image/jpeg",
     }
     protocol_version = "HTTP/1.1"
 
     def log_message(self, fmt, *args):
-        if "model2.glb" in (args[0] if args else ""):
+        if "model.glb" in (args[0] if args else ""):
             super().log_message(fmt, *args)
 
     def end_headers(self):
@@ -44,23 +40,13 @@ class Silencioso(SimpleHTTPRequestHandler):
         shutil.copyfileobj(source, outputfile, length=256 * 1024)
 
 
-def direccion_lan():
-    """IP de esta máquina en la red, sin dejar escrita una dirección vieja."""
-    try:
-        with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as sonda:
-            sonda.connect(("10.255.255.255", 1))
-            return sonda.getsockname()[0]
-    except OSError:
-        return "127.0.0.1"
-
-
 def main():
     puerto = int(sys.argv[1]) if len(sys.argv) > 1 else PUERTO
     handler = partial(Silencioso, directory=str(ROOT))
     with ThreadingHTTPServer((HOST, puerto), handler) as httpd:
         print(f"sirviendo {ROOT}", flush=True)
         print(f"  local:   http://127.0.0.1:{puerto}", flush=True)
-        print(f"  red:     http://{direccion_lan()}:{puerto}", flush=True)
+        print(f"  red:     http://10.4.145.88:{puerto}", flush=True)
         httpd.serve_forever()
 
 

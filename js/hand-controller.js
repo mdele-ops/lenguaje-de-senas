@@ -528,6 +528,26 @@
     const DEFAULT_FINGER_JOINT_ORDER = ["meta", "prox", "midd", "dist"];
     const FINGER_CURL_DEFAULTS = { prox: 70, midd: 85, dist: 65 };
     const THUMB_CURL_DEFAULTS = { trapez: 22, meta: 30, prox: 40, dist: 35 };
+    // Hasta dónde dobla cada falange de los cuatro dedos (rig.flexMaxGrados).
+    // El curl y el extra del catálogo giran sobre el mismo eje y se suman, así
+    // que sin tope una pose puede pedirle 120° a un nudillo que solo da 90 y el
+    // dedo se enrolla sobre sí mismo. El pulgar queda fuera: otra anatomía.
+    const FINGER_FLEX_DEFAULTS = { prox: 80, midd: 100, dist: 70 };
+
+    function maxFlexDeg(keys) {
+      if (!keys) return null;
+      const rig = (catalog && catalog.rig) || {};
+      const limits = rig.flexMaxGrados || FINGER_FLEX_DEFAULTS;
+      const list = Array.isArray(keys) ? keys : [keys];
+      let total = 0;
+      let found = false;
+      list.forEach(function (k) {
+        if (!k || limits[k] == null) return;
+        total += limits[k];
+        found = true;
+      });
+      return found ? total : null;
+    }
 
     function sumDeg(keys, curl, maxMap, defaults) {
       if (!keys) return 0;
@@ -546,16 +566,21 @@
       return Array.isArray(keys) ? keys.indexOf(key) !== -1 : keys === key;
     }
 
-    function applyFingerCurl(finger, amount, twist, spread, aside) {
+    function applyFingerCurl(finger, cfg, extras, flexed) {
       const rig = catalog.rig || {};
       const chain = (rig.huesos && rig.huesos[finger]) || [];
       const curlMax = rig.curlMaxGrados || {};
       const thumbMax = rig.thumbCurlMaxGrados || {};
       const axis = rig.ejeCurl || "z";
       const curlSign = rig.curlSign == null ? 1 : Number(rig.curlSign);
+      const amount = cfg ? cfg.curl : 0;
+      const twist = cfg ? cfg.twist : undefined;
+      const spread = cfg ? cfg.spread : undefined;
+      const aside = cfg ? cfg.aside : undefined;
       const curl = Math.max(-1, Math.min(1, amount == null ? 0 : amount));
+      const isThumb = finger === "thumb";
       const jointOrderCfg = rig.jointOrder || {};
-      const jointOrder = finger === "thumb"
+      const jointOrder = isThumb
         ? jointOrderCfg.thumb || DEFAULT_THUMB_JOINT_ORDER
         : jointOrderCfg.dedo || DEFAULT_FINGER_JOINT_ORDER;
 
@@ -567,10 +592,21 @@
         setQuat(bone, rest);
 
         const joint = jointOrder[i];
-        const deltaDeg =
-          finger === "thumb"
-            ? sumDeg(joint, curl, thumbMax, THUMB_CURL_DEFAULTS)
-            : sumDeg(joint, curl, curlMax, FINGER_CURL_DEFAULTS);
+        let deltaDeg = isThumb
+          ? sumDeg(joint, curl, thumbMax, THUMB_CURL_DEFAULTS)
+          : sumDeg(joint, curl, curlMax, FINGER_CURL_DEFAULTS);
+
+        if (!isThumb) {
+          // El extra del catálogo dobla sobre el mismo eje que el curl, así
+          // que entra aquí: si se aplicara aparte, el tope no serviría de nada.
+          const extraRots = extras && extras[boneName];
+          const extraDeg =
+            extraRots && typeof extraRots[axis] === "number" ? extraRots[axis] : 0;
+          if (extraDeg && flexed) flexed[boneName] = axis;
+          deltaDeg += extraDeg * curlSign;
+          const limit = maxFlexDeg(joint);
+          if (limit != null && deltaDeg > limit) deltaDeg = limit;
+        }
 
         rotateLocal(bone, axis, curlSign * deltaDeg * DEG);
 
@@ -580,7 +616,7 @@
         if (typeof spread === "number" && hasKey(joint, "prox")) {
           rotateLocal(bone, "z", spread * DEG);
         }
-        if (finger === "thumb" && typeof aside === "number" && hasKey(joint, "trapez")) {
+        if (isThumb && typeof aside === "number" && hasKey(joint, "trapez")) {
           rotateLocal(bone, "y", aside * 32 * DEG);
         }
       });
@@ -597,9 +633,11 @@
 
       if (!pose) return;
 
+      // Huesos cuya rotación en el eje de curvatura ya la resolvió
+      // applyFingerCurl, recortada al tope de la articulación.
+      const flexed = Object.create(null);
       ["thumb", "index", "middle", "ring", "pinky"].forEach(function (finger) {
-        const cfg = pose[finger] || { curl: 0 };
-        applyFingerCurl(finger, cfg.curl, cfg.twist, cfg.spread, cfg.aside);
+        applyFingerCurl(finger, pose[finger] || { curl: 0 }, pose.extra, flexed);
       });
 
       const wristBoneName = getWristBoneName();
@@ -621,9 +659,9 @@
           const bone = bones[name];
           const rots = pose.extra[name];
           if (!bone || !rots) return;
-          if (rots.x) rotateLocal(bone, "x", rots.x * DEG);
-          if (rots.y) rotateLocal(bone, "y", rots.y * DEG);
-          if (rots.z) rotateLocal(bone, "z", rots.z * DEG);
+          if (rots.x && flexed[name] !== "x") rotateLocal(bone, "x", rots.x * DEG);
+          if (rots.y && flexed[name] !== "y") rotateLocal(bone, "y", rots.y * DEG);
+          if (rots.z && flexed[name] !== "z") rotateLocal(bone, "z", rots.z * DEG);
         });
       }
     }

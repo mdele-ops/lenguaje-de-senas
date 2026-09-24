@@ -170,6 +170,8 @@
       font-weight: 700;
       font-size: 0.72rem;
       letter-spacing: 0.02em;
+      padding: 7px;
+      object-fit: contain;
     }
     .gm-badge-text { font-size: 0.82rem; font-weight: 600; letter-spacing: 0.01em; white-space: nowrap; }
     @media (max-width: 480px) {
@@ -519,6 +521,82 @@
     }
     .glass-card .phrase-letter.done { background: rgba(52, 211, 153, 0.16); border-color: rgba(52, 211, 153, 0.4); }
 
+    /* Persona y deletreo en la misma vista */
+    .shell { max-width: 1240px; }
+    .glass-card { max-width: 1180px !important; }
+
+    .stage-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.45fr) minmax(270px, 390px);
+      gap: 16px 20px;
+      align-items: start;
+      position: relative;
+      z-index: 2;
+      margin-top: 6px;
+    }
+    .stage-person {
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+    }
+    .stage-person #viewer {
+      height: clamp(420px, calc(100dvh - 450px), 720px);
+      min-height: 0;
+      margin-top: 0;
+    }
+    .stage-spell {
+      position: relative;
+      z-index: 2;
+      align-self: start;
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+      width: 100%;
+      height: auto;
+      max-height: clamp(420px, calc(100dvh - 450px), 720px);
+      overflow: auto;
+      padding: 16px 16px 14px;
+      border-radius: 20px;
+      background:
+        linear-gradient(165deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02));
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+      scrollbar-width: thin;
+      scrollbar-color: rgba(0, 156, 222, 0.45) transparent;
+    }
+    .stage-spell .practice-title {
+      font-size: clamp(1.2rem, 1.8vw, 1.55rem) !important;
+      margin-bottom: 8px !important;
+    }
+    .stage-spell .practice-subtitle {
+      font-size: 0.84rem !important;
+      margin-bottom: 12px !important;
+    }
+    .stage-spell .accent-rule { margin: 10px 0 12px; }
+    .stage-spell .phrase-input { min-width: 0; }
+    .stage-spell .phrase-input-row { flex-wrap: nowrap; }
+    .stage-spell .phrase-chip { font-size: 0.74rem; padding: 5px 11px; }
+    .stage-spell .phrase-playback { margin-top: 12px; }
+
+    @media (max-width: 980px) {
+      .stage-layout { grid-template-columns: 1fr; }
+      .stage-person #viewer,
+      .stage-spell {
+        height: auto;
+        min-height: 0;
+      }
+      .stage-person #viewer { height: min(52vh, 480px); }
+      .stage-spell {
+        max-height: none;
+        overflow: visible;
+        padding: 14px 14px 12px;
+      }
+    }
+    @media (max-width: 640px) {
+      .stage-spell .phrase-input-row { flex-wrap: wrap; }
+      .stage-person #viewer { height: min(46vh, 380px); }
+    }
+
     /* ============ Footer institucional ============ */
     footer {
       display: flex !important;
@@ -557,7 +635,7 @@
     body.loaded .practice-header .brand.anim-in { animation: fadeSlideUp 0.7s ease-out 0.15s forwards; }
     body.loaded .nav-links.anim-in { animation: fadeSlideUp 0.6s ease-out 0.22s forwards; }
     body.loaded .card-stage .glass-card.anim-in { animation: fadeSlideUp 0.7s ease-out 0.3s forwards; }
-    body.loaded #phrase-section .glass-card.anim-in { animation: fadeSlideUp 0.7s ease-out 0.4s forwards; }
+    body.loaded #phrase-section.anim-in { animation: fadeSlideUp 0.7s ease-out 0.45s forwards; }
     body.loaded footer.anim-in { animation: fadeSlideUp 0.6s ease-out 0.6s forwards; }
 
     @media (prefers-reduced-motion: reduce) {
@@ -581,7 +659,7 @@
   <div class="grain-overlay"></div>
 
   <div class="gm-badge anim-in">
-    <span class="gm-badge-mark">GM</span>
+    <img class="gm-badge-mark" src="assets/gm-symbol.png" alt="GM" />
     <span class="gm-badge-text">General Motors México</span>
   </div>
 
@@ -629,111 +707,106 @@
             <div class="accent-rule"></div>
             <h2 class="practice-title">Modelo 3D y abecedario LSM</h2>
             <p class="practice-subtitle">
-              Arrastra para rotar · rueda para acercar. Cada letra usa el catálogo LSM:
-              clip de animación del <code>.glb</code> si existe, o pose por esqueleto.
+              Arrastra para rotar · rueda para acercar. El deletreo queda al lado,
+              para ver a la persona mientras seña.
             </p>
 
-            <div id="viewer">
-              <div id="viewer-label">Modelo 3D (model2.glb)</div>
-              <div id="anim-info">Cargando catálogo y modelo…</div>
+            <div class="stage-layout">
+              <div class="stage-person">
+                <div id="viewer">
+                  <div id="viewer-label">Modelo 3D</div>
+                  <div id="anim-info">Cargando catálogo y modelo…</div>
 
-              <model-viewer
-                id="handViewer"
-                alt="Modelo 3D con la mano derecha riggeada para lengua de señas"
-                loading="eager"
-                reveal="auto"
-                camera-controls
-                touch-action="pan-y"
-                interaction-prompt="none"
-                exposure="1.25"
-                shadow-intensity="0.45"
-                shadow-softness="1"
-                environment-image="neutral"
-                camera-target="-0.06m 1.35m 0.17m"
-                camera-orbit="0deg 78deg 0.52m"
-                min-camera-orbit="auto 55deg 0.45m"
-                max-camera-orbit="auto 110deg 3.2m"
-                field-of-view="30deg"
-                animation-crossfade-duration="250">
-              </model-viewer>
-            </div>
+                  <model-viewer
+                    id="handViewer"
+                    alt="Modelo 3D con la mano derecha riggeada para lengua de señas"
+                    loading="eager"
+                    reveal="auto"
+                    camera-controls
+                    touch-action="pan-y"
+                    interaction-prompt="none"
+                    exposure="1.25"
+                    shadow-intensity="0.45"
+                    shadow-softness="1"
+                    environment-image="neutral"
+                    camera-target="-0.06m 1.35m 0.17m"
+                    camera-orbit="0deg 78deg 0.52m"
+                    min-camera-orbit="auto 55deg 0.45m"
+                    max-camera-orbit="auto 110deg 3.2m"
+                    field-of-view="30deg"
+                    animation-crossfade-duration="250">
+                  </model-viewer>
+                </div>
 
-            <div class="letter-display" aria-live="polite">
-              <div id="current-letter" class="letter-main">—</div>
-            </div>
+                <div class="letter-display" aria-live="polite">
+                  <div id="current-letter" class="letter-main">—</div>
+                </div>
 
-            <div class="controls-row">
-              <button class="btn btn-ghost" type="button" id="btn-prev">← Anterior</button>
-              <button class="btn btn-primary" type="button" id="btn-next">Siguiente →</button>
+                <div class="controls-row">
+                  <button class="btn btn-ghost" type="button" id="btn-prev">← Anterior</button>
+                  <button class="btn btn-primary" type="button" id="btn-next">Siguiente →</button>
+                </div>
+              </div>
+
+              <aside id="phrase-section" class="stage-spell anim-in" aria-label="Deletreo de palabras y frases">
+                <div class="card-kicker mono-label">
+                  <span class="kicker-dot"></span>
+                  Deletreo automático
+                </div>
+                <div class="accent-rule"></div>
+                <h2 class="practice-title">Deletrear palabras y frases</h2>
+                <p class="practice-subtitle">
+                  Escribe una palabra u oración (por ejemplo <strong>HOLA</strong>) y la persona
+                  la deletrea letra por letra con el alfabeto LSM.
+                </p>
+
+                <form id="phrase-form" class="phrase-input-row" autocomplete="off">
+                  <input
+                    type="text"
+                    id="phrase-input"
+                    class="phrase-input"
+                    placeholder="Escribe aquí, ej. HOLA"
+                    maxlength="60"
+                  />
+                  <button class="btn btn-primary" type="submit" id="btn-spell">Deletrear ▶</button>
+                </form>
+
+                <div id="phrase-chip-list" class="phrase-chip-list"></div>
+
+                <div id="phrase-playback" class="phrase-playback">
+                  <div id="phrase-playback-word" class="phrase-playback-word"></div>
+                  <div class="phrase-playback-controls">
+                    <button class="btn btn-ghost" type="button" id="btn-phrase-pause">Pausar</button>
+                    <button class="btn btn-ghost" type="button" id="btn-phrase-stop">Detener</button>
+                    <label class="phrase-speed-label">
+                      Velocidad
+                      <select id="phrase-speed">
+                        <option value="1.6">Lenta</option>
+                        <option value="1" selected>Normal</option>
+                        <option value="0.55">Rápida</option>
+                      </select>
+                    </label>
+                  </div>
+                </div>
+              </aside>
             </div>
 
             <div id="alphabet-grid" class="alphabet-grid"></div>
           </article>
         </div>
       </section>
-
-      <section id="phrase-section">
-        <article class="practice-card glass-card anim-in">
-          <span class="card-corner card-corner-tl"></span>
-          <span class="card-corner card-corner-tr"></span>
-          <span class="card-corner card-corner-bl"></span>
-          <span class="card-corner card-corner-br"></span>
-          <div class="card-sweep"></div>
-
-          <div class="card-kicker mono-label">
-            <span class="kicker-dot"></span>
-            Deletreo automático
-          </div>
-          <div class="accent-rule"></div>
-          <h2 class="practice-title">Deletrear palabras y frases</h2>
-          <p class="practice-subtitle">
-            Escribe una palabra u oración (por ejemplo <strong>HOLA</strong>) y la mano 3D la
-            deletreará letra por letra con el alfabeto LSM — la técnica conocida como
-            "español señado".
-          </p>
-
-          <form id="phrase-form" class="phrase-input-row" autocomplete="off">
-            <input
-              type="text"
-              id="phrase-input"
-              class="phrase-input"
-              placeholder="Escribe aquí, ej. HOLA"
-              maxlength="60"
-            />
-            <button class="btn btn-primary" type="submit" id="btn-spell">Deletrear ▶</button>
-          </form>
-
-          <div id="phrase-chip-list" class="phrase-chip-list"></div>
-
-          <div id="phrase-playback" class="phrase-playback">
-            <div id="phrase-playback-word" class="phrase-playback-word"></div>
-            <div class="phrase-playback-controls">
-              <button class="btn btn-ghost" type="button" id="btn-phrase-pause">Pausar</button>
-              <button class="btn btn-ghost" type="button" id="btn-phrase-stop">Detener</button>
-              <label class="phrase-speed-label">
-                Velocidad
-                <select id="phrase-speed">
-                  <option value="1.6">Lenta</option>
-                  <option value="1" selected>Normal</option>
-                  <option value="0.55">Rápida</option>
-                </select>
-              </label>
-            </div>
-          </div>
-        </article>
-      </section>
     </main>
 
     <footer class="anim-in">
-      <span>Prototipo educativo interno · Catálogo LSM + model2.glb</span>
+      <span>Material educativo interno · Alfabeto en Lengua de Señas Mexicana</span>
       <span class="footer-right mono-label">
         GM Complejo Toluca <span class="sep">·</span> v1.0
       </span>
     </footer>
   </div>
 
-  <script src="js/catalogo-lsm.js?v=20260923n6"></script>
-  <script src="js/hand-controller.js?v=20260923n3"></script>
+  <script src="js/catalogo-lsm.js?v=20260923n12"></script>
+  <script src="js/hand-controller.js?v=20260923n4"></script>
   <script>
     (function () {
       const MODEL_URL = "model2.glb";
@@ -1092,7 +1165,20 @@
         phrasePlaybackEl.classList.add("is-active");
         btnPhrasePause.textContent = "Pausar";
         renderProgresoFrase();
+        enfocarPersona();
+        const panel = document.getElementById("phrase-section");
+        if (panel) panel.scrollTop = panel.scrollHeight;
         avanzarFrase();
+      }
+
+      function enfocarPersona() {
+        const viewer = document.getElementById("viewer");
+        if (!viewer) return;
+        const rect = viewer.getBoundingClientRect();
+        const visible = rect.top >= 8 && rect.bottom <= window.innerHeight - 8;
+        if (!visible) {
+          viewer.scrollIntoView({ behavior: "smooth", block: "nearest" });
+        }
       }
 
       function crearChipsFrases() {
