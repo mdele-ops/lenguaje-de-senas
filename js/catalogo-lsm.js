@@ -15,8 +15,8 @@ window.LSM_CATALOG = {
     "cameraTarget": "-0.06m 1.35m 0.17m",
     "cameraOrbit": "0deg 78deg 0.52m",
     "cameraBias": [
-      0.12,
-      -0.025,
+      0.06,
+      -0.005,
       -0.02
     ],
     "restCorrections": [
@@ -234,19 +234,19 @@ window.LSM_CATALOG = {
           "aside": -0.5
         },
         "index": {
-          "curl": 0.0,
+          "curl": 0,
           "spread": -4
         },
         "middle": {
-          "curl": 0.0,
+          "curl": 0,
           "spread": 3
         },
         "ring": {
-          "curl": 0.0,
+          "curl": 0,
           "spread": 4
         },
         "pinky": {
-          "curl": 0.0,
+          "curl": 0,
           "spread": 6
         },
         "extra": {
@@ -359,7 +359,7 @@ window.LSM_CATALOG = {
           "aside": 0.38
         },
         "index": {
-          "curl": 0.0
+          "curl": 0
         },
         "middle": {
           "curl": 0.56
@@ -396,26 +396,18 @@ window.LSM_CATALOG = {
           "curl": 0.4
         },
         "index": {
-          "curl": 0.78,
-          "spread": -18
+          "curl": 0.78
         },
         "middle": {
-          "curl": 0.98,
-          "spread": -6
+          "curl": 0.98
         },
         "ring": {
-          "curl": 0.96,
-          "spread": 6
+          "curl": 0.96
         },
         "pinky": {
-          "curl": 0.98,
-          "spread": 18
+          "curl": 0.98
         },
-        "nudillos": 0.54,
-        "largo": {
-          "pinky": 1.02,
-          "ring": 1.04
-        },
+        "nudillos": 0.18,
         "extra": {
           "RightHandThumb1": {
             "x": -7,
@@ -478,7 +470,7 @@ window.LSM_CATALOG = {
     {
       "letra": "F",
       "nombre": "F",
-      "descripcion": "Palma al frente: pulgar vertical; yemas de pulgar e índice se tocan formando círculo, sin cruzarse; medio, anular y meñique extendidos.",
+      "descripcion": "Palma al frente: pulgar vertical; yemas de pulgar e índice se tocan formando círculo, sin cruzarse; medio, anular y meñique extendidos y juntos.",
       "animacion": "Letra_F",
       "aliases": [
         "F",
@@ -487,27 +479,29 @@ window.LSM_CATALOG = {
       ],
       "pose": {
         "thumb": {
-          "curl": 0.2
+          "curl": 0.45,
+          "aside": -0.1
         },
         "index": {
-          "curl": 0.5,
-          "spread": 8
+          "curl": 0.52,
+          "spread": 14
         },
         "middle": {
-          "curl": 0.0,
-          "spread": 3
+          "curl": 0,
+          "spread": 12.2
         },
         "ring": {
-          "curl": 0.0,
-          "spread": 4
+          "curl": 0,
+          "spread": 4.7
         },
         "pinky": {
-          "curl": 0.0,
-          "spread": 6
+          "curl": 0,
+          "spread": -13.8
         },
+        "nudillos": 0.28,
         "extra": {
           "RightHandThumb1": {
-            "z": 30
+            "z": 50
           }
         }
       }
@@ -515,7 +509,7 @@ window.LSM_CATALOG = {
     {
       "letra": "G",
       "nombre": "G",
-      "descripcion": "Índice y pulgar extendidos en paralelo (hacia el lado).",
+      "descripcion": "Índice extendido en horizontal, cruzando por delante del pecho con el dorso de la mano al frente; el pulgar extendido en diagonal hacia arriba, a unos 40° del índice; medio, anular y meñique cerrados.",
       "animacion": "Letra_G",
       "aliases": [
         "G",
@@ -524,8 +518,8 @@ window.LSM_CATALOG = {
       ],
       "pose": {
         "thumb": {
-          "curl": 0.05,
-          "aside": 0.6
+          "curl": 0.16,
+          "aside": 0.81
         },
         "index": {
           "curl": 0.05
@@ -540,20 +534,24 @@ window.LSM_CATALOG = {
           "curl": 0.95
         },
         "muneca": {
-          "x": -39.092,
-          "y": -0.428,
-          "z": 75.072
+          "x": 91,
+          "y": 39.5,
+          "z": -25.5
         },
         "extra": {
+          "RightHandThumb1": {
+            "x": -40,
+            "y": -40
+          },
           "RightForeArm": {
-            "x": 27.693,
-            "y": 25.322,
-            "z": -12.105
+            "x": 67,
+            "y": 66,
+            "z": -40
           },
           "RightArm": {
-            "x": 11.511,
-            "y": 3.841,
-            "z": 14.511
+            "x": -16.5,
+            "y": -36.5,
+            "z": -4.5
           }
         }
       }
@@ -561,7 +559,7 @@ window.LSM_CATALOG = {
     {
       "letra": "H",
       "nombre": "H",
-      "descripcion": "Índice y medio extendidos juntos; resto cerrado.",
+      "descripcion": "Índice y medio extendidos juntos, en horizontal y cruzando por delante del pecho, con el dorso de la mano al frente; el pulgar recto hacia arriba; anular y meñique cerrados.",
       "animacion": "Letra_H",
       "aliases": [
         "H",
@@ -570,35 +568,42 @@ window.LSM_CATALOG = {
       ],
       "pose": {
         "thumb": {
-          "curl": 0.55
+          "curl": 0
         },
         "index": {
-          "curl": 0.05
+          "curl": 0,
+          "spread": 8
         },
         "middle": {
-          "curl": 0.05
+          "curl": 0,
+          "spread": -8
         },
         "ring": {
-          "curl": 0.95
+          "curl": 1
         },
         "pinky": {
-          "curl": 0.95
+          "curl": 1
         },
         "muneca": {
-          "x": -39.092,
-          "y": -0.428,
-          "z": 75.072
+          "x": 91,
+          "y": 39.5,
+          "z": -25.5
         },
         "extra": {
+          "RightHandThumb1": {
+            "x": -50,
+            "y": -15,
+            "z": -25
+          },
           "RightForeArm": {
-            "x": 27.693,
-            "y": 25.322,
-            "z": -12.105
+            "x": 67,
+            "y": 66,
+            "z": -40
           },
           "RightArm": {
-            "x": 11.511,
-            "y": 3.841,
-            "z": 14.511
+            "x": -16.5,
+            "y": -36.5,
+            "z": -4.5
           }
         }
       }
@@ -627,7 +632,7 @@ window.LSM_CATALOG = {
           "curl": 0.95
         },
         "pinky": {
-          "curl": 0.0
+          "curl": 0
         }
       }
     },
@@ -669,7 +674,7 @@ window.LSM_CATALOG = {
         "loop": true,
         "keyframes": [
           {
-            "t": 0.0,
+            "t": 0,
             "muneca": {
               "x": 0,
               "y": -12,
@@ -760,7 +765,7 @@ window.LSM_CATALOG = {
             }
           },
           {
-            "t": 1.0,
+            "t": 1,
             "muneca": {
               "x": 0,
               "y": -16,
@@ -791,7 +796,7 @@ window.LSM_CATALOG = {
           "aside": 0.2
         },
         "index": {
-          "curl": 0.0
+          "curl": 0
         },
         "middle": {
           "curl": 0.4
@@ -814,7 +819,7 @@ window.LSM_CATALOG = {
         "loop": true,
         "keyframes": [
           {
-            "t": 0.0,
+            "t": 0,
             "muneca": {
               "x": -18,
               "y": 0,
@@ -830,7 +835,7 @@ window.LSM_CATALOG = {
             }
           },
           {
-            "t": 1.0,
+            "t": 1,
             "muneca": {
               "x": 30,
               "y": 0,
@@ -856,7 +861,7 @@ window.LSM_CATALOG = {
           "aside": 0.55
         },
         "index": {
-          "curl": 0.0
+          "curl": 0
         },
         "middle": {
           "curl": 0.95
@@ -1070,7 +1075,7 @@ window.LSM_CATALOG = {
         "loop": true,
         "keyframes": [
           {
-            "t": 0.0,
+            "t": 0,
             "muneca": {
               "x": 109.047,
               "y": 4.659,
@@ -1110,7 +1115,7 @@ window.LSM_CATALOG = {
             }
           },
           {
-            "t": 1.0,
+            "t": 1,
             "muneca": {
               "x": 109.047,
               "y": 4.659,
@@ -1238,11 +1243,11 @@ window.LSM_CATALOG = {
           "aside": -0.3
         },
         "index": {
-          "curl": 0.0,
+          "curl": 0,
           "spread": 4
         },
         "middle": {
-          "curl": 0.0,
+          "curl": 0,
           "spread": -4
         },
         "ring": {
@@ -1288,7 +1293,7 @@ window.LSM_CATALOG = {
           "aside": 0.3
         },
         "index": {
-          "curl": 0.0
+          "curl": 0
         },
         "middle": {
           "curl": 0.95
@@ -1334,7 +1339,7 @@ window.LSM_CATALOG = {
         "loop": true,
         "keyframes": [
           {
-            "t": 0.0,
+            "t": 0,
             "muneca": {
               "x": 96.946,
               "y": -10.187,
@@ -1574,7 +1579,7 @@ window.LSM_CATALOG = {
             }
           },
           {
-            "t": 1.0,
+            "t": 1,
             "muneca": {
               "x": 96.946,
               "y": -10.187,
@@ -1612,10 +1617,10 @@ window.LSM_CATALOG = {
           "aside": -0.6
         },
         "index": {
-          "curl": 0.0
+          "curl": 0
         },
         "middle": {
-          "curl": 0.0
+          "curl": 0
         },
         "ring": {
           "curl": 0.95
@@ -1778,10 +1783,10 @@ window.LSM_CATALOG = {
           "aside": -0.6
         },
         "index": {
-          "curl": 0.0
+          "curl": 0
         },
         "middle": {
-          "curl": 0.0
+          "curl": 0
         },
         "ring": {
           "curl": 0.95
@@ -1822,11 +1827,11 @@ window.LSM_CATALOG = {
           "aside": -0.6
         },
         "index": {
-          "curl": 0.0,
+          "curl": 0,
           "spread": -10
         },
         "middle": {
-          "curl": 0.0,
+          "curl": 0,
           "spread": 10
         },
         "ring": {
@@ -1862,14 +1867,14 @@ window.LSM_CATALOG = {
           "aside": -0.6
         },
         "index": {
-          "curl": 0.0,
+          "curl": 0,
           "spread": -6
         },
         "middle": {
-          "curl": 0.0
+          "curl": 0
         },
         "ring": {
-          "curl": 0.0,
+          "curl": 0,
           "spread": 12
         },
         "pinky": {
@@ -1902,16 +1907,16 @@ window.LSM_CATALOG = {
           "aside": 0.4
         },
         "index": {
-          "curl": 0.0
+          "curl": 0
         },
         "middle": {
-          "curl": 1.0
+          "curl": 1
         },
         "ring": {
-          "curl": 1.0
+          "curl": 1
         },
         "pinky": {
-          "curl": 1.0
+          "curl": 1
         },
         "muneca": {
           "x": -16.818,
@@ -1952,7 +1957,7 @@ window.LSM_CATALOG = {
         "loop": true,
         "keyframes": [
           {
-            "t": 0.0,
+            "t": 0,
             "muneca": {
               "x": -16.818,
               "y": 6.191,
@@ -1972,7 +1977,7 @@ window.LSM_CATALOG = {
             }
           },
           {
-            "t": 1.0,
+            "t": 1,
             "muneca": {
               "x": -16.818,
               "y": 6.191,
@@ -2006,7 +2011,7 @@ window.LSM_CATALOG = {
       ],
       "pose": {
         "thumb": {
-          "curl": 0.0,
+          "curl": 0,
           "aside": 0.85
         },
         "index": {
@@ -2019,7 +2024,7 @@ window.LSM_CATALOG = {
           "curl": 0.98
         },
         "pinky": {
-          "curl": 0.0,
+          "curl": 0,
           "spread": 22
         },
         "extra": {
@@ -2060,7 +2065,7 @@ window.LSM_CATALOG = {
           "aside": 0.12
         },
         "index": {
-          "curl": 0.0
+          "curl": 0
         },
         "middle": {
           "curl": 0.98
@@ -2099,7 +2104,7 @@ window.LSM_CATALOG = {
         "loop": true,
         "keyframes": [
           {
-            "t": 0.0,
+            "t": 0,
             "extra": {
               "RightArm": {
                 "x": 11.511,
@@ -2159,7 +2164,7 @@ window.LSM_CATALOG = {
             }
           },
           {
-            "t": 1.0,
+            "t": 1,
             "extra": {
               "RightArm": {
                 "x": 11.511,

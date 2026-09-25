@@ -280,12 +280,11 @@ la distingue es dónde queda el pulgar:
 ```json
 "pose": {
   "thumb":  { "curl": 0.4 },
-  "index":  { "curl": 0.78, "spread": -18 },
-  "middle": { "curl": 0.98, "spread": -6 },
-  "ring":   { "curl": 0.96, "spread": 6 },
-  "pinky":  { "curl": 0.98, "spread": 18 },
-  "nudillos": 0.54,
-  "largo":  { "pinky": 1.02, "ring": 1.04 },
+  "index":  { "curl": 0.78 },
+  "middle": { "curl": 0.98 },
+  "ring":   { "curl": 0.96 },
+  "pinky":  { "curl": 0.98 },
+  "nudillos": 0.18,
   "extra": {
     "RightHandThumb1":  { "x": -7, "y": -65, "z": 46 },
     "RightHandThumb2":  { "x": 40, "z": 22 },
@@ -311,23 +310,23 @@ Interpretación:
 
 1. El grueso del doblez lo hace **`curl`**, no `extra`. Los cuatro dedos van
    entre 0.78 y 0.98 y los `extra` son los mismos para todos (14° / 14° / 6°):
-   ya no hay un retoque distinto por dedo. La fila de yemas se nivela con las
-   dos herramientas que no tocan ángulos —el `curl` de cada dedo y `largo`—, y
-   eso deja el `extra` libre para lo que de verdad necesita retoque.
+   ya no hay un retoque distinto por dedo. Eso deja el `extra` libre para lo
+   que de verdad necesita retoque.
 2. El índice dobla **menos** que los otros tres (0.78 frente a 0.96–0.98) a
    propósito: es el que tiene que dejar sitio a la yema del pulgar. Con los
    cuatro al mismo `curl`, el índice se le echa encima y el pulgar desaparece.
-3. **`nudillos: 0.54`** es lo que junta los dedos. Aprieta las raíces de los
-   nudillos hacia el del medio y el frente índice→meñique pasa de 0.61 a 0.28
-   de palma; con eso las yemas quedan a 0.10–0.12 unas de otras, tocándose como
-   en la foto, sin necesidad de forzar el `spread`. **Cuidado al comparar
-   medidas de `ancho` entre letras**: la métrica se divide por ese mismo frente
-   índice→meñique, así que en cuanto hay `nudillos` los valores de `ancho` se
-   inflan y no son comparables con una letra que no lo lleva.
-4. **`largo`** sube 2% el meñique y 4% el anular. Son los dos dedos cortos del
-   rig y, con el mismo doblez que los demás, sus yemas se quedaban atrás; el
-   alargue los pone en la misma fila (yemas a 0.68–0.73 de palma, dentro de
-   0.05 unas de otras) sin cambiar ningún ángulo.
+3. **`nudillos: 0.18`** es un apriete suave de las raíces hacia la del medio:
+   deja las yemas a 0.12–0.16 de palma unas de otras, o sea juntas pero cada
+   dedo con su silueta. El valor es el techo práctico de este mando: a partir
+   de ~0.35 las cuatro raíces se acercan más que el grosor de los propios
+   dedos, las mallas se atraviesan y el puño deja de leerse como cuatro dedos
+   para leerse como un bulto. **Cuidado al comparar medidas de `ancho` entre
+   letras**: la métrica se divide por el frente índice→meñique, así que en
+   cuanto hay `nudillos` los valores de `ancho` se inflan y no son comparables
+   con una letra que no lo lleva.
+4. Los cuatro dedos van con **`spread: 0`**. El abanico de ±18°/±6° que llevaba
+   antes existía solo para deshacer a mano el apriete excesivo de `nudillos`, y
+   con el apriete ya suave lo único que hacía era torcer los dedos.
 5. El pulgar se **orienta** con `Thumb1` y se **acomoda** con `Thumb2`/`Thumb3`.
    `Thumb1 { y: -65, z: 46 }` lo tumba cruzando la palma y le gira la uña al
    frente; `Thumb2 { x: 40, z: 22 }` y `Thumb3 { x: 55, y: -44, z: -22 }` sacan
@@ -339,6 +338,16 @@ Interpretación:
    comprobar el resultado a ojo.
 6. `RightHand { x: -17.23, y: -4.999, z: -2.462 }` gira la mano para que la
    palma mire al frente, que es la vista de la lámina.
+
+La fila de yemas queda en 0.75 / 0.69 / 0.67 / 0.67 de palma: baja un escalón
+del índice al meñique, igual que la fila de nudillos del rig. No se intenta
+igualarla del todo, porque las dos herramientas que podrían hacerlo empujan al
+revés de lo que parece. Los cuatro dedos están **sobre-enrollados** (suman más
+de 240° entre las tres falanges, o sea la yema ya pasó por debajo del nudillo y
+vuelve a subir), así que subir el `curl` **sube** la yema y alargar la falange
+con `largo` la **baja**. De ahí que la E ya no lleve `largo`: el 2% de meñique y
+4% de anular que llevaba antes dejaban esos dos dedos 0.01 más bajos, no más
+altos.
 
 El defecto de la versión anterior no era el doblez de los dedos sino que **el
 pulgar no se veía**: quedaba a la altura de los nudillos y **detrás** de la
@@ -352,9 +361,9 @@ dividido por el largo de la palma):
 
 | Métrica | Qué mide | Antes | Ahora |
 |---|---|---|---|
-| `yemasAlto` | altura de las cuatro yemas | 0.78 / 0.70 / 0.67 / 0.64 (escalonadas) | 0.73 / 0.69 / 0.68 / 0.72 (a nivel) |
-| `gaps` | separación entre yemas vecinas | 0.20 / 0.22 / 0.15 | 0.11 / 0.12 / 0.10 |
-| `tocaDedos` | distancia de la yema más cercana al pulgar | 0.20 | 0.10 |
+| `yemasAlto` | altura de las cuatro yemas | 0.78 / 0.70 / 0.67 / 0.64 (escalonadas) | 0.75 / 0.69 / 0.67 / 0.67 |
+| `gaps` | separación entre yemas vecinas | 0.20 / 0.22 / 0.15 | 0.16 / 0.16 / 0.12 |
+| `tocaDedos` | distancia de la yema más cercana al pulgar | 0.20 | 0.07 |
 | punta del pulgar | `alto` / `ancho` / `frente` | 1.01 / 0.17 / **−0.15** (detrás) | 0.66 / 0.24 / **0.28** (al frente) |
 | `mpAng` / `ipAng` | doblez del pulgar en el nudillo y en la última falange | 71° / 12° | 75° / 86° |
 
@@ -366,7 +375,13 @@ Formas de equivocarse que ya se probaron y **no** funcionan:
   `curl`.
 - Nivelar la fila de yemas con un `extra` distinto por dedo. Se puede, pero
   cada valor depende del reposo horneado del `.glb` y hay que recalcular los
-  doce en cuanto se toca el `curl`. Sale más limpio con `curl` + `largo`.
+  doce en cuanto se toca el `curl`. El escalón que queda es el de la propia
+  fila de nudillos y no molesta.
+- Apretar `nudillos` para que las yemas se toquen. Es el error que tuvo esta
+  letra: con `0.54` los números de separación salían perfectos (0.10–0.12) y
+  la mano se veía **amontonada**, porque las medidas miran centros de hueso y
+  no ven que las mallas ya se están atravesando. Cualquier valor de `nudillos`
+  hay que juzgarlo en una captura, no en la tabla.
 - Pedirle al pulgar la posición **exacta** de la foto. El pulgar de este rig
   mide **1.007 de palma** —y su falange distal sola, 0.38, es desproporcionada—
   así que no puede estar a la vez bajo (`alto 0.46`) y tumbado al frente
@@ -382,8 +397,7 @@ Formas de equivocarse que ya se probaron y **no** funcionan:
 - Puntuar el pulgar solo por su **punta**. La punta acaba donde toca, pero el
   resto del dedo se despega de la palma y aparece el cuerno. Hay que medir las
   tres articulaciones contra el marco de la palma.
-- Cerrar los cuatro dedos **de más** buscando un puño más compacto. Con
-  `nudillos 0.57` y los cuatro `curl` altos el puño queda perfecto… y tapa el
+- Cerrar los cuatro dedos **de más** buscando un puño más compacto: tapa el
   pulgar otra vez, que es justo lo que distingue la E.
 - Fiarse de la **foto del usuario** para la orientación: está tomada desde abajo
   y ahí el pulgar se ve escorzado.
@@ -396,10 +410,12 @@ Formas de equivocarse que ya se probaron y **no** funcionan:
   confirmar el punto de vista proyectando los huesos sobre la captura antes de
   sacar conclusiones.
 
-Para revisar cambios en esta letra: `py tools/verifica_e15.py` (aplica la E por
-el camino real de la app —`mostrarSena`, no `applyTestPose`— comprueba que la
-pose del catálogo llega a la página y la pone al lado de A, S, T, O y C para ver
-que siguen distinguiéndose).
+Para revisar cambios en esta letra: `py tools/verifica_e_dedos.py` (aplica la E
+por el camino real de la app —`mostrarSena`, no `applyTestPose`— comprueba que
+la pose del catálogo llega a la página y la pone al lado de A, S y T para ver
+que siguen distinguiéndose). Para elegir valores mirando, `tools/separa_e.py`
+compara apriete de nudillos y `spread`, y `tools/fila_e.py` compara `curl` y
+`largo` sobre la fila de yemas.
 
 Si en la máquina no hay Python ni Node, todo ese banco de pruebas queda
 inservible y se puede trabajar igual desde el navegador:
