@@ -233,7 +233,9 @@
     return pose;
   }
 
-  function sampleCyclePose(basePose, keyframes, t) {
+  // suavizarTramos: cada tramo entre keyframes arranca y frena con suavidad
+  // (como un trazo hecho a mano) en vez de ir a velocidad constante.
+  function sampleCyclePose(basePose, keyframes, t, suavizarTramos) {
     const kfs = keyframes || [];
     if (!kfs.length) return basePose;
     if (t <= kfs[0].t) return mergePoseKeyframe(basePose, kfs[0]);
@@ -244,7 +246,8 @@
     const a = kfs[i];
     const b = kfs[i + 1];
     const span = b.t - a.t || 1;
-    const u = (t - a.t) / span;
+    let u = (t - a.t) / span;
+    if (suavizarTramos) u = 0.5 - 0.5 * Math.cos(Math.PI * u);
     const blended = { muneca: lerpXYZ(a.muneca, b.muneca, u) };
     if (a.extra || b.extra) {
       const names = Object.create(null);
@@ -287,6 +290,34 @@
     const back = (elapsed - holdStart - duration - holdEnd) / reset;
     const backT = Math.min(1, Math.max(0, back));
     return 1 - (cycle.ease === "linear" ? backT : easeInOutCubic(backT));
+  }
+
+  // Pose del ciclo en el instante `now`. Con `retornoDirecto`, la fase de
+  // reinicio de un ciclo en bucle lleva la mano del último keyframe al primero
+  // en línea directa; sin él, repasa el trazo al revés (la Z se dibujaría
+  // hacia atrás antes de cada vuelta).
+  function sampleCycleAt(cycle, now) {
+    const kfs = cycle.keyframes || [];
+    if (cycle.loop && cycle.retornoDirecto && kfs.length > 1) {
+      const holdStart = Number(cycle.holdStartMs) || 0;
+      const duration = Number(cycle.durationMs) || 1400;
+      const holdEnd = Number(cycle.holdEndMs) || 0;
+      const reset = Number(cycle.resetMs) || 500;
+      const active = holdStart + duration + holdEnd;
+      const elapsed = (now - cycle.start) % (active + reset);
+      if (elapsed > active) {
+        const u = easeInOutCubic(Math.min(1, (elapsed - active) / reset));
+        const from = Object.assign({}, kfs[kfs.length - 1], { t: 0 });
+        const to = Object.assign({}, kfs[0], { t: 1 });
+        return sampleCyclePose(cycle.basePose, [from, to], u);
+      }
+    }
+    return sampleCyclePose(
+      cycle.basePose,
+      kfs,
+      cycleT(cycle, now),
+      cycle.suavizarTramos
+    );
   }
 
   function rotateLocal(bone, axis, radians) {
@@ -665,8 +696,12 @@
       });
       applyKnuckleSqueeze(pose && pose.nudillos);
       applyFingerLengths(pose && pose.largo);
+      applyBoneScales(pose && pose.escala);
 
-      if (!pose) return;
+      if (!pose) {
+        applyForearmTwist();
+        return;
+      }
 
       // Huesos cuya rotación en el eje de curvatura ya la resolvió
       // applyFingerCurl, recortada al tope de la articulación.
@@ -699,6 +734,43 @@
           if (rots.z && flexed[name] !== "z") rotateLocal(bone, "z", rots.z * DEG);
         });
       }
+
+      applyForearmTwist();
+    }
+
+    // El giro de la mano sobre su propio eje (P, C, O, X...) lo hace solo el
+    // hueso de la mano, así que toda la torsión se concentra en los dos o tres
+    // centímetros de la muñeca y la piel se retuerce como un caramelo. El rig
+    // trae dos huesos de torsión en el antebrazo (con peso de piel desde el
+    // codo hasta la muñeca) que nadie movía. Aquí se mide cuánto gira la mano
+    // sobre el eje del antebrazo y se reparte ese giro entre ellos, en
+    // proporción a su distancia a la muñeca. La orientación de la mano no
+    // cambia: solo se suaviza la piel.
+    function applyForearmTwist() {
+      const rig = (catalog && catalog.rig) || {};
+      const lista = rig.torsionAntebrazo;
+      if (!lista || !lista.length) return;
+      const wrist = bones[getWristBoneName()];
+      if (!wrist || !wrist.quaternion) return;
+
+      // Giro de la mano alrededor del eje Y del antebrazo (proyección
+      // swing-twist). Con w < 0 se invierte el cuaternión para quedar en
+      // (-180°, 180°] en vez de dar vueltas de más.
+      let qy = wrist.quaternion.y;
+      let qw = wrist.quaternion.w;
+      if (qw < 0) {
+        qy = -qy;
+        qw = -qw;
+      }
+      const giro = 2 * Math.atan2(qy, qw);
+
+      lista.forEach(function (item) {
+        const bone = bones[item.hueso];
+        const rest = restPose[item.hueso];
+        if (!bone || !rest) return;
+        setQuat(bone, rest);
+        rotateLocal(bone, "y", giro * (Number(item.fraccion) || 0));
+      });
     }
 
     // En este rig los nudillos están más separados que el grosor de los dedos:
@@ -743,6 +815,22 @@
             k === 1 ? rest : { x: rest.x * k, y: rest.y * k, z: rest.z * k }
           );
         });
+      });
+    }
+
+    // `escala` encoge o agranda un hueso y todo lo que cuelga de él (largo y
+    // grosor a la vez, a diferencia de `largo`, que solo separa las falanges).
+    // Ej.: { "RightHandThumb1": 0.8 } deja el pulgar entero al 80 %. Siempre se
+    // parte de escala 1 para que no se arrastre de una letra a la siguiente.
+    function applyBoneScales(escala) {
+      getFingerBoneNames().forEach(function (name) {
+        const bone = bones[name];
+        if (bone && bone.scale) bone.scale.set(1, 1, 1);
+      });
+      Object.keys(escala || {}).forEach(function (name) {
+        const bone = bones[name];
+        const k = Number(escala[name]);
+        if (bone && bone.scale && k > 0) bone.scale.set(k, k, k);
       });
     }
 
@@ -798,6 +886,9 @@
             setPos(bones[name], lerpVec(fromP, toP, t));
           }
         });
+        // Se recalcula desde la mano ya interpolada: interpolar aparte los
+        // huesos de torsión puede girar por el lado contrario.
+        applyForearmTwist();
         followHand();
         forceRender({ aggressive: true });
 
@@ -826,10 +917,7 @@
           }
         }
       } else if (poseCycle) {
-        const t = cycleT(poseCycle, now);
-        bakePoseToBones(
-          sampleCyclePose(poseCycle.basePose, poseCycle.keyframes, t)
-        );
+        bakePoseToBones(sampleCycleAt(poseCycle, now));
         followHand();
         forceRender({ aggressive: true });
         if (!poseCycle.loop) {

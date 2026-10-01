@@ -434,32 +434,33 @@ buscar las yemas hasta que se tocan y el hueco pasa de abierto a agujero.
 
 ```json
 "pose": {
-  "thumb":  { "curl": 0.35, "aside": -0.5 },
-  "index":  { "curl": 0.625, "spread": 4 },
-  "middle": { "curl": 0.625, "spread": 1.3 },
-  "ring":   { "curl": 0.625, "spread": -1.3 },
-  "pinky":  { "curl": 0.625, "spread": -4 },
-  "muneca": { "y": 70 },
+  "thumb":  { "curl": 0.22, "aside": -0.3 },
+  "index":  { "curl": 0.6, "spread": 4 },
+  "middle": { "curl": 0.6, "spread": 1 },
+  "ring":   { "curl": 0.6, "spread": -2 },
+  "pinky":  { "curl": 0.6, "spread": -5 },
+  "nudillos": 0.3,
+  "muneca": { "x": 15, "y": 70, "z": -50 },
   "extra": {
-    "mixamorig1RightHandThumb1_036": { "x": -15, "y": 10, "z": 15 },
-    "mixamorig1RightHandThumb2_037": { "x": 25 },
-    "mixamorig1RightHandThumb3_038": { "x": 35 },
-    "mixamorig1RightHandIndex1_040": { "x": 14.1 },
-    "mixamorig1RightHandIndex2_041": { "x": 2 },
-    "mixamorig1RightHandIndex3_042": { "x": -16.2 },
-    "mixamorig1RightHandMiddle1_044": { "x": 12 },
-    "mixamorig1RightHandMiddle2_045": { "x": 2 },
-    "mixamorig1RightHandMiddle3_046": { "x": -6 },
-    "mixamorig1RightHandRing1_048":  { "x": 7.1 },
-    "mixamorig1RightHandRing2_049":  { "x": 6.6 },
-    "mixamorig1RightHandRing3_050":  { "x": 10.9 },
-    "mixamorig1RightHandPinky1_052": { "x": 14.6 },
-    "mixamorig1RightHandPinky2_053": { "x": -3.9 },
-    "mixamorig1RightHandPinky3_054": { "x": -13.5 },
-    "mixamorig1RightArm_033":        { "z": -18 }
+    "RightHandThumb1": { "x": 10, "y": -28, "z": 40 },
+    "RightHandThumb2": { "x": 35 },
+    "RightHandThumb3": { "x": 80 },
+    "RightHandIndex1": { "x": 24 }, "RightHandIndex2": { "x": 16 }, "RightHandIndex3": { "x": -10 },
+    "RightHandMiddle1": { "x": 24 }, "RightHandMiddle2": { "x": 16 }, "RightHandMiddle3": { "x": -10 },
+    "RightHandRing1": { "x": 24 }, "RightHandRing2": { "x": 16 }, "RightHandRing3": { "x": -10 },
+    "RightHandPinky1": { "x": 24 }, "RightHandPinky2": { "x": 16 }, "RightHandPinky3": { "x": -10 },
+    "RightHand": { "x": -28.933, "y": -3.319, "z": -10.592 }
   }
 }
 ```
+
+Versión actual (1.4.5, `tools/o_redonda.py`): los cuatro dedos llevan la misma
+curva y `nudillos: 0.3` los junta, así que las yemas quedan en fila sobre la
+punta del pulgar (distancias 0.11 / 0.09 / 0.09 / 0.16 de palma) y el hueco
+redondo se ve de frente. Con `curl` 0.7 los dedos tapan el hueco; con el medio,
+anular y meñique cerrados en la palma se lee como un pellizco del índice, no
+como O. Los puntos de abajo son de la versión anterior y se conservan como
+historia de lo que se probó.
 
 Interpretación:
 
@@ -549,7 +550,7 @@ La media luna de la J se arma con dos huesos a la vez:
 
 - `muneca.z` gira la mano en el plano de la palma, y por lo tanto mueve la punta
   del meñique de derecha a izquierda. Es lo que dibuja el gancho: va de `0` a
-  `84` grados.
+  `-84` grados (signo negativo en este rig; el valor positivo quedaba al revés).
 - `extra.mixamorig1RightForeArm_034.x` dobla el codo, que es lo que **baja y
   sube** la mano entera. Sube hasta `42` a mitad del trazo y vuelve a `0`.
 
@@ -657,32 +658,63 @@ muestrea la animación durante un periodo completo del ciclo y confirma la
 forma (pico de 36° apuntando al suelo, puño cerrado) y el trazo (radio de 0.43
 palmas, 360° acumulados y sentido horario).
 
-### Letra X — gancho de perfil y jalón diagonal
+### Letra X — gatillo, pulgar a 90° y jalón hacia el pecho
 
-La **X** no es un puño con el índice un poco menos cerrado ni un gancho
-apuntando a la cámara: el índice sale del puño (`curl: 0`) y se dobla en
-PIP/DIP (`extra` 18° / 78° / 58°) formando el gancho de la lámina. Medio,
-anular y meñique van en puño (`curl: 1.0`); el pulgar se recuesta al
-costado como en la A (`aside: 0.4`).
+La **X** se hace con la mano **apuntando hacia quien mira**, como el cañón de un
+arma visto de frente: los dedos van hacia la cámara
+(`dedos ≈ (0.16, 0.16, 0.97)`), la palma queda de lado (`palmN ≈ (0.92, 0.31,
+-0.24)`, no se ve) y el pulgar sube. El **nudillo doblado del índice mira
+hacia enfrente**: el punto más adelantado del gancho tiene `z = 0.96` hacia la
+cámara (antes `0.81`, con `x = 0.49`, y el dedo se veía de lado, tendido hacia
+la línea media). El gancho cierra hacia la palma, es decir hacia el costado.
 
-La orientación es la que hace legible el gancho **de perfil**, apuntando
-a la izquierda, con la muñeca abajo: `muneca.z: -90` pone el puño de pie
-(fistUp ~ 0.9), `x: 20` gira el gancho hacia el lado y `y: 12` enseña el
-dorso a 3/4, palma hacia el cuerpo. `muneca.x: 70` apuntaba el puño a la
-cámara; `muneca.y: 72` lo acostaba de lado.
+**Pulgar: base a 90° y punta doblada hacia adelante.** El primer tramo del
+pulgar (`Thumb1 → Thumb2`) sigue en el plano de la palma, del lado del índice,
+y apunta hacia arriba; la punta (`Thumb3 → Thumb4`) se dobla **14° hacia
+adelante** (hacia donde apuntan los dedos), sin irse hacia la palma. Medido
+contra el eje de los dedos (`RightHand → RightHandMiddle1`): el primer tramo
+queda a 79.6° y la punta a 65.7°; el pulgar entero (`Thumb1 → Thumb4`) queda a
+70°, ya no a 90° exactos. Valores: `Thumb1 { x: -34.83, y: -25.53, z: 6.92 }`,
+`Thumb2 { x: 4.84, y: -7.56, z: 7.78 }` y `Thumb3 { x: -8.19, z: 11.48 }`.
+Se encontraron con una búsqueda numérica que fija la dirección del primer tramo
+(cambia 0.3°), pide el doblez hacia adelante y vigila la piel: contra la versión
+recta, el percentil 95 del largo de aristas es 1.03 y el 99, 1.11. Con el pulgar
+recto de antes (`Thumb1 { x: -32.78, y: -36.93, z: 7.9 }`, `Thumb2 { x: -13.91,
+y: -15.57 }`, `Thumb3 { x: -17.13 }`) el ángulo del pulgar entero era 90.000°.
+**Tamaño del pulgar.** El pulgar del rig mide casi lo mismo que la palma
+(0.099 contra 0.098) y, estirado y de frente, se ve enorme. La pose lleva
+`escala: { RightHandThumb1: 0.65 }`, que encoge el pulgar entero (largo y
+grosor). Es una escala uniforme, así que los ángulos no cambian. `escala`
+es una clave de la pose (la lee `applyBoneScales` en `hand-controller.js`) y se
+reinicia a 1 en cada letra.
 
-La flecha vino de la lámina no es un cabeceo de muñeca: es un **jalón
-corto de toda la mano** en diagonal hacia arriba y a la derecha. Sobre
-esa pose, `ForeArm.x` desplaza a la derecha y `ForeArm.z` negativo sube
-la mano. El ciclo interpola el antebrazo de `(x: 0, z: 0)` a
-`(x: 12, z: -12)`.
+Los dedos hacen el gatillo: el índice sale del puño (`curl: 0`) y se dobla en
+PIP/DIP (`extra` 18° / 78° / 58°). Medio, anular y meñique van en puño
+(`curl: 1.0`).
 
-`py tools/verify_letter_x.py` comprueba forma (gancho PIP ~95°, puño
-cerrado, puño de pie) y que el trazo del ciclo sea esa diagonal.
+**Orientación.** La giré con una búsqueda numérica (recocido simulado sobre
+`muneca`, `ForeArm` y `Arm`, medido respecto a `Spine2`) que pedía: dedos hacia
+la cámara, nudillo del índice hacia la cámara, pulgar hacia arriba (`y ≥ 0.93`),
+muñeca doblada menos de 28°, la mano a menos de 4.5 cm de donde estaba y
+la camisa sin atravesar. Valores: `Arm` -8.7 / -24.1 / -11.1, `ForeArm`
+9.4 / 100.9 / 20.6, `muneca` 28.8 / 12.3 / 19.3. La muñeca queda doblada 28°.
+La camisa (`outfit`) llega a `z ≈ 0.127` por delante de `Spine2` en el pecho:
+el punto más cercano de la mano queda a `z ≥ 0.188` durante todo el ciclo, así
+que no la atraviesa.
 
+La flecha de la lámina es un **jalón corto de toda la mano hacia atrás, hacia
+el pecho**, sin girar la muñeca. El ciclo interpola solo `RightArm` y
+`RightForeArm` (`Arm` +9.3 / -2.0 / +10.3, `ForeArm` -24.0 / -7.7 / +14.6 de
+diferencia): el nudillo se acerca ~4.7 cm al pecho y ~1.8 cm a la línea media,
+la orientación cambia menos de 2° y el pulgar no cambia de forma.
+
+`tools/verify_letter_x.py` mide el trazo contra el pecho. Sus rangos de forma
+(`fistUp`, `idxSide`) son de una orientación anterior y hay que recalibrarlos
+antes de volver a correrlo.
 ### Letra Z — trazo de la Z mayúscula
 
-La **Z** mantiene el índice estirado y el resto en puño, palma al frente.
+La **Z** mantiene el índice estirado y el resto en puño, palma al frente, con
+la yema del pulgar unida a la yema del dedo medio.
 Las líneas vino de la lámina no son un giro del dedo: la yema recorre tres
 rectas (derecha, diagonal abajo-izquierda, derecha) y la mano entera se
 traslada con ella. El movimiento vive en el antebrazo, así la muñeca viaja
@@ -697,9 +729,21 @@ con la mano y el índice no cambia de forma.
 
 `py tools/movimiento_z.py` resuelve las cuatro esquinas de una Z de ~84 px
 (un largo de mano) y escribe los keyframes: el antebrazo oscila ±22° en `x`
-y ±14° en `z`. `ease: "linear"` para que los tres trazos vayan a la misma
-velocidad. El keyframe `t: 0` coincide con la `pose`, que es la esquina
+y ±14° en `z`. El keyframe `t: 0` coincide con la `pose`, que es la esquina
 superior izquierda.
+
+Para que el gesto se vea natural, el ciclo usa dos opciones del controlador:
+
+- `suavizarTramos: true`: cada trazo arranca y frena suave (coseno) en vez de
+  ir a velocidad constante. Las esquinas llevan un keyframe duplicado
+  (`t` 0.27/0.32 y 0.68/0.73) que da una pausa corta, como al levantar el lápiz
+  en cada vértice.
+- `retornoDirecto: true`: al reiniciar el bucle la mano va en línea directa de
+  la esquina inferior derecha a la superior izquierda; sin esta opción repasa
+  la Z al revés.
+
+La muñeca (`muneca`) de cada keyframe compensa el giro del antebrazo para que
+la mano siga recta, con la palma al frente, durante todo el trazo.
 
 `py tools/verify_letter_z.py` lo comprueba por el camino real de la app:
 forma de señalar y un trazo con tres segmentos en Z.

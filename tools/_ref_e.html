@@ -1,0 +1,49 @@
+<!doctype html>
+<!-- Rejilla en unidades de palma sobre la foto de referencia de la E.
+     La escala viene de E_usuario3_big.png (630x830), leida a ojo sobre la
+     imagen: la muneca cae en y=550 y la fila de nudillos en y=110, o sea
+     palma = 440 px; el nudillo del indice esta en x=415 y el del menique en
+     x=228 (la palma mira a la camara y es mano derecha, asi que el pulgar
+     queda a la derecha y el ancho crece hacia la izquierda).
+     Sirve para leer alto/ancho de yemas y pulgar con el mismo marco que usa
+     `medir()` sobre el rig, y asi poder comparar foto y render con numeros.
+     Es una calibracion aproximada: vale para situar las yemas y el pulgar a
+     media unidad de palma, no para afinar decimas. -->
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Referencia E con rejilla</title>
+<style>
+  body { margin: 0; background: #fff; font: 12px ui-monospace, monospace; }
+  #w { position: relative; width: 630px; }
+  #w img { display: block; width: 630px; max-width: none; }
+  .h { position: absolute; left: 0; width: 630px; border-top: 1px solid rgba(220,0,0,.85); }
+  .h b { position: absolute; left: 2px; top: -14px; color: #c00; background: rgba(255,255,255,.8); font-weight: 400; }
+  .v { position: absolute; top: 0; height: 830px; border-left: 1px solid rgba(0,90,255,.8); }
+  .v b { position: absolute; top: 4px; left: 3px; color: #05f; background: rgba(255,255,255,.8); font-weight: 400; }
+</style>
+</head>
+<body>
+<div id="w"><img src="screenshots/referencia/E_usuario3_big.png" alt="referencia E"></div>
+<script>
+  const W = document.getElementById("w");
+  const Y_MUNECA = 550, PALMA = 440, X_INDICE = 415, X_MENIQUE = 228;
+
+  [1.10, 1.00, 0.86, 0.70, 0.60, 0.46, 0.34, 0.15, 0.00].forEach(function (a) {
+    const d = document.createElement("div");
+    d.className = "h";
+    d.style.top = (Y_MUNECA - a * PALMA) + "px";
+    d.innerHTML = "<b>alto " + a.toFixed(2) + "</b>";
+    W.appendChild(d);
+  });
+
+  [-0.20, 0.00, 0.05, 0.30, 0.50, 0.75, 1.00].forEach(function (a) {
+    const d = document.createElement("div");
+    d.className = "v";
+    d.style.left = (X_INDICE + a * (X_MENIQUE - X_INDICE)) + "px";
+    d.innerHTML = "<b>" + a.toFixed(2) + "</b>";
+    W.appendChild(d);
+  });
+</script>
+</body>
+</html>

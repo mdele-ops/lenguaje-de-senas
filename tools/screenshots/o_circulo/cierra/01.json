@@ -1,0 +1,58 @@
+{
+  "thumb": {
+    "curl": 0.22,
+    "aside": -0.3
+  },
+  "index": {
+    "curl": 0.64,
+    "spread": 4
+  },
+  "middle": {
+    "curl": 1.0
+  },
+  "ring": {
+    "curl": 1.0
+  },
+  "pinky": {
+    "curl": 1.0
+  },
+  "extra": {
+    "RightHand": {
+      "x": -28.933,
+      "y": -3.319,
+      "z": -10.592
+    },
+    "RightHandMiddle1": {
+      "x": 12
+    },
+    "RightHandRing1": {
+      "x": 12
+    },
+    "RightHandPinky1": {
+      "x": 12
+    },
+    "RightHandIndex1": {
+      "x": 24
+    },
+    "RightHandIndex2": {
+      "x": 6
+    },
+    "RightHandIndex3": {
+      "x": -10
+    },
+    "RightHandThumb1": {
+      "x": -8,
+      "y": -28,
+      "z": 40
+    },
+    "RightHandThumb2": {
+      "x": 35
+    },
+    "RightHandThumb3": {
+      "x": 80
+    }
+  },
+  "muneca": {
+    "y": -70
+  }
+}

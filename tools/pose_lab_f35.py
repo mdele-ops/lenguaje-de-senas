@@ -1,0 +1,208 @@
+"""F: pulgar VERTICAL; indice ROSANDO el MEDIO del pulgar (no yemas)."""
+import time
+from pathlib import Path
+
+from playwright.sync_api import sync_playwright
+
+ROOT = Path(__file__).resolve().parents[1]
+OUT_DIR = ROOT / "tools" / "screenshots" / "lab_f35"
+OUT_DIR.mkdir(parents=True, exist_ok=True)
+URL = "http://localhost:8123/practica.html?letra=%E2%97%8B&v=f35vert"
+
+T1 = "mixamorig1RightHandThumb1_036"
+I1 = "mixamorig1RightHandIndex1_040"
+I2 = "mixamorig1RightHandIndex2_041"
+I3 = "mixamorig1RightHandIndex3_042"
+
+MEASURE_JS = """
+() => {
+  const mv = document.getElementById('handViewer');
+  function getScene(modelViewer) {
+    if (modelViewer.model && typeof modelViewer.model.traverse === 'function') return modelViewer.model;
+    if (modelViewer.model && modelViewer.model.scene && typeof modelViewer.model.scene.traverse === 'function') return modelViewer.model.scene;
+    const symbols = Object.getOwnPropertySymbols(modelViewer);
+    for (let i = 0; i < symbols.length; i++) {
+      const value = modelViewer[symbols[i]];
+      if (value && typeof value.traverse === 'function') return value;
+      if (value && value.model && typeof value.model.traverse === 'function') return value.model;
+      if (value && value.target && typeof value.target.traverse === 'function') return value.target;
+    }
+    return null;
+  }
+  const scene = getScene(mv);
+  if (scene.updateMatrixWorld) scene.updateMatrixWorld(true);
+  const bones = {};
+  scene.traverse((o) => { if (o && o.name) bones[o.name] = o; });
+  function pos(name) {
+    const b = bones[name];
+    if (!b || !b.matrixWorld) return null;
+    const e = b.matrixWorld.elements;
+    return { x: e[12], y: e[13], z: e[14] };
+  }
+  const t1 = pos('mixamorig1RightHandThumb1_036');
+  const t2 = pos('mixamorig1RightHandThumb2_037');
+  const t3 = pos('mixamorig1RightHandThumb3_038');
+  const t4 = pos('mixamorig1RightHandThumb4_039');
+  const i4 = pos('mixamorig1RightHandIndex4_043');
+  if (!t1 || !t4 || !i4) return { error: 'bones' };
+  function dist(a, b) {
+    const dx = a.x - b.x, dy = a.y - b.y, dz = a.z - b.z;
+    return Math.sqrt(dx*dx + dy*dy + dz*dz);
+  }
+  const mid = { x: (t2.x+t3.x)/2, y: (t2.y+t3.y)/2, z: (t2.z+t3.z)/2 };
+  const tdx = t4.x - t1.x, tdy = t4.y - t1.y, tdz = t4.z - t1.z;
+  const tlen = Math.sqrt(tdx*tdx + tdy*tdy + tdz*tdz) || 1;
+  const distTip = dist(i4, t4);
+  const distT2 = dist(i4, t2);
+  const distT3 = dist(i4, t3);
+  const distMid = dist(i4, mid);
+  const distShaft = Math.min(distT2, distT3, distMid);
+  return {
+    distTip, distMid, distT2, distT3, distShaft,
+    thumbUp: tdy / tlen,
+    vertical: tdy / tlen >= 0.82,
+    midTouch: distShaft >= 0.042 && distShaft <= 0.062 && distTip > distShaft * 1.25,
+    clip: distShaft < 0.040,
+    tipsGlued: distTip < 0.045
+  };
+}
+"""
+
+
+def pose(i_curl, extra, spreads=(4, 5, 8)):
+    return {
+        "thumb": {"curl": 0.0},
+        "index": {"curl": i_curl},
+        "middle": {"curl": 0.0, "spread": spreads[0]},
+        "ring": {"curl": 0.0, "spread": spreads[1]},
+        "pinky": {"curl": 0.0, "spread": spreads[2]},
+        "extra": extra,
+    }
+
+
+CASES = {
+    "00_circ": {
+        "thumb": {"curl": 0.45, "aside": 0.35},
+        "index": {"curl": 0.46},
+        "middle": {"curl": 0.0, "spread": 8},
+        "ring": {"curl": 0.0, "spread": 10},
+        "pinky": {"curl": 0.0, "spread": 14},
+        "extra": {T1: {"z": 28, "y": -4}, "mixamorig1RightHandThumb2_037": {"x": -22}},
+    },
+    "01_v70": pose(0.70, {T1: {"z": 30}, I2: {"x": 8}}),
+    "02_v62": pose(0.62, {T1: {"z": 30}, I2: {"x": 8}}),
+    "03_v58": pose(0.58, {T1: {"z": 30}, I2: {"x": 8}}),
+    "04_v66": pose(0.66, {T1: {"z": 30}, I2: {"x": 10}}),
+    "05_v64_x6": pose(0.64, {T1: {"z": 30}, I2: {"x": 6}}),
+    "06_v60_x10": pose(0.60, {T1: {"z": 30}, I2: {"x": 10}}),
+    "07_v68": pose(0.68, {T1: {"z": 30}}),
+    "08_v64_z-8": pose(0.64, {T1: {"z": 30}, I2: {"x": 8, "z": -8}}),
+    "09_v62_i1": pose(0.62, {T1: {"z": 30}, I1: {"x": 6}, I2: {"x": 8}}),
+    "10_v65": pose(0.65, {T1: {"z": 32}, I2: {"x": 8}}),
+    "11_v63_x12": pose(0.63, {T1: {"z": 30}, I2: {"x": 12}}),
+}
+
+
+def main():
+    with sync_playwright() as p:
+        browser = p.chromium.launch(
+            channel="chrome",
+            args=["--use-gl=swiftshader", "--enable-webgl", "--ignore-gpu-blocklist"],
+        )
+        page = browser.new_page(viewport={"width": 1100, "height": 900})
+        page.goto(URL, wait_until="networkidle")
+        page.wait_for_selector("#anim-info", timeout=20000, state="attached")
+        time.sleep(7)
+        for _ in range(50):
+            if page.evaluate(
+                "() => window.__LSM_CONTROLLER__ && window.__LSM_CONTROLLER__.isModelReady()"
+            ):
+                break
+            time.sleep(0.3)
+        time.sleep(1.0)
+
+        viewer = page.query_selector("#viewer")
+        ranked = []
+        for name, data in CASES.items():
+            page.evaluate(
+                "(pose) => window.__LSM_CONTROLLER__.applyTestPose(pose)", data
+            )
+            time.sleep(0.2)
+            m = page.evaluate(MEASURE_JS)
+            ranked.append((name, m))
+            flags = []
+            if m.get("vertical"):
+                flags.append("VERT")
+            if m.get("midTouch"):
+                flags.append("MID")
+            if m.get("clip"):
+                flags.append("CLIP")
+            if m.get("tipsGlued"):
+                flags.append("TIPS")
+            flag = " ".join(flags) or "far"
+            print(
+                f"{name}: mid={m['distMid']:.4f} shaft={m['distShaft']:.4f} "
+                f"tip={m['distTip']:.4f} {flag} up={m['thumbUp']:.3f}"
+            )
+            page.evaluate(
+                """() => {
+                    const mv = document.getElementById('handViewer');
+                    mv.cameraTarget = '-0.30m 2.36m 0.20m';
+                    mv.cameraOrbit = '8deg 78deg 0.50m';
+                    mv.fieldOfView = '18deg';
+                    mv.jumpCameraToGoal();
+                }"""
+            )
+            time.sleep(0.14)
+            viewer.screenshot(path=str(OUT_DIR / f"{name}_hand.png"))
+            page.evaluate(
+                """() => {
+                    const mv = document.getElementById('handViewer');
+                    mv.cameraOrbit = '0deg 72deg 0.48m';
+                    mv.jumpCameraToGoal();
+                }"""
+            )
+            time.sleep(0.12)
+            viewer.screenshot(path=str(OUT_DIR / f"{name}_front.png"))
+            page.evaluate(
+                """() => {
+                    const mv = document.getElementById('handViewer');
+                    mv.cameraOrbit = '-40deg 80deg 0.52m';
+                    mv.jumpCameraToGoal();
+                }"""
+            )
+            time.sleep(0.12)
+            viewer.screenshot(path=str(OUT_DIR / f"{name}_side.png"))
+
+        print("ranked (vert, mid-graze, no clip, no tip glue):")
+        scored = sorted(
+            ranked,
+            key=lambda x: (
+                0 if x[1].get("vertical") else 1,
+                0 if x[1].get("midTouch") else 1,
+                1 if x[1].get("clip") else 0,
+                1 if x[1].get("tipsGlued") else 0,
+                abs(x[1]["distShaft"] - 0.050),
+                -x[1]["thumbUp"],
+            ),
+        )
+        for name, m in scored:
+            flags = []
+            if m.get("vertical"):
+                flags.append("VERT")
+            if m.get("midTouch"):
+                flags.append("MID")
+            if m.get("clip"):
+                flags.append("CLIP")
+            if m.get("tipsGlued"):
+                flags.append("TIPS")
+            flag = " ".join(flags) or "far"
+            print(
+                f"  {name}: shaft={m['distShaft']:.4f} mid={m['distMid']:.4f} "
+                f"tip={m['distTip']:.4f} {flag} up={m['thumbUp']:.3f}"
+            )
+        browser.close()
+
+
+if __name__ == "__main__":
+    main()

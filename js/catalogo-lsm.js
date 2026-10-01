@@ -1,6 +1,6 @@
 /* Generado desde data/catalogo-lsm.json — no editar a mano */
 window.LSM_CATALOG = {
-  "version": "1.4.0",
+  "version": "1.4.5",
   "idioma": "LSM",
   "nombre": "Alfabeto dactilológico mexicano",
   "modelo": {
@@ -12,8 +12,18 @@ window.LSM_CATALOG = {
     "curlSign": 1,
     "transitionMs": 2000,
     "wristBone": "RightHand",
+    "torsionAntebrazo": [
+      {
+        "hueso": "RightForeArm1",
+        "fraccion": 0.6
+      },
+      {
+        "hueso": "RightForeArm2",
+        "fraccion": 0.95
+      }
+    ],
     "cameraTarget": "-0.06m 1.35m 0.17m",
-    "cameraOrbit": "0deg 78deg 0.52m",
+    "cameraOrbit": "45deg 78deg 0.52m",
     "cameraBias": [
       0.06,
       -0.005,
@@ -234,19 +244,19 @@ window.LSM_CATALOG = {
           "aside": -0.5
         },
         "index": {
-          "curl": 0,
+          "curl": 0.0,
           "spread": -4
         },
         "middle": {
-          "curl": 0,
+          "curl": 0.0,
           "spread": 3
         },
         "ring": {
-          "curl": 0,
+          "curl": 0.0,
           "spread": 4
         },
         "pinky": {
-          "curl": 0,
+          "curl": 0.0,
           "spread": 6
         },
         "extra": {
@@ -359,7 +369,7 @@ window.LSM_CATALOG = {
           "aside": 0.38
         },
         "index": {
-          "curl": 0
+          "curl": 0.0
         },
         "middle": {
           "curl": 0.56
@@ -487,15 +497,15 @@ window.LSM_CATALOG = {
           "spread": 14
         },
         "middle": {
-          "curl": 0,
+          "curl": 0.0,
           "spread": 12.2
         },
         "ring": {
-          "curl": 0,
+          "curl": 0.0,
           "spread": 4.7
         },
         "pinky": {
-          "curl": 0,
+          "curl": 0.0,
           "spread": -13.8
         },
         "nudillos": 0.28,
@@ -632,7 +642,7 @@ window.LSM_CATALOG = {
           "curl": 0.95
         },
         "pinky": {
-          "curl": 0
+          "curl": 0.0
         }
       }
     },
@@ -674,7 +684,7 @@ window.LSM_CATALOG = {
         "loop": true,
         "keyframes": [
           {
-            "t": 0,
+            "t": 0.0,
             "muneca": {
               "x": 0,
               "y": -12,
@@ -691,7 +701,7 @@ window.LSM_CATALOG = {
             "muneca": {
               "x": 3,
               "y": -12,
-              "z": -14
+              "z": 14
             },
             "extra": {
               "RightForeArm": {
@@ -704,7 +714,7 @@ window.LSM_CATALOG = {
             "muneca": {
               "x": 5,
               "y": -12,
-              "z": -16
+              "z": 16
             },
             "extra": {
               "RightForeArm": {
@@ -717,7 +727,7 @@ window.LSM_CATALOG = {
             "muneca": {
               "x": 6,
               "y": -12,
-              "z": -4
+              "z": 4
             },
             "extra": {
               "RightForeArm": {
@@ -730,7 +740,7 @@ window.LSM_CATALOG = {
             "muneca": {
               "x": 5,
               "y": -13,
-              "z": 20
+              "z": -20
             },
             "extra": {
               "RightForeArm": {
@@ -743,7 +753,7 @@ window.LSM_CATALOG = {
             "muneca": {
               "x": 3,
               "y": -14,
-              "z": 46
+              "z": -46
             },
             "extra": {
               "RightForeArm": {
@@ -756,7 +766,7 @@ window.LSM_CATALOG = {
             "muneca": {
               "x": 1,
               "y": -15,
-              "z": 68
+              "z": -68
             },
             "extra": {
               "RightForeArm": {
@@ -765,11 +775,11 @@ window.LSM_CATALOG = {
             }
           },
           {
-            "t": 1,
+            "t": 1.0,
             "muneca": {
               "x": 0,
               "y": -16,
-              "z": 84
+              "z": -84
             },
             "extra": {
               "RightForeArm": {
@@ -783,7 +793,7 @@ window.LSM_CATALOG = {
     {
       "letra": "K",
       "nombre": "K",
-      "descripcion": "Índice arriba, medio inclinado; pulgar entre ambos. La muñeca hace un vaivén: la mano se inclina hacia adelante y regresa hacia atrás, sin mover el brazo.",
+      "descripcion": "Índice arriba y dedo medio hacia adelante, a 45° sobre la horizontal; pulgar entre ambos. La muñeca hace un vaivén: la mano se inclina hacia adelante y regresa hacia atrás, sin mover el brazo.",
       "animacion": "Letra_K",
       "aliases": [
         "K",
@@ -796,10 +806,10 @@ window.LSM_CATALOG = {
           "aside": 0.2
         },
         "index": {
-          "curl": 0
+          "curl": 0.0
         },
         "middle": {
-          "curl": 0.4
+          "curl": 0.0
         },
         "ring": {
           "curl": 0.95
@@ -809,6 +819,11 @@ window.LSM_CATALOG = {
         },
         "muneca": {
           "x": -18
+        },
+        "extra": {
+          "RightHandMiddle1": {
+            "x": 64.8
+          }
         }
       },
       "ciclo": {
@@ -819,7 +834,7 @@ window.LSM_CATALOG = {
         "loop": true,
         "keyframes": [
           {
-            "t": 0,
+            "t": 0.0,
             "muneca": {
               "x": -18,
               "y": 0,
@@ -835,7 +850,7 @@ window.LSM_CATALOG = {
             }
           },
           {
-            "t": 1,
+            "t": 1.0,
             "muneca": {
               "x": 30,
               "y": 0,
@@ -861,7 +876,7 @@ window.LSM_CATALOG = {
           "aside": 0.55
         },
         "index": {
-          "curl": 0
+          "curl": 0.0
         },
         "middle": {
           "curl": 0.95
@@ -1075,7 +1090,7 @@ window.LSM_CATALOG = {
         "loop": true,
         "keyframes": [
           {
-            "t": 0,
+            "t": 0.0,
             "muneca": {
               "x": 109.047,
               "y": 4.659,
@@ -1115,7 +1130,7 @@ window.LSM_CATALOG = {
             }
           },
           {
-            "t": 1,
+            "t": 1.0,
             "muneca": {
               "x": 109.047,
               "y": 4.659,
@@ -1140,7 +1155,7 @@ window.LSM_CATALOG = {
     {
       "letra": "O",
       "nombre": "O",
-      "descripcion": "Mano de perfil delante del pecho, palma hacia el costado: los cuatro dedos, juntos y curvados por igual, bajan formando el arco de arriba y el pulgar sube a su encuentro hasta que las yemas se tocan, dejando un hueco redondo con la forma de la letra O.",
+      "descripcion": "Mano de perfil delante del pecho, palma hacia el costado, en la misma postura de la C: los cuatro dedos forman el arco de arriba y el pulgar lo cierra por abajo, pero aquí la yema del pulgar sube hasta tocar la yema del índice y el hueco queda como un círculo, la letra O.",
       "animacion": "Letra_O",
       "aliases": [
         "O",
@@ -1149,80 +1164,80 @@ window.LSM_CATALOG = {
       ],
       "pose": {
         "thumb": {
-          "curl": 0.35,
-          "aside": -0.5
+          "curl": 0.4,
+          "aside": 1
         },
         "index": {
-          "curl": 0.625,
+          "curl": 0.19,
           "spread": 4
         },
         "middle": {
-          "curl": 0.625,
-          "spread": 1.3
+          "curl": 0.19,
+          "spread": 1
         },
         "ring": {
-          "curl": 0.625,
-          "spread": -1.3
+          "curl": 0.19,
+          "spread": -1
         },
         "pinky": {
-          "curl": 0.625,
+          "curl": 0.19,
           "spread": -4
         },
         "muneca": {
-          "y": 70
+          "y": 90
         },
         "extra": {
-          "RightHandThumb1": {
-            "x": -15,
-            "y": 10,
-            "z": 15
-          },
-          "RightHandThumb2": {
-            "x": 25
-          },
-          "RightHandThumb3": {
-            "x": 35
-          },
           "RightHandIndex1": {
-            "x": 14.1
-          },
-          "RightHandIndex2": {
-            "x": 2
-          },
-          "RightHandIndex3": {
-            "x": -16.2
+            "x": 12
           },
           "RightHandMiddle1": {
             "x": 12
           },
-          "RightHandMiddle2": {
-            "x": 2
-          },
-          "RightHandMiddle3": {
-            "x": -6
-          },
           "RightHandRing1": {
-            "x": 7.1
-          },
-          "RightHandRing2": {
-            "x": 6.6
-          },
-          "RightHandRing3": {
-            "x": 10.9
+            "x": 12
           },
           "RightHandPinky1": {
-            "x": 14.6
+            "x": 12
+          },
+          "RightHandIndex2": {
+            "x": 42
+          },
+          "RightHandMiddle2": {
+            "x": 45.94
+          },
+          "RightHandRing2": {
+            "x": 42
           },
           "RightHandPinky2": {
-            "x": -3.9
+            "x": 42
+          },
+          "RightHandIndex3": {
+            "x": 13.18
+          },
+          "RightHandMiddle3": {
+            "x": 13.18
+          },
+          "RightHandRing3": {
+            "x": 13.18
           },
           "RightHandPinky3": {
-            "x": -13.5
+            "x": 13.18
+          },
+          "RightHandThumb1": {
+            "x": -20,
+            "y": 24,
+            "z": 35
+          },
+          "RightHandThumb2": {
+            "x": -40
+          },
+          "RightHandThumb3": {
+            "x": -10
           },
           "RightHand": {
-            "x": -28.933,
-            "y": -3.319,
-            "z": -10.592
+            "x": -24.11,
+            "y": -1.88,
+            "z": -19.39
           }
         }
       }
@@ -1230,7 +1245,7 @@ window.LSM_CATALOG = {
     {
       "letra": "P",
       "nombre": "P",
-      "descripcion": "Índice estirado en diagonal hacia arriba y dedo medio tumbado desde el nudillo hasta quedar horizontal, formando escuadra; el pulgar se recoge en la base del medio y anular y meñique quedan cerrados. La muñeca gira para poner la mano de perfil y además se dobla, de modo que la escuadra queda inclinada como en una mano real.",
+      "descripcion": "Índice estirado en diagonal hacia arriba y dedo medio tumbado desde el nudillo hasta quedar horizontal, formando escuadra; la yema del pulgar toca el dedo medio por debajo, sin quedar separada, y anular y meñique quedan cerrados. La muñeca gira para poner la mano de perfil y además se dobla, de modo que la escuadra queda inclinada como en una mano real.",
       "animacion": "Letra_P",
       "aliases": [
         "P",
@@ -1239,15 +1254,15 @@ window.LSM_CATALOG = {
       ],
       "pose": {
         "thumb": {
-          "curl": 0.85,
-          "aside": -0.3
+          "curl": 0.68,
+          "aside": -0.61
         },
         "index": {
-          "curl": 0,
+          "curl": 0.0,
           "spread": 4
         },
         "middle": {
-          "curl": 0,
+          "curl": 0.0,
           "spread": -4
         },
         "ring": {
@@ -1261,18 +1276,25 @@ window.LSM_CATALOG = {
         },
         "extra": {
           "RightHand": {
-            "x": 5.01,
-            "y": -5.065,
-            "z": -29.603
+            "y": 10
           },
           "RightHandMiddle1": {
             "x": 55
           },
           "RightHandThumb1": {
-            "y": -85
+            "x": 5.3,
+            "y": -42.4,
+            "z": 10.5
           },
           "RightHandThumb2": {
-            "x": 25
+            "x": -5.6,
+            "y": 5.2,
+            "z": 19.8
+          },
+          "RightHandThumb3": {
+            "x": -13.5,
+            "y": -37,
+            "z": 11.4
           }
         }
       }
@@ -1293,7 +1315,7 @@ window.LSM_CATALOG = {
           "aside": 0.3
         },
         "index": {
-          "curl": 0
+          "curl": 0.0
         },
         "middle": {
           "curl": 0.95
@@ -1339,7 +1361,7 @@ window.LSM_CATALOG = {
         "loop": true,
         "keyframes": [
           {
-            "t": 0,
+            "t": 0.0,
             "muneca": {
               "x": 96.946,
               "y": -10.187,
@@ -1579,7 +1601,7 @@ window.LSM_CATALOG = {
             }
           },
           {
-            "t": 1,
+            "t": 1.0,
             "muneca": {
               "x": 96.946,
               "y": -10.187,
@@ -1617,10 +1639,10 @@ window.LSM_CATALOG = {
           "aside": -0.6
         },
         "index": {
-          "curl": 0
+          "curl": 0.0
         },
         "middle": {
-          "curl": 0
+          "curl": 0.0
         },
         "ring": {
           "curl": 0.95
@@ -1722,30 +1744,35 @@ window.LSM_CATALOG = {
       ],
       "pose": {
         "thumb": {
-          "curl": 0.35
+          "curl": 0.1
         },
         "index": {
           "curl": 0.9,
-          "spread": -16
+          "spread": -12.3
         },
         "middle": {
           "curl": 0.9,
-          "spread": 16
+          "spread": 12.3
         },
         "ring": {
-          "curl": 0.9
+          "curl": 0.9,
+          "spread": 5
         },
         "pinky": {
-          "curl": 0.9
+          "curl": 0.9,
+          "spread": 2
         },
         "extra": {
           "RightHandThumb1": {
-            "x": -55,
-            "y": 30,
-            "z": 56
+            "x": -22.5,
+            "y": 3,
+            "z": 85.7
+          },
+          "RightHandThumb2": {
+            "x": 46.1
           },
           "RightHandThumb3": {
-            "x": -5
+            "x": 24.8
           },
           "RightHandIndex1": {
             "x": 30
@@ -1780,33 +1807,40 @@ window.LSM_CATALOG = {
       "pose": {
         "thumb": {
           "curl": 0.35,
-          "aside": -0.6
+          "aside": -0.7
         },
         "index": {
-          "curl": 0
+          "curl": 0.0
         },
         "middle": {
-          "curl": 0
+          "curl": 0.0
         },
         "ring": {
           "curl": 0.95
         },
         "pinky": {
-          "curl": 0.95
+          "curl": 0.95,
+          "spread": -8
         },
+        "nudillos": 0.2,
         "extra": {
           "RightHandIndex1": {
-            "z": 8
+            "z": 5
           },
           "RightHandMiddle1": {
-            "z": -8
+            "z": -5
           },
           "RightHandThumb1": {
-            "y": -30,
+            "x": 15,
+            "y": -21,
             "z": 40
           },
           "RightHandThumb2": {
-            "x": 60
+            "x": 60,
+            "y": 10
+          },
+          "RightHandThumb3": {
+            "x": 17.5
           }
         }
       }
@@ -1814,7 +1848,7 @@ window.LSM_CATALOG = {
     {
       "letra": "V",
       "nombre": "V",
-      "descripcion": "Índice y medio estirados hacia arriba y separados en una V estrecha (unos 30-35 grados, no el signo de victoria abierto). Anular y meñique se recogen en el puño con el pulgar tumbado encima, apoyado sobre las falanges de esos dos, sin montar en los dedos largos.",
+      "descripcion": "Índice y medio estirados hacia arriba y separados en una V estrecha (no el signo de victoria abierto). Anular y meñique se recogen en el puño y la yema del pulgar se une con la yema del anular.",
       "animacion": "Letra_V",
       "aliases": [
         "V",
@@ -1823,16 +1857,16 @@ window.LSM_CATALOG = {
       ],
       "pose": {
         "thumb": {
-          "curl": 0.35,
-          "aside": -0.6
+          "curl": 0.39,
+          "aside": -0.61
         },
         "index": {
-          "curl": 0,
-          "spread": -10
+          "curl": 0.0,
+          "spread": -6.5
         },
         "middle": {
-          "curl": 0,
-          "spread": 10
+          "curl": 0.0,
+          "spread": 6.5
         },
         "ring": {
           "curl": 0.95
@@ -1842,11 +1876,17 @@ window.LSM_CATALOG = {
         },
         "extra": {
           "RightHandThumb1": {
-            "y": -30,
+            "x": 8,
+            "y": -38,
             "z": 40
           },
           "RightHandThumb2": {
-            "x": 60
+            "x": 74,
+            "z": 4.5
+          },
+          "RightHandThumb3": {
+            "x": 5,
+            "z": 4
           }
         }
       }
@@ -1854,7 +1894,7 @@ window.LSM_CATALOG = {
     {
       "letra": "W",
       "nombre": "W",
-      "descripcion": "Índice, medio y anular estirados hacia arriba, con un hueco visible entre cada uno, como los tres palitos de la W (sin abrirlos en abanico). El meñique se recoge contra la palma y el pulgar queda tumbado encima, con la yema apoyada sobre el meñique.",
+      "descripcion": "Índice, medio y anular estirados hacia arriba, con un hueco visible entre cada uno, como los tres palitos de la W (sin abrirlos en abanico). El meñique se curva hacia el pulgar y el pulgar sale a su encuentro: las yemas de pulgar y meñique se tocan delante de la palma.",
       "animacion": "Letra_W",
       "aliases": [
         "W",
@@ -1863,30 +1903,40 @@ window.LSM_CATALOG = {
       ],
       "pose": {
         "thumb": {
-          "curl": 0.35,
-          "aside": -0.6
+          "curl": 0.4,
+          "aside": -0.55
         },
         "index": {
-          "curl": 0,
-          "spread": -6
+          "curl": 0.0,
+          "spread": -2
         },
         "middle": {
-          "curl": 0
+          "curl": 0.0
         },
         "ring": {
-          "curl": 0,
-          "spread": 12
+          "curl": 0.0,
+          "spread": 6
         },
         "pinky": {
-          "curl": 0.95
+          "curl": 0.81,
+          "spread": -4,
+          "twist": 5
         },
         "extra": {
           "RightHandThumb1": {
+            "x": 23,
             "y": -30,
-            "z": 50
+            "z": 39
           },
           "RightHandThumb2": {
-            "x": 60
+            "x": 37,
+            "y": -7,
+            "z": -5
+          },
+          "RightHandThumb3": {
+            "x": 32,
+            "y": 17,
+            "z": 15
           }
         }
       }
@@ -1894,7 +1944,7 @@ window.LSM_CATALOG = {
     {
       "letra": "X",
       "nombre": "X",
-      "descripcion": "Puño de pie delante del pecho, palma hacia el cuerpo: el índice sale del puño y se dobla en gancho apuntando a la izquierda; medio, anular y meñique van cerrados y el pulgar se recuesta al costado del medio, debajo del gancho. Sin cambiar de forma, la mano entera se jala en diagonal hacia arriba y a la derecha (la flecha de la lámina); el movimiento sale del antebrazo, no de un giro de muñeca.",
+      "descripcion": "La mano va delante del pecho y apunta hacia quien mira, con la palma de lado (no se ve) y la muñeca casi recta. Los dedos hacen el gatillo: el índice sale del puño y se dobla en gancho, con el nudillo doblado hacia enfrente (no de lado); medio, anular y meñique van cerrados y el pulgar va hacia arriba, con la base a 90° de los dedos y la punta doblada un poco hacia adelante. Sin cambiar de forma, la mano entera se jala hacia atrás, hacia el pecho (la flecha de la lámina); el movimiento sale del brazo y el codo, no de un giro de muñeca.",
       "animacion": "Letra_X",
       "aliases": [
         "X",
@@ -1903,25 +1953,23 @@ window.LSM_CATALOG = {
       ],
       "pose": {
         "thumb": {
-          "curl": 0.25,
-          "aside": 0.4
+          "curl": 0,
+          "aside": -0.99
+        },
+        "escala": {
+          "RightHandThumb1": 0.65
         },
         "index": {
-          "curl": 0
+          "curl": 0.0
         },
         "middle": {
-          "curl": 1
+          "curl": 1.0
         },
         "ring": {
-          "curl": 1
+          "curl": 1.0
         },
         "pinky": {
-          "curl": 1
-        },
-        "muneca": {
-          "x": -16.818,
-          "y": 6.191,
-          "z": -103.94
+          "curl": 1.0
         },
         "extra": {
           "RightHandIndex1": {
@@ -1934,22 +1982,38 @@ window.LSM_CATALOG = {
             "x": 58
           },
           "RightHandThumb1": {
-            "y": -12
+            "x": -34.831,
+            "y": -25.528,
+            "z": 6.924
+          },
+          "RightHandThumb2": {
+            "x": 4.84,
+            "y": -7.558,
+            "z": 7.78
+          },
+          "RightHandThumb3": {
+            "x": -8.192,
+            "z": 11.484
           },
           "RightArm": {
-            "x": 11.511,
-            "y": 3.841,
-            "z": -3.489
+            "x": -8.671,
+            "y": -24.081,
+            "z": -11.088
           },
           "RightForeArm": {
-            "x": 27.693,
-            "y": 25.322,
-            "z": -12.105
+            "x": 9.359,
+            "y": 100.888,
+            "z": 20.612
           }
+        },
+        "muneca": {
+          "x": 28.832,
+          "y": 12.297,
+          "z": 19.275
         }
       },
       "ciclo": {
-        "etiqueta": "la mano se jala en diagonal hacia arriba y a la derecha",
+        "etiqueta": "la mano se jala hacia atrás, hacia el pecho",
         "holdStartMs": 450,
         "durationMs": 850,
         "holdEndMs": 400,
@@ -1957,42 +2021,42 @@ window.LSM_CATALOG = {
         "loop": true,
         "keyframes": [
           {
-            "t": 0,
+            "t": 0.0,
             "muneca": {
-              "x": -16.818,
-              "y": 6.191,
-              "z": -103.94
+              "x": 28.832,
+              "y": 12.297,
+              "z": 19.275
             },
             "extra": {
               "RightArm": {
-                "x": 11.511,
-                "y": 3.841,
-                "z": -3.489
+                "x": -8.671,
+                "y": -24.081,
+                "z": -11.088
               },
               "RightForeArm": {
-                "x": 27.693,
-                "y": 25.322,
-                "z": -12.105
+                "x": 9.359,
+                "y": 100.888,
+                "z": 20.612
               }
             }
           },
           {
-            "t": 1,
+            "t": 1.0,
             "muneca": {
-              "x": -16.818,
-              "y": 6.191,
-              "z": -103.94
+              "x": 28.832,
+              "y": 12.297,
+              "z": 19.275
             },
             "extra": {
               "RightArm": {
-                "x": 11.511,
-                "y": 3.841,
-                "z": -3.489
+                "x": 0.591,
+                "y": -26.13,
+                "z": -0.825
               },
               "RightForeArm": {
-                "x": 39.338,
-                "y": 23.068,
-                "z": -23.768
+                "x": -14.671,
+                "y": 93.206,
+                "z": 35.188
               }
             }
           }
@@ -2011,7 +2075,7 @@ window.LSM_CATALOG = {
       ],
       "pose": {
         "thumb": {
-          "curl": 0,
+          "curl": 0.0,
           "aside": 0.85
         },
         "index": {
@@ -2024,7 +2088,7 @@ window.LSM_CATALOG = {
           "curl": 0.98
         },
         "pinky": {
-          "curl": 0,
+          "curl": 0.0,
           "spread": 22
         },
         "extra": {
@@ -2052,7 +2116,7 @@ window.LSM_CATALOG = {
     {
       "letra": "Z",
       "nombre": "Z",
-      "descripcion": "Índice estirado hacia arriba y el resto en puño, palma al frente: el dedo es el lápiz. Sin cambiar de forma, la mano entera —muñeca y antebrazo juntos— dibuja una Z mayúscula en el aire: trazo horizontal a la derecha, diagonal abajo-izquierda y otra vez horizontal a la derecha.",
+      "descripcion": "Índice estirado hacia arriba y el resto en puño, palma al frente, con la yema del pulgar unida a la yema del dedo medio: el índice es el lápiz. Sin cambiar de forma, la mano entera —muñeca y antebrazo juntos— dibuja una Z mayúscula en el aire: trazo horizontal a la derecha, diagonal abajo-izquierda y otra vez horizontal a la derecha.",
       "animacion": "Letra_Z",
       "aliases": [
         "Z",
@@ -2065,7 +2129,7 @@ window.LSM_CATALOG = {
           "aside": 0.12
         },
         "index": {
-          "curl": 0
+          "curl": 0.0
         },
         "middle": {
           "curl": 0.98
@@ -2086,25 +2150,41 @@ window.LSM_CATALOG = {
             "x": 1.329,
             "y": 4.569,
             "z": 2.914
+          },
+          "RightHandThumb1": {
+            "x": -58.125,
+            "y": -18.75,
+            "z": 46.875
+          },
+          "RightHandThumb2": {
+            "x": 45,
+            "y": -30,
+            "z": 45
+          },
+          "RightHandThumb3": {
+            "x": 60,
+            "y": -30
           }
         },
         "muneca": {
-          "x": -39.092,
-          "y": -0.428,
+          "x": 20.908,
+          "y": -0.115,
           "z": -14.928
         }
       },
       "ciclo": {
         "etiqueta": "el índice dibuja una Z en el aire",
         "holdStartMs": 500,
-        "durationMs": 1600,
-        "holdEndMs": 400,
-        "resetMs": 700,
+        "durationMs": 2400,
+        "holdEndMs": 500,
+        "resetMs": 900,
         "ease": "linear",
+        "suavizarTramos": true,
+        "retornoDirecto": true,
         "loop": true,
         "keyframes": [
           {
-            "t": 0,
+            "t": 0.0,
             "extra": {
               "RightArm": {
                 "x": 11.511,
@@ -2118,13 +2198,13 @@ window.LSM_CATALOG = {
               }
             },
             "muneca": {
-              "x": -39.092,
-              "y": -0.428,
+              "x": 20.908,
+              "y": -0.115,
               "z": -14.928
             }
           },
           {
-            "t": 0.293,
+            "t": 0.27,
             "extra": {
               "RightArm": {
                 "x": 11.511,
@@ -2138,13 +2218,33 @@ window.LSM_CATALOG = {
               }
             },
             "muneca": {
-              "x": -39.092,
-              "y": -0.428,
-              "z": -14.928
+              "x": 12.471,
+              "y": -17.928,
+              "z": 2.573
             }
           },
           {
-            "t": 0.707,
+            "t": 0.32,
+            "extra": {
+              "RightArm": {
+                "x": 11.511,
+                "y": 3.841,
+                "z": -3.489
+              },
+              "RightForeArm": {
+                "x": 5.475,
+                "y": 3.831,
+                "z": -24.26
+              }
+            },
+            "muneca": {
+              "x": 12.471,
+              "y": -17.928,
+              "z": 2.573
+            }
+          },
+          {
+            "t": 0.68,
             "extra": {
               "RightArm": {
                 "x": 11.511,
@@ -2158,13 +2258,33 @@ window.LSM_CATALOG = {
               }
             },
             "muneca": {
-              "x": -39.092,
-              "y": -0.428,
-              "z": -14.928
+              "x": -16.28,
+              "y": 12.073,
+              "z": -15.24
             }
           },
           {
-            "t": 1,
+            "t": 0.73,
+            "extra": {
+              "RightArm": {
+                "x": 11.511,
+                "y": 3.841,
+                "z": -3.489
+              },
+              "RightForeArm": {
+                "x": 39.644,
+                "y": -2.661,
+                "z": 3.38
+              }
+            },
+            "muneca": {
+              "x": -16.28,
+              "y": 12.073,
+              "z": -15.24
+            }
+          },
+          {
+            "t": 1.0,
             "extra": {
               "RightArm": {
                 "x": 11.511,
@@ -2178,9 +2298,9 @@ window.LSM_CATALOG = {
               }
             },
             "muneca": {
-              "x": -39.092,
-              "y": -0.428,
-              "z": -14.928
+              "x": -27.217,
+              "y": -12.615,
+              "z": -12.74
             }
           }
         ]

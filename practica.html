@@ -1,9 +1,10 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
+  <meta http-equiv="Cache-Control" content="no-cache, must-revalidate" />
   <title>Práctica LSM · Modelo 3D - GM Complejo Toluca</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <link rel="stylesheet" href="css/app.css" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -649,6 +650,7 @@
       }
     }
   </style>
+  <link rel="stylesheet" href="css/responsive.css?v=1" />
 </head>
 <body>
   <div class="top-glow-bar"></div>
@@ -805,8 +807,8 @@
     </footer>
   </div>
 
-  <script src="js/catalogo-lsm.js?v=20260924n15"></script>
-  <script src="js/hand-controller.js?v=20260924n15"></script>
+  <script src="js/catalogo-lsm.js?v=20261001u13"></script>
+  <script src="js/hand-controller.js?v=20261001t2"></script>
   <script>
     (function () {
       const MODEL_URL = "model2.glb";
@@ -1138,7 +1140,10 @@
           baseMs = controller.getLetterPlayMs(item.letra);
         }
         const extraHold = 850 * (velocidad - 1);
-        const totalMs = Math.max(baseMs, baseMs + extraHold);
+        const totalMs = Math.max(
+          controller.getTransitionMs() + 100,
+          baseMs + extraHold
+        );
         phraseTimer = setTimeout(avanzarFrase, totalMs);
       }
 

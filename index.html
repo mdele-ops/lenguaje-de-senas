@@ -1,9 +1,10 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
+  <meta http-equiv="Cache-Control" content="no-cache, must-revalidate" />
   <title>Lengua de Señas Mexicana - GM Complejo Toluca</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <link rel="stylesheet" href="css/app.css" />
   <link rel="prefetch" href="practica.html" />
   <link rel="prefetch" href="model2.glb" as="fetch" />
@@ -972,6 +973,7 @@
       #neural-bg { display: none; }
     }
   </style>
+  <link rel="stylesheet" href="css/responsive.css?v=1" />
 </head>
 <body>
   <div class="top-glow-bar"></div>
@@ -1150,8 +1152,8 @@
     </footer>
   </div>
 
-  <script src="js/catalogo-lsm.js?v=20260924n15"></script>
-  <script src="js/hand-controller.js?v=20260924n15"></script>
+  <script src="js/catalogo-lsm.js?v=20261001u13"></script>
+  <script src="js/hand-controller.js?v=20261001t2"></script>
   <script>
     /* Avatar 3D del hero: deletrea el alfabeto LSM en bucle, sin controles. */
     (function () {
@@ -1396,6 +1398,9 @@
       function resize() {
         width = canvas.width = window.innerWidth;
         height = canvas.height = window.innerHeight;
+        /* Menos nodos en pantallas chicas: más fluido en teléfonos */
+        NODE_COUNT = width < 600 ? 28 : width < 1000 ? 42 : 60;
+        LINK_DISTANCE = width < 600 ? 100 : 140;
       }
 
       function createNodes() {
@@ -1467,9 +1472,14 @@
         requestAnimationFrame(step);
       }
 
+      var lastWidth = window.innerWidth;
       window.addEventListener('resize', function () {
+        var widthChanged = window.innerWidth !== lastWidth;
+        lastWidth = window.innerWidth;
         resize();
-        createNodes();
+        /* En móvil el resize se dispara al ocultar la barra del navegador:
+           solo regeneramos si cambió el ancho (rotación / ventana). */
+        if (widthChanged) createNodes();
       });
 
       window.addEventListener('mousemove', function (e) {

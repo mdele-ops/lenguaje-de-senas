@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <title>Lengua de Señas Mexicana (LSM) · GM Complejo Toluca</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,300;8..60,400;8..60,500;8..60,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -42,7 +42,7 @@
   }
 
   * { box-sizing: border-box; }
-  html { scroll-behavior: smooth; }
+  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
 
   body {
     margin: 0;
@@ -296,6 +296,7 @@
     background-position: center 30%;
     color: #ffffff;
     border-bottom: 1px solid rgba(255,255,255,0.26);
+    overflow: hidden; /* el resplandor decorativo no debe generar scroll lateral */
   }
   .hero-cover::before {
     content: "";
@@ -456,7 +457,7 @@
   .practice-panel .btn-solid:hover { background: var(--accent-tint); }
 
   /* ---------- Source cards (alphabet references) ---------- */
-  .source-cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin-top: 24px; }
+  .source-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 16px; margin-top: 24px; }
   .source-card {
     display: flex; flex-direction: column; gap: 10px; padding: 22px 20px;
     border-radius: 3px; border: 1px solid var(--paper-line); background: var(--paper);
@@ -475,7 +476,7 @@
   /* ---------- LSM image reference gallery ---------- */
   .reference-gallery {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 18px;
     margin-top: 26px;
     max-width: 780px;
@@ -559,14 +560,63 @@
     .layout { grid-template-columns: 1fr; }
     .toc { position: static; margin-bottom: 26px; }
     .toc ol { display: flex; flex-wrap: wrap; gap: 4px 18px; border-left: none; }
-    .header-inner { padding: 14px 20px 14px 64px; }
+    .header-inner { padding: 12px 20px 12px 88px; gap: 14px; }
+    .brand-block { min-width: 0; }
     .hero-cover { padding: 100px 20px 72px; }
-    .source-cards { grid-template-columns: 1fr; }
-    .reference-gallery { grid-template-columns: 1fr; }
     .hero-stats { gap: 14px 0; }
     .hero-stat { flex: 1 1 45%; border-left: none; padding: 10px 0; border-top: 1px solid rgba(255,255,255,0.22); }
     .hero-stat:first-child { border-top: none; }
     .practice-panel { padding: 26px; }
+
+    /* Logo GM compacto: solo el símbolo, para no tapar el encabezado */
+    .gm-badge { padding: 5px; min-height: 0; border-radius: 12px; gap: 0; }
+    .gm-badge .gm-badge-copy { display: none; }
+    .gm-badge .gm-badge-mark { width: 44px; height: 44px; }
+    .gm-badge::after { display: none; }
+  }
+
+  /* ---------- Teléfono ---------- */
+  @media (max-width: 600px) {
+    body { font-size: 15.5px; }
+    .brand-block { display: none; }
+    .header-inner { padding: 10px 14px 10px 76px; justify-content: flex-end; }
+    .nav-links { gap: 8px; }
+    .btn { padding: 10px 16px; font-size: 13px; min-height: 44px; justify-content: center; }
+    .gm-badge { top: 10px; left: 10px; }
+    .gm-badge .gm-badge-mark { width: 40px; height: 40px; }
+
+    .hero-cover { padding: 84px 18px 56px; }
+    .hero-cover p.lead { font-size: 16px; }
+    .hero-cta { margin-top: 28px; }
+    .hero-cta .btn { flex: 1 1 100%; }
+    .hero-stat-num { font-size: 1.6rem; }
+
+    .shell { padding: 0 16px 56px; }
+    .layout { gap: 8px; padding-top: 32px; }
+    .toc ol { gap: 2px 14px; }
+    .toc a { padding: 8px 0; }
+    .section-block { padding: 36px 0; }
+    .section-block p,
+    ul.field-list li { max-width: none; }
+    .callout { padding: 16px 18px; }
+
+    .reference-gallery { max-width: none; }
+    .practice-panel { padding: 22px 18px; }
+    .practice-panel .btn { width: 100%; }
+    .video-caption { flex-direction: column; align-items: flex-start; gap: 4px; }
+
+    thead th, tbody td, tbody th { padding: 10px 12px; }
+    tbody th { width: auto; }
+    table { font-size: 13.5px; }
+    code { white-space: normal; overflow-wrap: anywhere; }
+    .chip { padding: 9px 14px; }
+    footer { padding: 26px 16px 36px; }
+  }
+
+  img, iframe, video { max-width: 100%; }
+  .site-header .header-inner { padding-right: max(20px, env(safe-area-inset-right)); }
+  @media (hover: none) {
+    .btn:hover, .reference-card:hover { transform: none; }
   }
 
   @media print {

@@ -1,0 +1,161 @@
+/* =====================================================================
+   Ajustes responsivos compartidos (index.html y practica.html)
+   Se carga DESPUÉS del <style> de cada página para poder afinar reglas.
+   Breakpoints: 980 (tablet), 720 (tablet chica / teléfono grande),
+                480 (teléfono). Además: pointer/hover y orientación.
+   ===================================================================== */
+
+/* ---------- Base ---------- */
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  min-height: 100vh;
+  min-height: 100dvh;
+  overflow-x: clip; /* evita scroll horizontal por fondos/efectos */
+}
+
+img, video, svg { max-width: 100%; }
+
+/* Respeta notch / barras del sistema (iPhone, Android con gestos) */
+.shell {
+  padding-left: max(16px, env(safe-area-inset-left));
+  padding-right: max(16px, env(safe-area-inset-right));
+  padding-bottom: max(32px, env(safe-area-inset-bottom));
+}
+
+.gm-badge {
+  top: max(16px, env(safe-area-inset-top)) !important;
+  left: max(16px, env(safe-area-inset-left)) !important;
+}
+
+/* El logo GM es fijo: deja espacio arriba para que no tape el encabezado */
+@media (max-width: 980px) {
+  .shell { padding-top: max(76px, calc(env(safe-area-inset-top) + 64px)); }
+}
+
+/* Las tarjetas decorativas apiladas se salen del ancho en tableta / laptop chica */
+@media (max-width: 1180px) {
+  .hero-stack,
+  .card-stack { display: none; }
+}
+
+.breadcrumb { flex-wrap: wrap; justify-content: center; text-align: center; }
+
+/* ---------- Rendimiento en pantallas chicas / táctiles ---------- */
+@media (max-width: 900px), (pointer: coarse) {
+  .mesh-sheen,
+  .aurora-bg,
+  .aurora-bg-2 { animation: none !important; }
+  .mesh-sheen { filter: blur(60px); }
+  .aurora-bg { filter: blur(48px); }
+  .aurora-bg-2 { filter: blur(56px); }
+  .grain-overlay { display: none; }
+  .glass-card,
+  .hero,
+  .stats-strip {
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+  }
+}
+
+/* ---------- Dispositivos táctiles (sin hover real) ---------- */
+@media (hover: none) {
+  .btn:hover,
+  .letter-pill:hover,
+  .phrase-chip:hover,
+  .stat-item:hover { transform: none !important; }
+  .btn:hover::before { left: -60%; }
+  .glass-card:hover::before,
+  .hero:hover::before { opacity: 0; }
+}
+
+@media (pointer: coarse) {
+  /* Objetivos táctiles de al menos ~44px */
+  .btn { min-height: 44px; justify-content: center; }
+  .letter-pill { min-width: 42px; height: 42px; font-size: 0.9rem; }
+  .letter-pill.neutral-pill { min-width: 74px; }
+  .phrase-chip { padding: 10px 16px; font-size: 0.82rem; }
+  .stage-spell .phrase-chip { font-size: 0.82rem; padding: 10px 14px; }
+  .alphabet-grid { gap: 8px; }
+
+  /* 16px evita el zoom automático de iOS al enfocar el campo */
+  .phrase-input,
+  .phrase-speed-label select { font-size: 16px; }
+  .phrase-input { min-height: 44px; }
+  .phrase-speed-label select { min-height: 40px; }
+}
+
+/* ---------- practica.html ---------- */
+@media (max-width: 980px) {
+  .glass-card { max-width: 100% !important; }
+  .stage-layout { gap: 18px; }
+}
+
+@media (max-width: 720px) {
+  .card-stage { margin-bottom: 12px; }
+  .glass-card .letter-main { font-size: 2.6rem !important; }
+  .controls-row { width: 100%; }
+  .controls-row .btn { flex: 1 1 0; justify-content: center; }
+  .nav-links { gap: 8px; }
+  .nav-links .btn { flex: 1 1 auto; justify-content: center; }
+  .phrase-playback-controls .btn { flex: 1 1 auto; justify-content: center; }
+  .phrase-speed-label { margin-left: 0; width: 100%; justify-content: space-between; }
+}
+
+@media (max-width: 640px) {
+  .card-corner { display: none; }
+  .glass-card .practice-subtitle { max-width: none; }
+  .stage-spell { padding: 14px 12px 12px; }
+  .stage-spell .phrase-input-row .btn { flex: 1 1 100%; }
+  .alphabet-grid { justify-content: center; }
+}
+
+@media (max-width: 480px) {
+  .shell { padding-top: max(68px, calc(env(safe-area-inset-top) + 58px)); }
+  .glass-card { padding: 22px 14px !important; border-radius: 18px !important; }
+  .stage-person #viewer { height: min(52vh, 360px); }
+  .phrase-playback { padding: 12px; }
+  .phrase-letter { min-width: 28px; height: 28px; font-size: 0.8rem; }
+  footer { font-size: 0.68rem !important; }
+}
+
+/* Teléfono en horizontal: aprovechar el alto disponible */
+@media (max-width: 980px) and (orientation: landscape) and (max-height: 520px) {
+  .shell { padding-top: max(60px, calc(env(safe-area-inset-top) + 52px)); }
+  .stage-person #viewer { height: max(240px, 74dvh); }
+  .glass-card { padding: 22px 20px !important; }
+}
+
+/* ---------- index.html ---------- */
+@media (max-width: 900px) {
+  .hero-top { gap: 32px; justify-content: center; }
+  .hero-top .hero-visual { margin-inline: auto; }
+  .hero-wrapper { gap: 20px; }
+}
+
+@media (max-width: 720px) {
+  .hero-top { gap: 28px; }
+  .hero-body { max-width: none; }
+  .hero-actions { gap: 10px; }
+}
+
+@media (max-width: 480px) {
+  .hero { padding: 28px 18px !important; gap: 24px !important; }
+  .hero-title { font-size: clamp(1.9rem, 9vw, 2.4rem) !important; }
+  .hero-actions .btn { flex: 1 1 100%; justify-content: center; }
+  .epigraph { font-size: 0.95rem; }
+  .stat-number { font-size: 1.6rem; }
+  .stat-item { padding: 16px 12px; }
+}
+
+@media (max-width: 980px) and (orientation: landscape) and (max-height: 520px) {
+  .hero { padding: 28px 28px !important; }
+}
+
+/* ---------- Pantallas grandes (TV / monitores ultra anchos) ---------- */
+@media (min-width: 1600px) {
+  html { font-size: 17px; }
+}
